@@ -20,6 +20,10 @@ public class UserRegistrationService {
 		return userDetails;
 	}
 	
+	public UserDetails getUserDetails(String id) {
+		return userDetailsRepository.findByUserId(Integer.valueOf(id));
+	}
+	
 	public void addUserDetails(UserDetails userDetails) {
 		userDetailsRepository.save(userDetails);
 	}

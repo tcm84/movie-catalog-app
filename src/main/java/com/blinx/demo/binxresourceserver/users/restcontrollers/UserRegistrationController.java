@@ -3,6 +3,7 @@ package com.blinx.demo.binxresourceserver.users.restcontrollers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,11 @@ public class UserRegistrationController {
 	@RequestMapping("/all")
 	public List<UserDetails> getAllUserDetails() {
 		return userRegistrationService.getAllUserDetails();
+	}
+	
+	@RequestMapping("registered/{id}")
+	public boolean isRegistered(@PathVariable String id) {
+		return userRegistrationService.getUserDetails(id) != null;
 	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/register")
