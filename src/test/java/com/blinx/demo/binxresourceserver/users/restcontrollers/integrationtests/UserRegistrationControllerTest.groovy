@@ -1,4 +1,4 @@
-package com.blinx.demo.binxresourceserver.users.restcontrollers
+package com.blinx.demo.binxresourceserver.users.restcontrollers.integrationtests
 
 import spock.lang.Specification
 
@@ -33,6 +33,23 @@ import org.springframework.http.MediaType;
 	UserRegistrationService])
 @WebMvcTest(UserRegistrationController)
 class UserRegistrationControllerTest extends Specification  {
+	
+	def newUserDetailsJSON =
+	'''{
+			"username": "username",
+			"password": "password",
+			"company": "company",
+			"address": {
+				"streetAddress": "streetaddress",
+				"city": "city",
+				"postCode": "postcode"
+			},
+			"phoneNumbers": [
+				"phoneNumber1",
+				"phoneNumber2"
+			]
+		}'''
+	
 
 	@Autowired
 	private MockMvc mockMvc
@@ -47,24 +64,7 @@ class UserRegistrationControllerTest extends Specification  {
 	}
 	
 	def "Should beable to register a new user"(){
-		given: "New user registration details in JSON format"
-		def newUserDetailsJSON = 
-		'''{
-			"username": "username",
-			"password": "password",
-			"company": "company",
-			"address": {
-				"streetAddress": "streetaddress",
-				"city": "city",
-				"postCode": "postcode"
-			},
-			"phoneNumbers": [
-				"phoneNumber1",
-				"phoneNumber2"
-			]
-		}'''
-		
-		when:"We post this user registration request to the endpoint"
+		when:"a new user tries to register"
 		def response = this.mockMvc.perform(post("/users/register")
 			.contentType(MediaType.APPLICATION_JSON).content(newUserDetailsJSON))
 		
@@ -74,5 +74,21 @@ class UserRegistrationControllerTest extends Specification  {
 		and: "the new user should be present in the repo"
 		mockMvc.perform(get("/users/registered/1"))
 				.andExpect(content().string("true"))
+	}
+	
+	def "Should not allow a user to Register again if all ready registered"(){
+		given:"A new user registers"
+		this.mockMvc.perform(post("/users/register")
+			.contentType(MediaType.APPLICATION_JSON).content(newUserDetailsJSON))
+		
+		when:"The same user tries to register again after already having just registered"
+		def response = this.mockMvc.perform(post("/users/register")
+								   .contentType(MediaType.APPLICATION_JSON).content(newUserDetailsJSON))
+		
+		then:"the registration endpoint should return a HttpStatus of CONFLICT"
+	    response.andExpect(status().isConflict())
+		
+		and:"the error response reason is User has already registered"
+		response.andExpect(status().reason("User has already registered"))
 	}
 }

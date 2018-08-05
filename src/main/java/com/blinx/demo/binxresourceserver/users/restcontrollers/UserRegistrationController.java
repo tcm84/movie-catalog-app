@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blinx.demo.binxresourceserver.users.exceptions.UserAlreadyRegisteredException;
 import com.blinx.demo.binxresourceserver.users.model.entities.UserDetails;
 import com.blinx.demo.binxresourceserver.users.services.UserRegistrationService;
 
@@ -30,6 +31,10 @@ public class UserRegistrationController {
 	
 	@RequestMapping(method=RequestMethod.POST, value="/register")
 	public void addUserDetails(@RequestBody UserDetails newUserDetails) {
+		if (userRegistrationService.exists(newUserDetails)) {
+			throw new UserAlreadyRegisteredException();
+		}
+		
 		userRegistrationService.addUserDetails(newUserDetails);
 	}
 }

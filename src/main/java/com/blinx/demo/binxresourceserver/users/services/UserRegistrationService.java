@@ -24,7 +24,12 @@ public class UserRegistrationService {
 		return userDetailsRepository.findByUserId(Integer.valueOf(id));
 	}
 	
-	public void addUserDetails(UserDetails userDetails) {
-		userDetailsRepository.save(userDetails);
+	public int addUserDetails(UserDetails userDetails) {
+		return userDetailsRepository.save(userDetails).getUserId();
+	}
+	
+	public boolean exists(UserDetails userDetails) {
+		return userDetailsRepository.findByUsernameAndEmailAddress(userDetails.getUsername(),
+																	userDetails.getEmailAddress()) != null;
 	}
 }

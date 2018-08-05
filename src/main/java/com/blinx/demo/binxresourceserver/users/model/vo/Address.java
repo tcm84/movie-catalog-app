@@ -2,9 +2,7 @@ package com.blinx.demo.binxresourceserver.users.model.vo;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import lombok.Data;
 
-@Data
 @Embeddable
 public class Address {
 	@Column(name="STREET_ADDR")

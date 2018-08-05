@@ -8,4 +8,5 @@ import com.blinx.demo.binxresourceserver.users.model.entities.UserDetails;
 @Repository
 public interface UserDetailsRepository extends CrudRepository<UserDetails,String> {
 	public UserDetails findByUserId(int userId);
+	public UserDetails findByUsernameAndEmailAddress(String username, String emailAddress);
 }

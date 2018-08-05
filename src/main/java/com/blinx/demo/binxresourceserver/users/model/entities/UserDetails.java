@@ -16,9 +16,6 @@ import javax.persistence.Table;
 
 import com.blinx.demo.binxresourceserver.users.model.vo.Address;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name="USER_DETAILS")
 public class UserDetails {
@@ -28,6 +25,7 @@ public class UserDetails {
 	private String username;
 	private String password;
 	private String company;
+	private String emailAddress;
 	
 	@Embedded
 	private Address address;
@@ -36,4 +34,16 @@ public class UserDetails {
 	@JoinTable(name="USER_PHONENUMBERS",
 			   joinColumns=@JoinColumn(name = "USER_ID"))
 	private Collection<String> phoneNumbers = new ArrayList<>();
+	
+	public int getUserId() {
+		return userId;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 }
