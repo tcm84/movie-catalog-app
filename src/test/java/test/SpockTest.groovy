@@ -20,16 +20,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes=BlinxResourceServerApplication)
 @WebMvcTest(TestController)
 class SpockTest extends Specification  {
-	
-	 @Autowired 
-	 private MockMvc mockMvc
-	
+
+	@Autowired
+	private MockMvc mockMvc
+
 	def "Should return test"() {
 		when:
 		def response = mockMvc.perform(get("/rest/test"))
-		
+
 		then:
-			response.andExpect(status().isOk())
-					.andExpect(content().string("test"))
+		response.andExpect(status().isOk())
+				.andExpect(content().string("test"))
 	}
 }
