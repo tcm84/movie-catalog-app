@@ -1,4 +1,4 @@
-package com.blinx.demo.blinxresourceserver.restcontrollers;
+package com.blinx.demo.binxresourceserver.restcontrollers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
