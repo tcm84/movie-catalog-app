@@ -16,6 +16,9 @@ import javax.persistence.Table;
 
 import com.blinx.demo.binxresourceserver.users.model.vo.Address;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name="USER_DETAILS")
 public class UserDetails {
@@ -33,40 +36,4 @@ public class UserDetails {
 	@JoinTable(name="USER_PHONENUMBERS",
 			   joinColumns=@JoinColumn(name = "USER_ID"))
 	private Collection<String> phoneNumbers = new ArrayList<>();
-	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getCompany() {
-		return company;
-	}
-	public void setCompany(String company) {
-		this.company = company;
-	}
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	public Collection<String> getPhoneNumbers() {
-		return phoneNumbers;
-	}
-	public void setPhoneNumbers(Collection<String> phoneNumbers) {
-		this.phoneNumbers = phoneNumbers;
-	}
-	@Override
-	public String toString() {
-		return "UserDetails [username=" + username + ", password=" + password + ", company=" + company + ", address="
-				+ address + ", phoneNumbers=" + phoneNumbers + "]";
-	}
 }

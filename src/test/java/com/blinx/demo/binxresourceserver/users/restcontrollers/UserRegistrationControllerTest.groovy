@@ -27,7 +27,6 @@ import org.springframework.context.annotation.Import
 
 import org.springframework.http.MediaType;
 
-
 @Import(RepoTestConfig)
 @ContextConfiguration(classes=[ 
 	BlinxResourceServerApplication,
@@ -44,15 +43,30 @@ class UserRegistrationControllerTest extends Specification  {
 
 		then:
 		response.andExpect(status().isOk())
+		response.andExpect(content().string("[]"))
 	}
 	
 	def "Should beable to register a new user"(){
-		given: "New user registration details"
-		def json = '{"username":"username","password":"password","company":"company","address":{"streetAddress":"streetaddress","city":"city","postCode":"postcode"},"phoneNumbers":["phoneNumber1","phoneNumber2"]}'
+		given: "New user registration details in JSON format"
+		def newUserDetailsJSON = 
+		'''{
+			"username": "username",
+			"password": "password",
+			"company": "company",
+			"address": {
+				"streetAddress": "streetaddress",
+				"city": "city",
+				"postCode": "postcode"
+			},
+			"phoneNumbers": [
+				"phoneNumber1",
+				"phoneNumber2"
+			]
+		}'''
 		
 		when:"We post this user registration request to the endpoint"
 		def response = this.mockMvc.perform(post("/users/register")
-			.contentType(MediaType.APPLICATION_JSON).content(json))
+			.contentType(MediaType.APPLICATION_JSON).content(newUserDetailsJSON))
 		
 		then: "We expect a HTTP status of OK"
 		response.andExpect(status().isOk())
