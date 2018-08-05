@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.MockMvc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 
 import com.blinx.demo.blinxresourceserver.BlinxResourceServerApplication
-import com.blinx.demo.blinxresourceserver.TestController
+import com.blinx.demo.blinxresourceserver.restcontrollers.TestController
 
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ContextConfiguration(classes=BlinxResourceServerApplication)
 @WebMvcTest(TestController)
-class SpockTestSpec extends Specification  {
+class SpockTest extends Specification  {
 	
 	 @Autowired 
 	 private MockMvc mockMvc
