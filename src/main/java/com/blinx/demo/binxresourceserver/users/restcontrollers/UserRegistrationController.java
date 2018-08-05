@@ -14,7 +14,6 @@ import com.blinx.demo.binxresourceserver.users.services.UserRegistrationService;
 @RestController
 @RequestMapping("/users")
 public class UserRegistrationController {
-	
 	@Autowired
 	private UserRegistrationService userRegistrationService;
 	
