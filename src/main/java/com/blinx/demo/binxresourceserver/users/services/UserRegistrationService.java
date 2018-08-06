@@ -29,7 +29,7 @@ public class UserRegistrationService {
 	}
 	
 	public boolean exists(UserDetails userDetails) {
-		return userDetailsRepository.findByUsernameAndEmailAddress(userDetails.getUsername(),
-																	userDetails.getEmailAddress()) != null;
+		return userDetailsRepository.
+				findByUsernameAndEmailAddress(userDetails.getUsername(),userDetails.getEmailAddress()).isPresent();
 	}
 }

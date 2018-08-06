@@ -7,8 +7,10 @@ import javax.persistence.Embeddable;
 public class Address {
 	@Column(name="STREET_ADDR")
 	private String streetAddress;
+	
 	@Column(name="CITY_NAME")
 	private String city;
+	
 	@Column(name="POST_CODE")
 	private String postCode;
 }

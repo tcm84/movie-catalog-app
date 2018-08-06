@@ -2,8 +2,9 @@ package com.blinx.demo.binxresourceserver.users.restcontrollers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,17 +25,12 @@ public class UserRegistrationController {
 		return userRegistrationService.getAllUserDetails();
 	}
 	
-	@RequestMapping("registered/{id}")
-	public boolean isRegistered(@PathVariable String id) {
-		return userRegistrationService.getUserDetails(id) != null;
-	}
-	
 	@RequestMapping(method=RequestMethod.POST, value="/register")
-	public void addUserDetails(@RequestBody UserDetails newUserDetails) {
+	public int addUserDetails(@Valid @RequestBody UserDetails newUserDetails) {
 		if (userRegistrationService.exists(newUserDetails)) {
 			throw new UserAlreadyRegisteredException();
 		}
 		
-		userRegistrationService.addUserDetails(newUserDetails);
+		return userRegistrationService.addUserDetails(newUserDetails);
 	}
 }
