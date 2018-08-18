@@ -20,4 +20,10 @@ public class MovieCatalogController {
 	public MovieDetails addToCatalog(@RequestBody MovieDetails movieDetails) {
 		return movieCatalogService.addToCatalog(movieDetails);
 	}
+	
+	
+	@RequestMapping(method=RequestMethod.PUT, value="/update")
+	public MovieDetails updateCatalog(@RequestBody MovieDetails movieDetails) {
+		return movieCatalogService.updateCatalog(movieDetails);
+	}
 }
