@@ -1,6 +1,7 @@
 package app.model;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.ArrayList;
 
 import javax.persistence.ElementCollection;
@@ -10,6 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import app.enums.Genre;
+import app.enums.Rating;
+
 @Entity
 public class MovieDetails {
 	@Id
@@ -18,10 +24,11 @@ public class MovieDetails {
 	
 	private String title;
 	private String director;
-	private String certificate;
-	private String rating;
-	private String gendre;
-	private String releasedate;
+	private Rating rating;
+	private Genre  genre;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
+	private Date   releasedate;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Collection<String> cast = new ArrayList<>();
@@ -41,36 +48,28 @@ public class MovieDetails {
 	public void setDirector(String director) {
 		this.director = director;
 	}
-
-	public String getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(String certificate) {
-		this.certificate = certificate;
-	}
-
-	public String getRating() {
+	
+	public Rating getRating() {
 		return rating;
 	}
 
-	public void setRating(String rating) {
+	public void setRating(Rating rating) {
 		this.rating = rating;
 	}
 
-	public String getGendre() {
-		return gendre;
+	public Genre getGenre() {
+		return genre;
 	}
 
-	public void setGendre(String gendre) {
-		this.gendre = gendre;
+	public void setGenre(Genre genre) {
+		this.genre = genre;
 	}
 
-	public String getReleasedate() {
+	public Date getReleasedate() {
 		return releasedate;
 	}
 
-	public void setReleasedate(String releasedate) {
+	public void setReleasedate(Date releasedate) {
 		this.releasedate = releasedate;
 	}
 

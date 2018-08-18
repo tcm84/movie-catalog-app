@@ -34,9 +34,8 @@ class MovieCatalogControllerATest extends Specification {
 		'''{
 				"title": "Hateful Eight",
 				"director": "Quentin Tarantino",
-				"certificate": "18",
-				"rating": "9/10",
-				"gendre": "western",
+				"rating": "_18",
+				"genre": "HISTORICAL_FICTION",
 				"releasedate": "11/10/2016",
 				"cast": [
 					"Samuel L Jackson",
