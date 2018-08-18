@@ -15,8 +15,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import app.enums.Genre;
 import app.enums.Rating;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter 
+@Setter
 public class MovieDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,52 +36,4 @@ public class MovieDetails {
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Collection<String> cast = new ArrayList<>();
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDirector() {
-		return director;
-	}
-
-	public void setDirector(String director) {
-		this.director = director;
-	}
-	
-	public Rating getRating() {
-		return rating;
-	}
-
-	public void setRating(Rating rating) {
-		this.rating = rating;
-	}
-
-	public Genre getGenre() {
-		return genre;
-	}
-
-	public void setGenre(Genre genre) {
-		this.genre = genre;
-	}
-
-	public Date getReleasedate() {
-		return releasedate;
-	}
-
-	public void setReleasedate(Date releasedate) {
-		this.releasedate = releasedate;
-	}
-
-	public Collection<String> getCast() {
-		return cast;
-	}
-
-	public void setCast(Collection<String> cast) {
-		this.cast = cast;
-	}
 }
