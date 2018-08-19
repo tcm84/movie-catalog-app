@@ -32,8 +32,8 @@ public class MovieCatalogControllerImpl implements MovieCatalogController {
 	}
 
 	@Override
-	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
-	public void deleteFromCatalog(@PathVariable Integer id) {
-		movieCatalogServiceImpl.deleteFromCatalog(id);
+	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{movieId}")
+	public void deleteFromCatalog(@PathVariable Integer movieId) {
+		movieCatalogServiceImpl.deleteFromCatalog(movieId);
 	}
 }

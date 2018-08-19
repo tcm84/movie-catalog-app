@@ -27,6 +27,10 @@ import lombok.Setter;
 @Getter 
 @Setter
 @Table(name="movie_catalog")
+/**
+* The <code>MovieDetails</code> class represents
+* a movie
+*/
 public class MovieDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
