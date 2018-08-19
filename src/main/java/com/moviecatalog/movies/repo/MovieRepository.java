@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.moviecatalog.movies.model.MovieDetails;
 
 /**
-* The <code>MovieCatalogRepository</code> represents a MovieCatalog
+* The <code>MovieRepository</code> represents a MovieCatalog
 */
-public interface MovieCatalogRepository extends CrudRepository<MovieDetails,Integer>  {
+public interface MovieRepository extends CrudRepository<MovieDetails,Integer>  {
 }

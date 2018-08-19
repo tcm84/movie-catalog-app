@@ -10,30 +10,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moviecatalog.movies.model.MovieDetails;
-import com.moviecatalog.movies.services.MovieCatalogService;
+import com.moviecatalog.movies.services.MovieService;
 
 @RestController
-@RequestMapping("/moviecatalog")
-public class MovieCatalogControllerImpl implements MovieCatalogController {
+@RequestMapping("/movies")
+public class MovieControllerImpl implements MovieController {
 	
 	@Autowired
-	private MovieCatalogService movieCatalogServiceImpl;
+	private MovieService movieServiceImpl;
 	
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/add")
-	public MovieDetails addToCatalog(@Valid @RequestBody MovieDetails movieDetails) {
-		return movieCatalogServiceImpl.addToCatalog(movieDetails);
+	public MovieDetails addMovie(@Valid @RequestBody MovieDetails movieDetails) {
+		return movieServiceImpl.addMovie(movieDetails);
 	}
 	
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/update")
-	public MovieDetails updateCatalog(@Valid @RequestBody MovieDetails movieDetails) {
-		return movieCatalogServiceImpl.updateCatalog(movieDetails);
+	public MovieDetails updateMovie(@Valid @RequestBody MovieDetails movieDetails) {
+		return movieServiceImpl.updateMovie(movieDetails);
 	}
 
 	@Override
 	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{movieId}")
-	public void deleteFromCatalog(@PathVariable Integer movieId) {
-		movieCatalogServiceImpl.deleteFromCatalog(movieId);
+	public void deleteMovie(@PathVariable Integer movieId) {
+		movieServiceImpl.deleteMovie(movieId);
 	}
 }

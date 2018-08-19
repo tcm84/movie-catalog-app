@@ -3,28 +3,28 @@ package com.moviecatalog.movies.restcontrollers;
 import com.moviecatalog.movies.model.MovieDetails;
 
 /**
-* The <code>MovieCatalogController</code> interface provides
+* The <code>MovieController</code> interface provides
 * an API to allow clients to perform CRUD operations 
 * on a MovieCatalog
 */
-public interface MovieCatalogController {
+public interface MovieController {
 
 	/** 
-	* @see MovieCatalogService#addToCatalog(MovieDetails)
+	* @see MovieService#addMovie(MovieDetails)
 	* @exception Throws MethodArgumentNotValidException if movieDetails
 	* fails the validation requirements
 	*/
-	MovieDetails addToCatalog(MovieDetails movieDetails);
+	MovieDetails addMovie(MovieDetails movieDetails);
 
 	/**
-	* @see MovieCatalogService#updateCatalog(MovieDetails)
+	* @see MovieService#updateMovie(MovieDetails)
 	* @exception Throws MethodArgumentNotValidException if movieDetails
 	* fails the validation requirements
 	*/
-	MovieDetails updateCatalog(MovieDetails movieDetails);
+	MovieDetails updateMovie(MovieDetails movieDetails);
 
 	/**
-	* @see MovieCatalogService#deleteFromCatalog(Integer)
+	* @see MovieService#deleteMovie(Integer)
 	*/
-	void deleteFromCatalog(Integer movieId);
+	void deleteMovie(Integer movieId);
 }

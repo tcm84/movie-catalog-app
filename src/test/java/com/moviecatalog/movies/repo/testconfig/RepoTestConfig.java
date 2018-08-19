@@ -14,10 +14,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.moviecatalog.movies.model.MovieDetails;
-import com.moviecatalog.movies.repo.MovieCatalogRepository;
+import com.moviecatalog.movies.repo.MovieRepository;
 
 @Configuration
-@EnableJpaRepositories(basePackageClasses = MovieCatalogRepository.class)
+@EnableJpaRepositories(basePackageClasses = MovieRepository.class)
 public class RepoTestConfig {
 	@Bean
 	public DataSource dataSource() {

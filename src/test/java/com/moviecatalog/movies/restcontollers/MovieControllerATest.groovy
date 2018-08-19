@@ -10,8 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.application.MovieCatalogApplication
 import com.moviecatalog.movies.repo.testconfig.RepoTestConfig
-import com.moviecatalog.movies.restcontrollers.MovieCatalogControllerImpl
-import com.moviecatalog.movies.services.MovieCatalogServiceImpl
+import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
+import com.moviecatalog.movies.services.MovieServiceImpl
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -28,9 +28,9 @@ import spock.lang.Unroll
 @Import(RepoTestConfig)
 @ContextConfiguration(classes=[
 	MovieCatalogApplication,
-	MovieCatalogServiceImpl])
-@WebMvcTest(MovieCatalogControllerImpl)
-class MovieCatalogControllerATest extends Specification {
+	MovieServiceImpl])
+@WebMvcTest(MovieControllerImpl)
+class MovieControllerATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
@@ -48,7 +48,7 @@ class MovieCatalogControllerATest extends Specification {
 					"Kurt Russel"
 				]
 			}'''
-		def response = mockMvc.perform(post("/moviecatalog/add")
+		def response = mockMvc.perform(post("/movies/add")
 						      .contentType(MediaType.APPLICATION_JSON)
 							  .content(hatefulEight))
 		
@@ -72,12 +72,12 @@ class MovieCatalogControllerATest extends Specification {
 					"David Carradine"
 				]
 			}'''
-		mockMvc.perform(post("/moviecatalog/add")
+		mockMvc.perform(post("/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(killBillVol1))
 			
 		when: "I request that it be added again when it already is in the catalog"
-		def response = mockMvc.perform(post("/moviecatalog/add")
+		def response = mockMvc.perform(post("/movies/add")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(killBillVol1))
 		
@@ -100,7 +100,7 @@ class MovieCatalogControllerATest extends Specification {
 					"David Carradine"
 				]
 			}'''
-		mockMvc.perform(post("/moviecatalog/add")
+		mockMvc.perform(post("/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(killBillVol2))
 		def updatedkillBillVol2 =
@@ -119,7 +119,7 @@ class MovieCatalogControllerATest extends Specification {
 			}'''
 		
 		when: "I make a request to update the movies' details"
-		def response = mockMvc.perform(post("/moviecatalog/update")
+		def response = mockMvc.perform(post("/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(updatedkillBillVol2))
 		
@@ -142,12 +142,12 @@ class MovieCatalogControllerATest extends Specification {
 					"David Carradine"
 				]
 			}'''
-		mockMvc.perform(post("/moviecatalog/add")
+		mockMvc.perform(post("/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(killBillVol3))
 		
 		when: "I make a request to delete the movie from the catalog"
-		def response = mockMvc.perform(delete("/moviecatalog/delete/1"))
+		def response = mockMvc.perform(delete("/movies/delete/1"))
 		
 		then: "the movies details should be deleted from the catalog"
 		response.andExpect(status().isOk())
@@ -169,7 +169,7 @@ class MovieCatalogControllerATest extends Specification {
 			}'''
 		
 		when: "I make a request to update the movies' details"
-		def response = mockMvc.perform(post("/moviecatalog/update")
+		def response = mockMvc.perform(post("/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(nonexistentMovie))
 		
@@ -205,7 +205,7 @@ class MovieCatalogControllerATest extends Specification {
 		
 		where:
 		description                                     | endpointURI
-		"when adding a new movie to the catalog"        | "/moviecatalog/add"
-		"when updating an existing movie in the catalog"| "/moviecatalog/update"
+		"when adding a new movie to the catalog"        | "/movies/add"
+		"when updating an existing movie in the catalog"| "/movies/update"
 	}
 }
