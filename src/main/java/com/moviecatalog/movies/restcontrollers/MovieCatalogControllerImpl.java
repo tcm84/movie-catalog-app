@@ -1,4 +1,4 @@
-package app.restcontrollers;
+package com.moviecatalog.movies.restcontrollers;
 
 import javax.validation.Valid;
 
@@ -9,28 +9,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.model.MovieDetails;
-import app.services.MovieCatalogService;
+import com.moviecatalog.movies.model.MovieDetails;
+import com.moviecatalog.movies.services.MovieCatalogService;
 
 @RestController
 @RequestMapping("/moviecatalog")
-public class MovieCatalogController {
+public class MovieCatalogControllerImpl implements MovieCatalogController {
 	
 	@Autowired
-	private MovieCatalogService movieCatalogService;
+	private MovieCatalogService movieCatalogServiceImpl;
 	
+	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/add")
 	public MovieDetails addToCatalog(@Valid @RequestBody MovieDetails movieDetails) {
-		return movieCatalogService.addToCatalog(movieDetails);
+		return movieCatalogServiceImpl.addToCatalog(movieDetails);
 	}
 	
+	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/update")
 	public MovieDetails updateCatalog(@Valid @RequestBody MovieDetails movieDetails) {
-		return movieCatalogService.updateCatalog(movieDetails);
+		return movieCatalogServiceImpl.updateCatalog(movieDetails);
 	}
-	
+
+	@Override
 	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
 	public void deleteFromCatalog(@PathVariable Integer id) {
-		movieCatalogService.deleteFromCatalog(id);
+		movieCatalogServiceImpl.deleteFromCatalog(id);
 	}
 }

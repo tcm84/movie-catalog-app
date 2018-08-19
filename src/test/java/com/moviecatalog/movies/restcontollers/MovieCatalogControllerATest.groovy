@@ -1,4 +1,4 @@
-package app.restcontollers.acceptancetests
+package com.moviecatalog.movies.restcontollers
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -8,6 +8,11 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
+import com.moviecatalog.application.MovieCatalogApplication
+import com.moviecatalog.movies.repo.testconfig.RepoTestConfig
+import com.moviecatalog.movies.restcontrollers.MovieCatalogControllerImpl
+import com.moviecatalog.movies.services.MovieCatalogServiceImpl
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 
@@ -16,10 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.springframework.http.MediaType;
 
-import app.MovieCatalogApplication
-import app.restcontrollers.MovieCatalogController
-import app.services.MovieCatalogService
-import app.repo.testconfig.RepoTestConfig
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -27,8 +28,8 @@ import spock.lang.Unroll
 @Import(RepoTestConfig)
 @ContextConfiguration(classes=[
 	MovieCatalogApplication,
-	MovieCatalogService])
-@WebMvcTest(MovieCatalogController)
+	MovieCatalogServiceImpl])
+@WebMvcTest(MovieCatalogControllerImpl)
 class MovieCatalogControllerATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc

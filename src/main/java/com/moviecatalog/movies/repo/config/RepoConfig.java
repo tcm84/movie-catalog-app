@@ -1,10 +1,10 @@
-package app.repo.config;
+package com.moviecatalog.movies.repo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
-import app.model.MovieDetails;
+import com.moviecatalog.movies.model.MovieDetails;
 
 @Configuration
 public class RepoConfig extends RepositoryRestConfigurerAdapter {

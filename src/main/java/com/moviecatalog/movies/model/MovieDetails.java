@@ -1,4 +1,4 @@
-package app.model;
+package com.moviecatalog.movies.model;
 
 import java.util.Collection;
 import java.util.Date;
@@ -17,9 +17,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.moviecatalog.movies.enums.Genre;
+import com.moviecatalog.movies.enums.Rating;
 
-import app.enums.Genre;
-import app.enums.Rating;
 import lombok.Getter;
 import lombok.Setter;
 

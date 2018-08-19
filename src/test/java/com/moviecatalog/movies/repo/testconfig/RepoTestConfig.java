@@ -1,4 +1,4 @@
-package app.repo.testconfig;
+package com.moviecatalog.movies.repo.testconfig;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -13,8 +13,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import app.model.MovieDetails;
-import app.repo.MovieCatalogRepository;
+import com.moviecatalog.movies.model.MovieDetails;
+import com.moviecatalog.movies.repo.MovieCatalogRepository;
 
 @Configuration
 @EnableJpaRepositories(basePackageClasses = MovieCatalogRepository.class)
