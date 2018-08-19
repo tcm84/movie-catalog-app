@@ -12,6 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,15 +33,21 @@ public class MovieDetails {
 	@Column(name="movie_id")
 	private int movieId;
 	
+	@NotEmpty(message="Movie title must not be empty")
 	private String title;
+	
+	@NotEmpty(message="Director must not be empty")
 	private String director;
-	private Rating rating;
+	
+	private Rating rating;	
 	private Genre  genre;
 	
-	
+	@NotNull(message="Releasedate should not be null")
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
+	@Column(name="release_date")
 	private Date   releasedate;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
+	@Size(min=1, message="Cast must contains at least one actor")
 	private Collection<String> cast = new ArrayList<>();
 }

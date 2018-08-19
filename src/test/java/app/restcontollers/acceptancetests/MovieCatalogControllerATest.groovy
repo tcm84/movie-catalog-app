@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.bind.MethodArgumentNotValidException
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -36,7 +37,6 @@ class MovieCatalogControllerATest extends Specification {
 		when: "I request a new movie gets added to the catalog"
 		def hatefulEight =
 		'''{
-				"movieId": 1,
 				"title": "Hateful Eight",
 				"director": "Quentin Tarantino",
 				"rating": "_18",
@@ -128,7 +128,7 @@ class MovieCatalogControllerATest extends Specification {
 	}
 	
 	def "Deleting movies from the catalog"(){
-		setup:"A movie exists in the catalog that I want to delete"
+		given:"a movie exists in the catalog that I want to delete"
 		def killBillVol3 =
 		'''{
 				"title": "Kill Bill Volume 3",
@@ -172,8 +172,33 @@ class MovieCatalogControllerATest extends Specification {
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(nonexistentMovie))
 		
-		then: "I should not beable to update them as the movie is not in the catalogue"
+		then: "I should not beable to update them as the movie is not in the catalog"
 		response.andExpect(status().isNotFound())
 				.andExpect(status().reason("Movie not found in the catalog"))
+	}
+	
+	def "Requests should be rejected if they don't pass validation requirements"(){
+		given: "a request containing no valid data"
+		def invalidRequest =
+		'''{
+			}'''
+		
+		when: "I make the request"
+		def response = mockMvc.perform(post("/moviecatalog/add")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(invalidRequest))
+		
+		then: "the request should be rejected as a bad request"
+		response.andExpect(status().isBadRequest())
+		
+		and: "the response should contain all the error messages for the failed validations"
+		MethodArgumentNotValidException ex = response.andReturn().resolvedException
+		def validationErrors = ex.getBindingResult().allErrors
+		validationErrors.size() == 4
+		Set actualErrorMsgs = []
+		validationErrors.forEach({error -> actualErrorMsgs += error.getDefaultMessage()})
+		Set expectedErrorMsgs = ["Movie title must not be empty", "Director must not be empty", 
+			 				     "Cast must contains at least one actor","Releasedate should not be null"]
+		actualErrorMsgs == expectedErrorMsgs
 	}
 }

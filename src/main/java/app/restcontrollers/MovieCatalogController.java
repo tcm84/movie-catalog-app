@@ -1,5 +1,7 @@
 package app.restcontrollers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,10 +20,9 @@ public class MovieCatalogController {
 	private MovieCatalogService movieCatalogService;
 	
 	@RequestMapping(method=RequestMethod.POST, value="/add")
-	public MovieDetails addToCatalog(@RequestBody MovieDetails movieDetails) {
+	public MovieDetails addToCatalog(@Valid @RequestBody MovieDetails movieDetails) {
 		return movieCatalogService.addToCatalog(movieDetails);
 	}
-	
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/update")
 	public MovieDetails updateCatalog(@RequestBody MovieDetails movieDetails) {
