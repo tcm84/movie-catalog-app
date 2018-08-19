@@ -1,6 +1,7 @@
 package app.restcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,5 +26,10 @@ public class MovieCatalogController {
 	@RequestMapping(method=RequestMethod.PUT, value="/update")
 	public MovieDetails updateCatalog(@RequestBody MovieDetails movieDetails) {
 		return movieCatalogService.updateCatalog(movieDetails);
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
+	public void deleteTopic(@PathVariable Integer id) {
+		movieCatalogService.deleteFromCatalog(id);
 	}
 }

@@ -19,4 +19,8 @@ public class MovieCatalogService {
 	public MovieDetails updateCatalog(MovieDetails movieDetails) {
 		return movieCatalogRepository.save(movieDetails);
 	}
+
+	public void deleteFromCatalog(Integer id) {
+		movieCatalogRepository.deleteById(id);
+	}
 }
