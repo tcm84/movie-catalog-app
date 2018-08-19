@@ -24,13 +24,13 @@ public class MovieCatalogController {
 		return movieCatalogService.addToCatalog(movieDetails);
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/update")
-	public MovieDetails updateCatalog(@RequestBody MovieDetails movieDetails) {
+	@RequestMapping(method=RequestMethod.POST, value="/update")
+	public MovieDetails updateCatalog(@Valid @RequestBody MovieDetails movieDetails) {
 		return movieCatalogService.updateCatalog(movieDetails);
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{id}")
-	public void deleteTopic(@PathVariable Integer id) {
+	public void deleteFromCatalog(@PathVariable Integer id) {
 		movieCatalogService.deleteFromCatalog(id);
 	}
 }

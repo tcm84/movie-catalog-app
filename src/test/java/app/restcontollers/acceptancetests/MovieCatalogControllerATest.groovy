@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -23,6 +22,7 @@ import app.services.MovieCatalogService
 import app.repo.testconfig.RepoTestConfig
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @Import(RepoTestConfig)
 @ContextConfiguration(classes=[
@@ -118,7 +118,7 @@ class MovieCatalogControllerATest extends Specification {
 			}'''
 		
 		when: "I make a request to update the movies' details"
-		def response = mockMvc.perform(put("/moviecatalog/update")
+		def response = mockMvc.perform(post("/moviecatalog/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(updatedkillBillVol2))
 		
@@ -168,7 +168,7 @@ class MovieCatalogControllerATest extends Specification {
 			}'''
 		
 		when: "I make a request to update the movies' details"
-		def response = mockMvc.perform(put("/moviecatalog/update")
+		def response = mockMvc.perform(post("/moviecatalog/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(nonexistentMovie))
 		
@@ -177,14 +177,15 @@ class MovieCatalogControllerATest extends Specification {
 				.andExpect(status().reason("Movie not found in the catalog"))
 	}
 	
-	def "Requests should be rejected if they don't pass validation requirements"(){
+	@Unroll
+	def "Requests should be rejected if they don't pass validation requirements #description"(){
 		given: "a request containing no valid data"
 		def invalidRequest =
 		'''{
 			}'''
 		
 		when: "I make the request"
-		def response = mockMvc.perform(post("/moviecatalog/add")
+		def response = mockMvc.perform(post(endpointURI)
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(invalidRequest))
 		
@@ -200,5 +201,10 @@ class MovieCatalogControllerATest extends Specification {
 		Set expectedErrorMsgs = ["Movie title must not be empty", "Director must not be empty", 
 			 				     "Cast must contains at least one actor","Releasedate should not be null"]
 		actualErrorMsgs == expectedErrorMsgs
+		
+		where:
+		description                                     | endpointURI
+		"when adding a new movie to the catalog"        | "/moviecatalog/add"
+		"when updating an existing movie in the catalog"| "/moviecatalog/update"
 	}
 }
