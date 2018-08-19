@@ -3,7 +3,8 @@ package app.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.exceptions.MovieExistsInCatalogException;
+import app.exceptions.MovieExistsException;
+import app.exceptions.MovieNotFoundException;
 import app.model.MovieDetails;
 import app.repo.MovieCatalogRepository;
 
@@ -15,12 +16,15 @@ public class MovieCatalogService {
 	
 	public MovieDetails addToCatalog(MovieDetails movieDetails) {
 		if (movieCatalogRepository.existsById(movieDetails.getMovieId())) {
-			throw new MovieExistsInCatalogException();
+			throw new MovieExistsException();
 		}
 		return movieCatalogRepository.save(movieDetails);
 	}
 
-	public MovieDetails updateCatalog(MovieDetails movieDetails) {
+	public MovieDetails updateCatalog(MovieDetails movieDetails) {		
+		if(!movieCatalogRepository.existsById(movieDetails.getMovieId())) {
+			throw new MovieNotFoundException();
+		}
 		return movieCatalogRepository.save(movieDetails);
 	}
 
