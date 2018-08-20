@@ -190,9 +190,19 @@ class MovieControllerATest extends Specification {
 		response.andExpect(status().isOk())
 	}
 	
+	def "Should not beable to search for a directors filmography if the director doesnt exist in the catalog"(){	
+		when: "I search for a filmography for a director that doesn't in the catalog"
+		def response = mockMvc.perform(post("/directors/99/movies/all")
+				.contentType(MediaType.APPLICATION_JSON))
+		
+		then: "all the directors movies should have been returned"
+		response.andExpect(status().isNotFound())
+				.andExpect(status().reason("Director not found in the catalog"))
+	}
+	
 	def "Should return all a directors movies when a search is done with their id"(){
 		given: "all a directors movies have been added to the catalog under them"
-		quentinTarantinoFilmography.forEach({movieDetails -> 
+		quentinTarantinoFilmography.forEach({movieDetails ->
 			mockMvc.perform(post("/directors/1/movies/add")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(movieDetails))

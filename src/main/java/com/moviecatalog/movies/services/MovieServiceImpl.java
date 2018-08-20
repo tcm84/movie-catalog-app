@@ -1,11 +1,12 @@
 package com.moviecatalog.movies.services;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.moviecatalog.directors.exceptions.DirectorNotFoundException;
 import com.moviecatalog.directors.model.DirectorDetails;
 import com.moviecatalog.movies.exceptions.MovieExistsException;
 import com.moviecatalog.movies.exceptions.MovieNotFoundException;
@@ -22,9 +23,13 @@ public class MovieServiceImpl implements MovieService {
 	public List<MovieDetails> getFilmography(Integer directorId) {
 		DirectorDetails directorDetails = new DirectorDetails();
 		directorDetails.setDirectorId(directorId);
-		List<MovieDetails> filmography = new ArrayList<>();
-		movieRepository.findByDirectorDetails(directorDetails).forEach(filmography::add);
-		return filmography;
+
+		Optional<List<MovieDetails>> optionalFilmography = movieRepository.findByDirectorDetails(directorDetails);
+		if (optionalFilmography.isPresent()) {
+			return optionalFilmography.get();
+		} else {
+			throw new DirectorNotFoundException();
+		}
 	}
 	
 	@Override
