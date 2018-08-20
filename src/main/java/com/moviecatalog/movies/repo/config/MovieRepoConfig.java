@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
-import com.moviecatalog.movies.model.MovieDetails;
+import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 
 @Configuration
 public class MovieRepoConfig extends RepositoryRestConfigurerAdapter {

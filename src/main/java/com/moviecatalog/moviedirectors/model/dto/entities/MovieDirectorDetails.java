@@ -1,4 +1,4 @@
-package com.moviecatalog.moviedirectors.model;
+package com.moviecatalog.moviedirectors.model.dto.entities;
 
 import java.util.Date;
 

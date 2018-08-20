@@ -2,7 +2,7 @@ package com.moviecatalog.movies.services;
 
 import java.util.List;
 
-import com.moviecatalog.movies.model.MovieDetails;
+import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 
 /**
 * The <code>MovieService</code> interface provides

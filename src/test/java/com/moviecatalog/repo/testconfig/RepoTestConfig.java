@@ -13,13 +13,17 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
 import com.moviecatalog.moviedirectors.repo.MovieDirectorRepository;
-import com.moviecatalog.movies.model.MovieDetails;
+import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.movieratings.model.dto.vo.MovieWarning;
+import com.moviecatalog.movieratings.repo.MovieRatingRepository;
+import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 import com.moviecatalog.movies.repo.MovieRepository;
 
 @TestConfiguration
-@EnableJpaRepositories(basePackageClasses = {MovieDirectorRepository.class,MovieRepository.class})
+@EnableJpaRepositories(basePackageClasses = {MovieDirectorRepository.class,MovieRepository.class,
+		MovieRatingRepository.class})
 public class RepoTestConfig {
 	@Bean
 	public DataSource dataSource() {
@@ -36,7 +40,9 @@ public class RepoTestConfig {
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setPackagesToScan(MovieDirectorDetails.class.getPackage().getName(),
-								  MovieDetails.class.getPackage().getName());
+								  MovieDetails.class.getPackage().getName(),
+								  MovieRatingDetails.class.getPackage().getName(),
+								  MovieWarning.class.getPackage().getName());
 		factory.setDataSource(dataSource());
 		factory.afterPropertiesSet();
 

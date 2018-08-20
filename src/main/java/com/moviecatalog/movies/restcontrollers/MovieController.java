@@ -2,7 +2,7 @@ package com.moviecatalog.movies.restcontrollers;
 
 import java.util.List;
 
-import com.moviecatalog.movies.model.MovieDetails;
+import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 
 /**
 * The <code>MovieController</code> interface provides

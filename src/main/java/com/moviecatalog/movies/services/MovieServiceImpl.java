@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
 import com.moviecatalog.movies.exceptions.FilmographyNotFoundException;
 import com.moviecatalog.movies.exceptions.MovieExistsException;
 import com.moviecatalog.movies.exceptions.MovieNotFoundException;
-import com.moviecatalog.movies.model.MovieDetails;
+import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 import com.moviecatalog.movies.repo.MovieRepository;
 
 @Service

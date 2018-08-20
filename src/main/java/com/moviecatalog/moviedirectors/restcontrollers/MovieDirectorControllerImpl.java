@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
 import com.moviecatalog.moviedirectors.services.MovieDirectorService;
 
 @RestController

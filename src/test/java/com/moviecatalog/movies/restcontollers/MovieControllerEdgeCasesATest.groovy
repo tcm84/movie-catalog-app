@@ -43,7 +43,7 @@ class MovieControllerEdgeCasesATest extends Specification {
 	private MockMvc mockMvc
 	
 	@Shared
-	def quentinTarantino =
+	def movieDirector =
 	'''{
 				"moviedirectorId": 1,
 				"name": "Quentin Tarantino",
@@ -53,12 +53,11 @@ class MovieControllerEdgeCasesATest extends Specification {
 			}'''
 	
 	@Shared
-	def quentinTarantinoFilmography =
+	def filmography =
 		[
 			'''{
 				"movieId": 1,
 				"title": "Hateful Eight",
-				"rating": "_18",
 				"genre": "HISTORICAL_FICTION",
 				"releasedate": "11/10/2016",
 				"cast": [
@@ -70,7 +69,6 @@ class MovieControllerEdgeCasesATest extends Specification {
 			'''{
 				"movieId": 2,
 				"title": "Kill Bill Volume 1",
-				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "10/10/2003",
 				"cast": [
@@ -82,7 +80,6 @@ class MovieControllerEdgeCasesATest extends Specification {
 			'''{
 				"movieId": 3,
 				"title": "Kill Bill Volume 2",
-				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "16/04/2004",
 				"cast": [
@@ -95,19 +92,19 @@ class MovieControllerEdgeCasesATest extends Specification {
 	def setup() {
 		mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(quentinTarantino))
+			.content(movieDirector))
 	}
 	
 	def "Should not beable to add a movie that already exists in the catalog"(){
 		given: "a movie has been already added to the catalog under that director"
 	   mockMvc.perform(post("/moviedirectors/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(quentinTarantinoFilmography[1]))
+			.content(filmography[1]))
 			
 		when: "I request that it be added again to the catalog under that director"
 		def response = mockMvc.perform(post("/moviedirectors/1/movies/add")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(quentinTarantinoFilmography[1]))
+							  .content(filmography[1]))
 		
 		then: "an exception should be returned indicating that the movie already exists"
 		response.andExpect(status().isConflict())
@@ -120,7 +117,7 @@ class MovieControllerEdgeCasesATest extends Specification {
 		'''{
 				"movieId": 10,
 				"title": "Kill Bill Volume 4",
-				"rating": "_18A",
+				"movieclassification": "_18A",
 				"genre": "ACTION",
 				"releasedate": "10/10/2008",
 				"cast": [

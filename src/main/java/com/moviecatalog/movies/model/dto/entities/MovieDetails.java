@@ -1,4 +1,4 @@
-package com.moviecatalog.movies.model;
+package com.moviecatalog.movies.model.dto.entities;
 
 import java.util.Collection;
 import java.util.Date;
@@ -18,9 +18,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
 import com.moviecatalog.movies.enums.Genre;
-import com.moviecatalog.movies.enums.Rating;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -44,9 +43,6 @@ public class MovieDetails {
 	
 	@ManyToOne
 	private MovieDirectorDetails movieDirectorDetails;
-	
-	@Column(name="rating")
-	private Rating rating;	
 	
 	@Column(name="genre")
 	private Genre  genre;

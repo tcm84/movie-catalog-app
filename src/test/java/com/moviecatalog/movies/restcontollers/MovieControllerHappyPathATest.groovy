@@ -58,7 +58,6 @@ class MovieControllerHappyPathATest extends Specification {
 			'''{
 				"movieId": 1,
 				"title": "Hateful Eight",
-				"rating": "_18",
 				"genre": "HISTORICAL_FICTION",
 				"releasedate": "11/10/2016",
 				"cast": [
@@ -70,7 +69,6 @@ class MovieControllerHappyPathATest extends Specification {
 			'''{
 				"movieId": 2,
 				"title": "Kill Bill Volume 1",
-				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "10/10/2003",
 				"cast": [
@@ -82,7 +80,6 @@ class MovieControllerHappyPathATest extends Specification {
 			'''{
 				"movieId": 3,
 				"title": "Kill Bill Volume 2",
-				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "16/04/2004",
 				"cast": [
@@ -119,7 +116,6 @@ class MovieControllerHappyPathATest extends Specification {
 		'''{
 				"movieId": 3,
 				"title": "Kill Bill Volume 2",
-				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "16/04/2004",
 				"cast": [
@@ -168,7 +164,6 @@ class MovieControllerHappyPathATest extends Specification {
 			{
 				"movieId": 1,
 				"title": "Hateful Eight",
-				"rating": "_18",
 				"genre": "HISTORICAL_FICTION",
 				"releasedate": "11/10/2016",
 				"cast": [
@@ -180,7 +175,6 @@ class MovieControllerHappyPathATest extends Specification {
 			{
 				"movieId": 2,
 				"title": "Kill Bill Volume 1",
-				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "10/10/2003",
 				"cast": [
@@ -192,7 +186,6 @@ class MovieControllerHappyPathATest extends Specification {
 			{
 				"movieId": 3,
 				"title": "Kill Bill Volume 2",
-				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "16/04/2004",
 				"cast": [

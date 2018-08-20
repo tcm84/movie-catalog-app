@@ -1,15 +1,15 @@
-package com.moviecatalog.moviedirectors.repo.config;
+package com.moviecatalog.movieratings.repo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
 
 @Configuration
-public class MovieDirectorRepoConfig extends RepositoryRestConfigurerAdapter {
+public class MovieRatingRepoConfig extends RepositoryRestConfigurerAdapter {
     @Override
 	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-        config.exposeIdsFor(MovieDirectorDetails.class);
+        config.exposeIdsFor(MovieRatingDetails.class);
     }
 }
