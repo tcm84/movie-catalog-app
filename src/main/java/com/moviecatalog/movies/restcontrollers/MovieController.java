@@ -11,17 +11,19 @@ public interface MovieController {
 
 	/** 
 	* @see MovieService#addMovie(MovieDetails)
+	* @param directorId of director of the new movie
 	* @exception Throws MethodArgumentNotValidException if movieDetails
 	* fails the validation requirements
 	*/
-	MovieDetails addMovie(MovieDetails movieDetails);
+	MovieDetails addMovie(Integer directorId, MovieDetails movieDetails);
 
 	/**
 	* @see MovieService#updateMovie(MovieDetails)
+	* @param directorId of director of the movie
 	* @exception Throws MethodArgumentNotValidException if movieDetails
 	* fails the validation requirements
 	*/
-	MovieDetails updateMovie(MovieDetails movieDetails);
+	MovieDetails updateMovie(Integer directorId, MovieDetails movieDetails);
 
 	/**
 	* @see MovieService#deleteMovie(Integer)

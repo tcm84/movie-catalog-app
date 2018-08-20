@@ -11,12 +11,14 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.moviecatalog.directors.model.DirectorDetails;
 import com.moviecatalog.movies.enums.Genre;
 import com.moviecatalog.movies.enums.Rating;
 
@@ -40,9 +42,8 @@ public class MovieDetails {
 	@Column(name="title")
 	private String title;
 	
-	@NotEmpty(message="Director must not be empty")
-	@Column(name="director")
-	private String director;
+	@ManyToOne
+	private DirectorDetails directorDetails;
 	
 	@Column(name="rating")
 	private Rating rating;	

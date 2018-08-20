@@ -92,6 +92,7 @@ class DirectorControllerATest extends Specification {
 	   mockMvc.perform(post("/directors/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(stevenSpielberg))
+		when: "I make a request to update the directors' details"
 		def updatedStevenSpielberg =
 		'''{
 						"directorId": 1,
@@ -100,7 +101,6 @@ class DirectorControllerATest extends Specification {
 				        "nationality": "AMERICAN"
 					}'''
 		
-		when: "I make a request to update the directors' details"
 		def response = mockMvc.perform(post("/directors/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(updatedStevenSpielberg))
