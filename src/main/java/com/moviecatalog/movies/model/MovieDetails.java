@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.moviecatalog.directors.model.DirectorDetails;
+import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
 import com.moviecatalog.movies.enums.Genre;
 import com.moviecatalog.movies.enums.Rating;
 
@@ -43,7 +43,7 @@ public class MovieDetails {
 	private String title;
 	
 	@ManyToOne
-	private DirectorDetails directorDetails;
+	private MovieDirectorDetails movieDirectorDetails;
 	
 	@Column(name="rating")
 	private Rating rating;	

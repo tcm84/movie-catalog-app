@@ -1,4 +1,4 @@
-package com.moviecatalog.directors.restcontrollers
+package com.moviecatalog.moviedirectors.restcontrollers
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -11,8 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
 import com.moviecatalog.repo.testconfig.RepoTestConfig
-import com.moviecatalog.directors.restcontrollers.DirectorControllerImpl
-import com.moviecatalog.directors.services.DirectorServiceImpl
+import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
+import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
 
 import groovy.swing.factory.ImageIconFactory
 
@@ -32,9 +32,9 @@ import spock.lang.Unroll
 @Import(RepoTestConfig)
 @ContextConfiguration(classes=[
 	MovieCatalogApplication,
-	DirectorServiceImpl])
-@WebMvcTest(DirectorControllerImpl)
-class DirectorControllerATest extends Specification {
+	MovieDirectorServiceImpl])
+@WebMvcTest(MovieDirectorControllerImpl)
+class MovieDirectorControllerATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
@@ -42,13 +42,13 @@ class DirectorControllerATest extends Specification {
 		when: "I request a new director gets added to the catalog"
 		def quentinTarantino =
 		'''{
-				"directorId": 1,
+				"moviedirectorId": 1,
 				"name": "Quentin Tarantino",
 				"dob": "27/03/65",
 				"nationality": "AMERICAN"
 
 			}'''
-		def response = mockMvc.perform(post("/directors/add")
+		def response = mockMvc.perform(post("/moviedirectors/add")
 						      .contentType(MediaType.APPLICATION_JSON)
 							  .content(quentinTarantino))
 		
@@ -61,47 +61,47 @@ class DirectorControllerATest extends Specification {
 		given: "a director that already exists in the catalog"
 		def stevenSpielberg =
 		'''{
-				"directorId": 1,
+				"moviedirectorId": 1,
 				"name": "stevenSpielberg",
 				"dob": "18/12/46",
 				"nationality": "AMERICAN"
 			}'''
-	   mockMvc.perform(post("/directors/add")
+	   mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(stevenSpielberg))
 			
 		when: "I request that it be added again when it already is in the catalog"
-		def response = mockMvc.perform(post("/directors/add")
+		def response = mockMvc.perform(post("/moviedirectors/add")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(stevenSpielberg))
 		
 		then: "I should not be able to added it again"
 		response.andExpect(status().isConflict())
-				.andExpect(status().reason("Director already exists in the catalog"))
+				.andExpect(status().reason("MovieDirector already exists in the catalog"))
 	}
 	
 	def "Updating directors in the catalog"(){
 		setup:"A director exists in the catalog that needs updated"
 		def stevenSpielberg =
 				'''{
-						"directorId": 1,
+						"moviedirectorId": 1,
 						"name": "stevenSpielberg",
 						"dob": "18/12/46",
 				        "nationality": "AMERICAN"
 					}'''
-	   mockMvc.perform(post("/directors/add")
+	   mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(stevenSpielberg))
 		when: "I make a request to update the directors' details"
 		def updatedStevenSpielberg =
 		'''{
-						"directorId": 1,
+						"moviedirectorId": 1,
 						"name": "Steven Spielberg",
 						"dob": "18/12/46",
 				        "nationality": "AMERICAN"
 					}'''
 		
-		def response = mockMvc.perform(post("/directors/update")
+		def response = mockMvc.perform(post("/moviedirectors/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(updatedStevenSpielberg))
 		
@@ -112,40 +112,40 @@ class DirectorControllerATest extends Specification {
 	
 	def "Should not beable to update a director that doesn't exist in the catalog"(){
 		given:"A director that doesn't exist in the catalog"
-		def nonexistentDirecror =
+		def nonexistentMovieDirector =
 				'''{
-						"directorId": 2,
+						"moviedirectorId": 2,
 						"name": "Clint Eastwood",
 						"dob": "31/05/30",
 				        "nationality": "AMERICAN"
 					}'''
 		
 		when: "I make a request to update the directors' details"
-		def response = mockMvc.perform(post("/directors/update")
+		def response = mockMvc.perform(post("/moviedirectors/update")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(nonexistentDirecror))
+							  .content(nonexistentMovieDirector))
 		
 		then: "I should not beable to update them as the director is not in the catalog"
 		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("Director not found in the catalog"))
+				.andExpect(status().reason("MovieDirector not found in the catalog"))
 	}
 	
 	def "Deleting directors from the catalog"(){
 		given:"a director exists in the catalog that I want to delete"
 		def eliRoth =
 				'''{
-						"directorId": 1,
+						"moviedirectorId": 1,
 						"name": "Eli Roth",
 						"dob": "18/04/72",
 				        "nationality": "AMERICAN"
 					}'''
-		mockMvc.perform(post("/directors/add")
+		mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(eliRoth))
 			
 		
 		when: "I make a request to delete the director from the catalog"
-		def response = mockMvc.perform(delete("/directors/delete/1"))
+		def response = mockMvc.perform(delete("/moviedirectors/delete/1"))
 		
 		then: "the directors details should be deleted from the catalog"
 		response.andExpect(status().isOk())
@@ -177,7 +177,7 @@ class DirectorControllerATest extends Specification {
 		
 		where:
 		description                                        | endpointURI
-		"when adding a new director to the catalog"        | "/directors/add"
-		"when updating an existing director in the catalog"| "/directors/update"
+		"when adding a new director to the catalog"        | "/moviedirectors/add"
+		"when updating an existing director in the catalog"| "/moviedirectors/update"
 	}
 }

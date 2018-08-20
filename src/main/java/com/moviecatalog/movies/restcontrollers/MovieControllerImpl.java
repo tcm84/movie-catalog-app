@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moviecatalog.directors.model.DirectorDetails;
+import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
 import com.moviecatalog.movies.model.MovieDetails;
 import com.moviecatalog.movies.services.MovieService;
 
@@ -21,31 +21,31 @@ public class MovieControllerImpl implements MovieController {
 	@Autowired
 	private MovieService movieServiceImpl;
 	
-	@RequestMapping("/directors/{directorId}/movies/all")
-	public List<MovieDetails> getFilmography(@PathVariable Integer directorId) {
-		return movieServiceImpl.getFilmography(directorId);
+	@RequestMapping("/moviedirectors/{moviedirectorId}/movies/all")
+	public List<MovieDetails> getFilmography(@PathVariable Integer moviedirectorId) {
+		return movieServiceImpl.getFilmography(moviedirectorId);
 	}
 	
 	@Override
-	@RequestMapping(method=RequestMethod.POST, value="/directors/{directorId}/movies/add")
-	public MovieDetails addMovie(@PathVariable Integer directorId, @Valid @RequestBody MovieDetails movieDetails) {
-		DirectorDetails directorDetails = new DirectorDetails();
-		directorDetails.setDirectorId(directorId);
-		movieDetails.setDirectorDetails(directorDetails);
+	@RequestMapping(method=RequestMethod.POST, value="/moviedirectors/{moviedirectorId}/movies/add")
+	public MovieDetails addMovie(@PathVariable Integer moviedirectorId, @Valid @RequestBody MovieDetails movieDetails) {
+		MovieDirectorDetails movieDirectorDetails = new MovieDirectorDetails();
+		movieDirectorDetails.setMoviedirectorId(moviedirectorId);
+		movieDetails.setMovieDirectorDetails(movieDirectorDetails);
 		return movieServiceImpl.addMovie(movieDetails);
 	}
 	
 	@Override
-	@RequestMapping(method=RequestMethod.POST, value="/directors/{directorId}/movies/update")
-	public MovieDetails updateMovie(@PathVariable Integer directorId,@Valid @RequestBody MovieDetails movieDetails) {
-		DirectorDetails directorDetails = new DirectorDetails();
-		directorDetails.setDirectorId(directorId);
-		movieDetails.setDirectorDetails(directorDetails);
+	@RequestMapping(method=RequestMethod.POST, value="/moviedirectors/{moviedirectorId}/movies/update")
+	public MovieDetails updateMovie(@PathVariable Integer moviedirectorId,@Valid @RequestBody MovieDetails movieDetails) {
+		MovieDirectorDetails movieDirectorDetails = new MovieDirectorDetails();
+		movieDirectorDetails.setMoviedirectorId(moviedirectorId);
+		movieDetails.setMovieDirectorDetails(movieDirectorDetails);
 		return movieServiceImpl.updateMovie(movieDetails);
 	}
 
 	@Override
-	@RequestMapping(method=RequestMethod.DELETE, value="/directors/{directorId}/movies/delete/{movieId}")
+	@RequestMapping(method=RequestMethod.DELETE, value="/moviedirectors/{moviedirectorId}/movies/delete/{movieId}")
 	public void deleteMovie(@PathVariable Integer movieId) {
 		movieServiceImpl.deleteMovie(movieId);
 	}

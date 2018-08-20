@@ -13,13 +13,13 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.moviecatalog.directors.model.DirectorDetails;
-import com.moviecatalog.directors.repo.DirectorRepository;
+import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.repo.MovieDirectorRepository;
 import com.moviecatalog.movies.model.MovieDetails;
 import com.moviecatalog.movies.repo.MovieRepository;
 
 @TestConfiguration
-@EnableJpaRepositories(basePackageClasses = {DirectorRepository.class,MovieRepository.class})
+@EnableJpaRepositories(basePackageClasses = {MovieDirectorRepository.class,MovieRepository.class})
 public class RepoTestConfig {
 	@Bean
 	public DataSource dataSource() {
@@ -35,7 +35,7 @@ public class RepoTestConfig {
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan(DirectorDetails.class.getPackage().getName(),
+		factory.setPackagesToScan(MovieDirectorDetails.class.getPackage().getName(),
 								  MovieDetails.class.getPackage().getName());
 		factory.setDataSource(dataSource());
 		factory.afterPropertiesSet();

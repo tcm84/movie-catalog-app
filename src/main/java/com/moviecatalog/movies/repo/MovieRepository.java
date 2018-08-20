@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.moviecatalog.directors.model.DirectorDetails;
+import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
 import com.moviecatalog.movies.model.MovieDetails;
 
 /**
@@ -14,5 +14,5 @@ import com.moviecatalog.movies.model.MovieDetails;
 */
 @Repository
 public interface MovieRepository extends CrudRepository<MovieDetails,Integer>  {
-	Optional<List<MovieDetails>> findByDirectorDetails(DirectorDetails directorDetails);
+	Optional<List<MovieDetails>> findByMovieDirectorDetails(MovieDirectorDetails movieDirectorDetails);
 }

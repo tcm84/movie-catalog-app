@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.moviecatalog.directors.exceptions.DirectorNotFoundException;
-import com.moviecatalog.directors.model.DirectorDetails;
+import com.moviecatalog.moviedirectors.exceptions.MovieDirectorNotFoundException;
+import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
 import com.moviecatalog.movies.exceptions.MovieExistsException;
 import com.moviecatalog.movies.exceptions.MovieNotFoundException;
 import com.moviecatalog.movies.model.MovieDetails;
@@ -20,15 +20,15 @@ public class MovieServiceImpl implements MovieService {
 	private MovieRepository movieRepository;
 	
 	@Override
-	public List<MovieDetails> getFilmography(Integer directorId) {
-		DirectorDetails directorDetails = new DirectorDetails();
-		directorDetails.setDirectorId(directorId);
+	public List<MovieDetails> getFilmography(Integer moviedirectorId) {
+		MovieDirectorDetails movieDirectorDetails = new MovieDirectorDetails();
+		movieDirectorDetails.setMoviedirectorId(moviedirectorId);
 
-		Optional<List<MovieDetails>> optionalFilmography = movieRepository.findByDirectorDetails(directorDetails);
+		Optional<List<MovieDetails>> optionalFilmography = movieRepository.findByMovieDirectorDetails(movieDirectorDetails);
 		if (optionalFilmography.isPresent()) {
 			return optionalFilmography.get();
 		} else {
-			throw new DirectorNotFoundException();
+			throw new MovieDirectorNotFoundException();
 		}
 	}
 	

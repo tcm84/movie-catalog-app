@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
-import com.moviecatalog.directors.restcontrollers.DirectorControllerImpl
-import com.moviecatalog.directors.services.DirectorServiceImpl
+import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
+import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
 import com.moviecatalog.movies.repo.MovieRepository
 import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
 import com.moviecatalog.movies.services.MovieServiceImpl
@@ -35,9 +35,9 @@ import spock.lang.Unroll
 @ContextConfiguration(classes=[
 	MovieCatalogApplication,
 	MovieServiceImpl,
-	DirectorServiceImpl])
+	MovieDirectorServiceImpl])
 @WebMvcTest(controllers=[MovieControllerImpl,
-						 DirectorControllerImpl])
+						 MovieDirectorControllerImpl])
 class MovieControllerATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
@@ -45,7 +45,7 @@ class MovieControllerATest extends Specification {
 	@Shared
 	def quentinTarantino =
 	'''{
-				"directorId": 1,
+				"moviedirectorId": 1,
 				"name": "Quentin Tarantino",
 				"dob": "27/03/65",
 				"nationality": "AMERICAN"
@@ -93,14 +93,14 @@ class MovieControllerATest extends Specification {
 		]
 	
 	def setup() {
-		mockMvc.perform(post("/directors/add")
+		mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(quentinTarantino))
 	}
 
 	def "Adding new movies to the catalog under an existing director"(){
 		when: "I add one of their movies to the catalog"
-		def response = mockMvc.perform(post("/directors/1/movies/add")
+		def response = mockMvc.perform(post("/moviedirectors/1/movies/add")
 						      .contentType(MediaType.APPLICATION_JSON)
 							  .content(quentinTarantinoFilmography[0]))
 		
@@ -111,12 +111,12 @@ class MovieControllerATest extends Specification {
 	
 	def "Should not beable to add a movie that already exists in the catalog"(){
 		given: "a movie has been already added to the catalog under that director"
-	   mockMvc.perform(post("/directors/1/movies/add")
+	   mockMvc.perform(post("/moviedirectors/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(quentinTarantinoFilmography[1]))
 			
 		when: "I request that it be added again to the catalog under that director"
-		def response = mockMvc.perform(post("/directors/1/movies/add")
+		def response = mockMvc.perform(post("/moviedirectors/1/movies/add")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(quentinTarantinoFilmography[1]))
 		
@@ -127,7 +127,7 @@ class MovieControllerATest extends Specification {
 	
 	def "Updating movies in the catalog"(){		
 		given:"a movie exists in the catalog under that director that needs updated"
-		mockMvc.perform(post("/directors/1/movies/add")
+		mockMvc.perform(post("/moviedirectors/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(quentinTarantinoFilmography[2]))
 		when: "I make a request to update the movies' details"
@@ -144,7 +144,7 @@ class MovieControllerATest extends Specification {
 					"Michael Madsen"
 				]
 			}'''
-		def response = mockMvc.perform(post("/directors/1/movies/update")
+		def response = mockMvc.perform(post("/moviedirectors/1/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(updatedkillBillVol2))
 		
@@ -168,7 +168,7 @@ class MovieControllerATest extends Specification {
 			}'''
 		
 		when: "I make a request to update the movies' details under that director"
-		def response = mockMvc.perform(post("/directors/1/movies/update")
+		def response = mockMvc.perform(post("/moviedirectors/1/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(nonexistentMovie))
 		
@@ -179,12 +179,12 @@ class MovieControllerATest extends Specification {
 	
 	def "Deleting movies from the catalog"(){		
 		given:"a movie exists in the catalog under that director that I want to delete"
-		mockMvc.perform(post("/directors/1/movies/add")
+		mockMvc.perform(post("/moviedirectors/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(quentinTarantinoFilmography[1]))
 			
 		when: "I make a request to delete the movie from the catalog"
-		def response = mockMvc.perform(delete("/directors/1/movies/delete/2"))
+		def response = mockMvc.perform(delete("/moviedirectors/1/movies/delete/2"))
 		
 		then: "the movies details should be deleted from the catalog"
 		response.andExpect(status().isOk())
@@ -192,24 +192,24 @@ class MovieControllerATest extends Specification {
 	
 	def "Should not beable to search for a directors filmography if the director doesnt exist in the catalog"(){	
 		when: "I search for a filmography for a director that doesn't in the catalog"
-		def response = mockMvc.perform(post("/directors/99/movies/all")
+		def response = mockMvc.perform(post("/moviedirectors/99/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "all the directors movies should have been returned"
 		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("Director not found in the catalog"))
+				.andExpect(status().reason("MovieDirector not found in the catalog"))
 	}
 	
 	def "Should return all a directors movies when a search is done with their id"(){
 		given: "all a directors movies have been added to the catalog under them"
 		quentinTarantinoFilmography.forEach({movieDetails ->
-			mockMvc.perform(post("/directors/1/movies/add")
+			mockMvc.perform(post("/moviedirectors/1/movies/add")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(movieDetails))
 		})
 		
 		when: "I search for all the directors movies"
-		def response = mockMvc.perform(post("/directors/1/movies/all")
+		def response = mockMvc.perform(post("/moviedirectors/1/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "all the directors movies should have been returned"
@@ -283,7 +283,7 @@ class MovieControllerATest extends Specification {
 		
 		where:
 		description                                                      | endpointURI
-		"for adding a new movie under a director to the catalog"         | "/directors/1/movies/add"
-		"for updating an existing movie under a director in the catalog" | "/directors/1/movies/update"
+		"for adding a new movie under a director to the catalog"         | "/moviedirectors/1/movies/add"
+		"for updating an existing movie under a director in the catalog" | "/moviedirectors/1/movies/update"
 	}
 }

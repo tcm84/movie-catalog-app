@@ -1,4 +1,4 @@
-package com.moviecatalog.directors.model;
+package com.moviecatalog.moviedirectors.model;
 
 import java.util.Date;
 
@@ -10,7 +10,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.moviecatalog.directors.enums.Nationality;
+import com.moviecatalog.moviedirectors.enums.Nationality;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,15 +20,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="directors")
+@Table(name="movie_directors")
 /**
-* The <code>DirectorDetails</code> class represents
-* a director
+* The <code>MovieDirectorDetails</code> class represents
+* a movie director
 */
-public class DirectorDetails {
+public class MovieDirectorDetails {
 	@Id
-	@Column(name="director_id")
-	private int directorId;
+	@Column(name="moviedirector_id")
+	private int moviedirectorId;
 	
 	@NotEmpty(message="Name must not be empty")
 	@Column(name="name")
