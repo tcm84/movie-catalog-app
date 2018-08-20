@@ -29,11 +29,14 @@ public class DirectorDetails {
 	private int directorId;
 	
 	@NotEmpty(message="Name must not be empty")
+	@Column(name="name")
 	private String name;
 	
 	@NotNull(message="Dob should not be null")
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yy")
+	@Column(name="dob")
 	private Date dob;
 	
+	@Column(name="nationality")
 	private Nationality nationality;
 }
