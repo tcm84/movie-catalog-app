@@ -22,4 +22,9 @@ public interface MovieRatingController {
 	* fails the validation requirements
 	*/
 	MovieRatingDetails updateMovieRating(MovieRatingDetails movieRatingDetails);
+	
+	/**
+	* @see MovieRatingService#deleteMovieRating(Integer)
+	*/
+	void deleteMovieRating(Integer movieRatingId);
 }

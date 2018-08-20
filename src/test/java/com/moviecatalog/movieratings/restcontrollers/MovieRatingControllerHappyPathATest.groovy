@@ -14,6 +14,7 @@ import com.moviecatalog.movies.repo.MovieRepository
 import com.moviecatalog.repo.testconfig.RepoTestConfig
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -72,6 +73,19 @@ class MovieRatingControllerHappyPathATest extends Specification {
 					}
 					
 				]
+			}''',
+			,
+			'''{
+				"movieratingId": 4,
+				"movieClassification": "_15",
+				"description": "Suitable for 15 years and over ",
+				"moviewarnings": [
+					{
+						"title": "Violence",
+						"summary": "There may be moderate violence with occasional more serious violence"
+					}
+					
+				]
 			}'''
 	]
 	
@@ -120,5 +134,19 @@ class MovieRatingControllerHappyPathATest extends Specification {
 		then: "the movie ratings details should be updated in the catalog"
 		response.andExpect(status().isOk())
 				.andExpect(content().json(movieRatings[1]))
+	}
+	
+	def "Deleting movie ratings from the catalog"(){
+		given:"a movie rating exists in the catalog that I want to delete"
+		mockMvc.perform(post("/movieratings/add")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(movieRatings[2]))
+			
+		
+		when: "I make a request to delete the movie rating from the catalog"
+		def response = mockMvc.perform(delete("/movieratings/delete/4"))
+		
+		then: "the movie ratings details should be deleted from the catalog"
+		response.andExpect(status().isOk())
 	}
 }

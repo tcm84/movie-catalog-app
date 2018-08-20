@@ -30,4 +30,9 @@ public class MovieRatingServiceImpl implements MovieRatingService {
 		
 		return movieRatingRepository.save(movieRatingDetails);
 	}
+	
+	@Override
+	public void deleteMovieRating(Integer movieratingId) {
+		movieRatingRepository.deleteById(movieratingId);
+	}
 }

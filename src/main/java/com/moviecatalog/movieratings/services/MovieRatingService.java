@@ -32,4 +32,11 @@ public interface MovieRatingService {
 	* this moviedirectorId does not exist in this catalog
 	*/
 	MovieRatingDetails updateMovieRating(MovieRatingDetails movieRatingDetails);
+	
+	/**
+	* Deletes a movie rating from this catalog with this movieratingId
+	*
+	* @param movieratingId of the movie rating to delete from this catalog
+	*/
+	void deleteMovieRating(Integer movieratingId);
 }
