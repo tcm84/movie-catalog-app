@@ -1,5 +1,7 @@
 package com.moviecatalog.movies.restcontollers
 
+import groovy.json.JsonOutput
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
@@ -68,7 +70,6 @@ class MovieControllerATest extends Specification {
 			'''{
 				"movieId": 2,
 				"title": "Kill Bill Volume 1",
-				"director": "Quentin Tarantino",
 				"rating": "_18",
 				"genre": "ACTION",
 				"releasedate": "10/10/2003",
@@ -187,6 +188,62 @@ class MovieControllerATest extends Specification {
 		
 		then: "the movies details should be deleted from the catalog"
 		response.andExpect(status().isOk())
+	}
+	
+	def "Should return all a directors movies when a search is done with their id"(){
+		given: "all a directors movies have been added to the catalog under them"
+		quentinTarantinoFilmography.forEach({movieDetails -> 
+			mockMvc.perform(post("/directors/1/movies/add")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(movieDetails))
+		})
+		
+		when: "I search for all the directors movies"
+		def response = mockMvc.perform(post("/directors/1/movies/all")
+				.contentType(MediaType.APPLICATION_JSON))
+		
+		then: "all the directors movies should have been returned"
+		def expectedQuentinTarantinoFilmography =
+		'''[
+			{
+				"movieId": 1,
+				"title": "Hateful Eight",
+				"rating": "_18",
+				"genre": "HISTORICAL_FICTION",
+				"releasedate": "11/10/2016",
+				"cast": [
+					"Samuel L Jackson",
+					"Kurt Russel"
+				]
+			},
+
+			{
+				"movieId": 2,
+				"title": "Kill Bill Volume 1",
+				"rating": "_18",
+				"genre": "ACTION",
+				"releasedate": "10/10/2003",
+				"cast": [
+					"Uma Thurman",
+					"David Carradine"
+				]
+			},
+
+			{
+				"movieId": 3,
+				"title": "Kill Bill Volume 2",
+				"rating": "_18",
+				"genre": "ACTION",
+				"releasedate": "16/04/2004",
+				"cast": [
+					"Uma Thurman",
+					"David Carradine",
+					"Michael Madsen"
+				]
+			}
+		]'''
+		response.andExpect(status().isOk())
+				.andExpect(content().json(expectedQuentinTarantinoFilmography))
 	}
 	
 	@Unroll

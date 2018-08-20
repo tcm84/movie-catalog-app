@@ -1,8 +1,12 @@
 package com.moviecatalog.movies.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.moviecatalog.directors.model.DirectorDetails;
 import com.moviecatalog.movies.exceptions.MovieExistsException;
 import com.moviecatalog.movies.exceptions.MovieNotFoundException;
 import com.moviecatalog.movies.model.MovieDetails;
@@ -13,6 +17,15 @@ public class MovieServiceImpl implements MovieService {
 
 	@Autowired
 	private MovieRepository movieRepository;
+	
+	@Override
+	public List<MovieDetails> getFilmography(Integer directorId) {
+		DirectorDetails directorDetails = new DirectorDetails();
+		directorDetails.setDirectorId(directorId);
+		List<MovieDetails> filmography = new ArrayList<>();
+		movieRepository.findByDirectorDetails(directorDetails).forEach(filmography::add);
+		return filmography;
+	}
 	
 	@Override
 	public MovieDetails addMovie(MovieDetails movieDetails) {

@@ -1,8 +1,11 @@
 package com.moviecatalog.movies.repo;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import com.moviecatalog.directors.model.DirectorDetails;
 import com.moviecatalog.movies.model.MovieDetails;
 
 /**
@@ -10,4 +13,5 @@ import com.moviecatalog.movies.model.MovieDetails;
 */
 @Repository
 public interface MovieRepository extends CrudRepository<MovieDetails,Integer>  {
+	List<MovieDetails> findByDirectorDetails(DirectorDetails directorDetails);
 }

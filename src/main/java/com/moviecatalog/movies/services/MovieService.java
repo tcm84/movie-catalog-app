@@ -1,5 +1,7 @@
 package com.moviecatalog.movies.services;
 
+import java.util.List;
+
 import com.moviecatalog.movies.model.MovieDetails;
 
 /**
@@ -8,6 +10,13 @@ import com.moviecatalog.movies.model.MovieDetails;
 * on a MovieRepository
 */
 public interface MovieService {
+	
+	/** 
+	* Returns the filmography from this catalog for this directorId
+	* 
+	* @param directorId of director the search is done for
+	*/
+	List<MovieDetails> getFilmography(Integer directorId);
 	
 	/**
 	* Adds a new movie to this catalog with these 

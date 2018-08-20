@@ -1,5 +1,7 @@
 package com.moviecatalog.movies.restcontrollers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,9 @@ public class MovieControllerImpl implements MovieController {
 	@Autowired
 	private MovieService movieServiceImpl;
 	
-	@RequestMapping("/test")
-	public String test() {
-		return "#### test ###";
+	@RequestMapping("/directors/{directorId}/movies/all")
+	public List<MovieDetails> getFilmography(@PathVariable Integer directorId) {
+		return movieServiceImpl.getFilmography(directorId);
 	}
 	
 	@Override
@@ -36,6 +38,9 @@ public class MovieControllerImpl implements MovieController {
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/directors/{directorId}/movies/update")
 	public MovieDetails updateMovie(@PathVariable Integer directorId,@Valid @RequestBody MovieDetails movieDetails) {
+		DirectorDetails directorDetails = new DirectorDetails();
+		directorDetails.setDirectorId(directorId);
+		movieDetails.setDirectorDetails(directorDetails);
 		return movieServiceImpl.updateMovie(movieDetails);
 	}
 

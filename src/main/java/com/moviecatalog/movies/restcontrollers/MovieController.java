@@ -1,5 +1,7 @@
 package com.moviecatalog.movies.restcontrollers;
 
+import java.util.List;
+
 import com.moviecatalog.movies.model.MovieDetails;
 
 /**
@@ -9,6 +11,12 @@ import com.moviecatalog.movies.model.MovieDetails;
 */
 public interface MovieController {
 
+	/** 
+	* @see MovieService#getFilmography(Integer)
+	* @param directorId of director
+	*/
+	List<MovieDetails> getFilmography(Integer directorId);
+	
 	/** 
 	* @see MovieService#addMovie(MovieDetails)
 	* @param directorId of director of the new movie
