@@ -8,10 +8,11 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
-import com.moviecatalog.application.MovieCatalogApplication
-import com.moviecatalog.movies.repo.testconfig.RepoTestConfig
+import com.moviecatalog.MovieCatalogApplication
+import com.moviecatalog.movies.repo.MovieRepository
 import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
 import com.moviecatalog.movies.services.MovieServiceImpl
+import com.moviecatalog.repo.testconfig.RepoTestConfig
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Import(RepoTestConfig)
@@ -33,7 +35,7 @@ import spock.lang.Unroll
 class MovieControllerATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
-	
+
 	def "Adding new movies to the catalog"(){
 		when: "I request a new movie gets added to the catalog"
 		def hatefulEight =
@@ -72,7 +74,7 @@ class MovieControllerATest extends Specification {
 					"David Carradine"
 				]
 			}'''
-		mockMvc.perform(post("/movies/add")
+	   mockMvc.perform(post("/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(killBillVol1))
 			
@@ -145,6 +147,7 @@ class MovieControllerATest extends Specification {
 		mockMvc.perform(post("/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(killBillVol3))
+			
 		
 		when: "I make a request to delete the movie from the catalog"
 		def response = mockMvc.perform(delete("/movies/delete/1"))

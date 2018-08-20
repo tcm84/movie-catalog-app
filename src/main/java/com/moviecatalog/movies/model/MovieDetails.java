@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -26,14 +24,13 @@ import lombok.Setter;
 @Entity
 @Getter 
 @Setter
-@Table(name="movie_catalog")
+@Table(name="movies")
 /**
 * The <code>MovieDetails</code> class represents
 * a movie
 */
 public class MovieDetails {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="movie_id")
 	private int movieId;
 	
