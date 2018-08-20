@@ -1,5 +1,7 @@
 package com.moviecatalog.directors.restcontrollers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,13 +21,13 @@ public class DirectorControllerImpl implements DirectorController {
 	
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/add")
-	public DirectorDetails addDirector(@RequestBody DirectorDetails directorsDetails) {
+	public DirectorDetails addDirector(@Valid @RequestBody DirectorDetails directorsDetails) {
 		return  directorsServiceImpl.addDirector(directorsDetails);
 	}
 	
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/update")
-	public DirectorDetails updateDirector(@RequestBody DirectorDetails directorDetails) {
+	public DirectorDetails updateDirector(@Valid @RequestBody DirectorDetails directorDetails) {
 		return directorsServiceImpl.updateDirector(directorDetails);
 	}
 	

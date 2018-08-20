@@ -43,7 +43,10 @@ class DirectorControllerATest extends Specification {
 		def quentinTarantino =
 		'''{
 				"directorId": 1,
-				"name": "Quentin Tarantino"
+				"name": "Quentin Tarantino",
+				"dob": "27/03/65",
+				"nationality": "AMERICAN"
+
 			}'''
 		def response = mockMvc.perform(post("/directors/add")
 						      .contentType(MediaType.APPLICATION_JSON)
@@ -59,7 +62,9 @@ class DirectorControllerATest extends Specification {
 		def stevenSpielberg =
 		'''{
 				"directorId": 1,
-				"name": "stevenSpielberg"
+				"name": "stevenSpielberg",
+				"dob": "18/12/46",
+				"nationality": "AMERICAN"
 			}'''
 	   mockMvc.perform(post("/directors/add")
 			.contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +85,9 @@ class DirectorControllerATest extends Specification {
 		def stevenSpielberg =
 				'''{
 						"directorId": 1,
-						"name": "stevenSpielberg"
+						"name": "stevenSpielberg",
+						"dob": "18/12/46",
+				        "nationality": "AMERICAN"
 					}'''
 	   mockMvc.perform(post("/directors/add")
 			.contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +95,9 @@ class DirectorControllerATest extends Specification {
 		def updatedStevenSpielberg =
 		'''{
 						"directorId": 1,
-						"name": "Steven Spielberg"
+						"name": "Steven Spielberg",
+						"dob": "18/12/46",
+				        "nationality": "AMERICAN"
 					}'''
 		
 		when: "I make a request to update the directors' details"
@@ -106,7 +115,9 @@ class DirectorControllerATest extends Specification {
 		def nonexistentDirecror =
 				'''{
 						"directorId": 2,
-						"name": "Clint Eastwood"
+						"name": "Clint Eastwood",
+						"dob": "31/05/30",
+				        "nationality": "AMERICAN"
 					}'''
 		
 		when: "I make a request to update the directors' details"
@@ -124,7 +135,9 @@ class DirectorControllerATest extends Specification {
 		def eliRoth =
 				'''{
 						"directorId": 1,
-						"name": "Eli Roth"
+						"name": "Eli Roth",
+						"dob": "18/04/72",
+				        "nationality": "AMERICAN"
 					}'''
 		mockMvc.perform(post("/directors/add")
 			.contentType(MediaType.APPLICATION_JSON)
@@ -136,5 +149,35 @@ class DirectorControllerATest extends Specification {
 		
 		then: "the directors details should be deleted from the catalog"
 		response.andExpect(status().isOk())
+	}
+	
+	@Unroll
+	def "Requests should be rejected if they don't pass validation requirements #description"(){
+		given: "a request containing no valid data"
+		def invalidRequest =
+		'''{
+			}'''
+		
+		when: "I make the request"
+		def response = mockMvc.perform(post(endpointURI)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(invalidRequest))
+		
+		then: "the request should be rejected as a bad request"
+		response.andExpect(status().isBadRequest())
+		
+		and: "the response should contain all the error messages for the failed validations"
+		MethodArgumentNotValidException ex = response.andReturn().resolvedException
+		def validationErrors = ex.getBindingResult().allErrors
+		validationErrors.size() == 2
+		Set actualErrorMsgs = []
+		validationErrors.forEach({error -> actualErrorMsgs += error.getDefaultMessage()})
+		Set expectedErrorMsgs = ["Name must not be empty", "Dob should not be null"]
+		actualErrorMsgs == expectedErrorMsgs
+		
+		where:
+		description                                        | endpointURI
+		"when adding a new director to the catalog"        | "/directors/add"
+		"when updating an existing director in the catalog"| "/directors/update"
 	}
 }
