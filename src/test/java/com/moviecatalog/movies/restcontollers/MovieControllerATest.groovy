@@ -39,24 +39,22 @@ import spock.lang.Unroll
 class MovieControllerATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
-
-	def "Adding new movies to the catalog under an existing director"(){
-		setup: "a director exists in the catalog"
-		def quentinTarantino =
-		'''{
+	
+	@Shared
+	def quentinTarantino =
+	'''{
 				"directorId": 1,
 				"name": "Quentin Tarantino",
 				"dob": "27/03/65",
 				"nationality": "AMERICAN"
 
 			}'''
-		mockMvc.perform(post("/directors/add")
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .content(quentinTarantino))
-		
-		when: "I add one of their movies to the catalog"
-		def hatefulEight =
-		'''{
+	
+	@Shared
+	def quentinTarantinoFilmography =
+		[
+			'''{
+				"movieId": 1,
 				"title": "Hateful Eight",
 				"rating": "_18",
 				"genre": "HISTORICAL_FICTION",
@@ -65,34 +63,10 @@ class MovieControllerATest extends Specification {
 					"Samuel L Jackson",
 					"Kurt Russel"
 				]
-			}'''
-		def response = mockMvc.perform(post("/directors/1/movies/add")
-						      .contentType(MediaType.APPLICATION_JSON)
-							  .content(hatefulEight))
-		
-		then: "it should be added to the catalog under their id"
-		response.andExpect(status().isOk())		
-				.andExpect(content().json(hatefulEight))
-	}
-	
-	def "Should not beable to add a movie that already exists in the catalog"(){
-		setup: "a director exists in the catalog"
-		def quentinTarantino =
-		'''{
-				"directorId": 1,
-				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
-				"nationality": "AMERICAN"
+			}''',
 
-			}'''
-		mockMvc.perform(post("/directors/add")
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .content(quentinTarantino))
-		
-		and: "a movie has been already added to the catalog under that director"
-		def killBillVol1 =
-		'''{
-				"movieId": 1,
+			'''{
+				"movieId": 2,
 				"title": "Kill Bill Volume 1",
 				"director": "Quentin Tarantino",
 				"rating": "_18",
@@ -102,39 +76,10 @@ class MovieControllerATest extends Specification {
 					"Uma Thurman",
 					"David Carradine"
 				]
-			}'''
-	   mockMvc.perform(post("/directors/1/movies/add")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(killBillVol1))
-			
-		when: "I request that it be added again to the catalog under that director"
-		def response = mockMvc.perform(post("/directors/1/movies/add")
-							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(killBillVol1))
-		
-		then: "an exception should be returned indicating that the movie already exists"
-		response.andExpect(status().isConflict())
-				.andExpect(status().reason("Movie already exists in the catalog"))
-	}
-	
-	def "Updating movies in the catalog"(){
-		setup: "a director exists in the catalog"
-		def quentinTarantino =
-		'''{
-				"directorId": 1,
-				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
-				"nationality": "AMERICAN"
+			}''',
 
-			}'''
-		mockMvc.perform(post("/directors/add")
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .content(quentinTarantino))
-		
-		and:"a movie exists in the catalog under that director that needs updated"
-		def killBillVol2 =
-		'''{
-				"movieId": 1,
+			'''{
+				"movieId": 3,
 				"title": "Kill Bill Volume 2",
 				"rating": "_18",
 				"genre": "ACTION",
@@ -144,13 +89,50 @@ class MovieControllerATest extends Specification {
 					"David Carradine"
 				]
 			}'''
+		]
+	
+	def setup() {
+		mockMvc.perform(post("/directors/add")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(quentinTarantino))
+	}
+
+	def "Adding new movies to the catalog under an existing director"(){
+		when: "I add one of their movies to the catalog"
+		def response = mockMvc.perform(post("/directors/1/movies/add")
+						      .contentType(MediaType.APPLICATION_JSON)
+							  .content(quentinTarantinoFilmography[0]))
+		
+		then: "it should be added to the catalog under their id"
+		response.andExpect(status().isOk())		
+				.andExpect(content().json(quentinTarantinoFilmography[0]))
+	}
+	
+	def "Should not beable to add a movie that already exists in the catalog"(){
+		given: "a movie has been already added to the catalog under that director"
+	   mockMvc.perform(post("/directors/1/movies/add")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(quentinTarantinoFilmography[1]))
+			
+		when: "I request that it be added again to the catalog under that director"
+		def response = mockMvc.perform(post("/directors/1/movies/add")
+							  .contentType(MediaType.APPLICATION_JSON)
+							  .content(quentinTarantinoFilmography[1]))
+		
+		then: "an exception should be returned indicating that the movie already exists"
+		response.andExpect(status().isConflict())
+				.andExpect(status().reason("Movie already exists in the catalog"))
+	}
+	
+	def "Updating movies in the catalog"(){		
+		given:"a movie exists in the catalog under that director that needs updated"
 		mockMvc.perform(post("/directors/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(killBillVol2))
+			.content(quentinTarantinoFilmography[2]))
 		when: "I make a request to update the movies' details"
 		def updatedkillBillVol2 =
 		'''{
-				"movieId": 1,
+				"movieId": 3,
 				"title": "Kill Bill Volume 2",
 				"rating": "_18",
 				"genre": "ACTION",
@@ -171,23 +153,10 @@ class MovieControllerATest extends Specification {
 	}
 	
 	def "Should not beable to update a movie that doesn't exist in the catalog"(){
-		given: "a director exists in the catalog"
-		def quentinTarantino =
-		'''{
-				"directorId": 1,
-				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
-				"nationality": "AMERICAN"
-
-			}'''
-		mockMvc.perform(post("/directors/add")
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .content(quentinTarantino))
-		
-		and:"a movie that doesn't exist under the director in the catalog"
+		given:"a movie that doesn't exist under the director in the catalog"
 		def nonexistentMovie =
 		'''{
-				"movieId": 2,
+				"movieId": 10,
 				"title": "Kill Bill Volume 4",
 				"rating": "_18A",
 				"genre": "ACTION",
@@ -207,60 +176,22 @@ class MovieControllerATest extends Specification {
 				.andExpect(status().reason("Movie not found in the catalog"))
 	}
 	
-	def "Deleting movies from the catalog"(){
-		given: "a director exists in the catalog"
-		def quentinTarantino =
-		'''{
-				"directorId": 1,
-				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
-				"nationality": "AMERICAN"
-
-			}'''
-		mockMvc.perform(post("/directors/add")
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .content(quentinTarantino))
-		
-		and:"a movie exists in the catalog under that director that I want to delete"
-		def killBillVol3 =
-		'''{
-				"title": "Kill Bill Volume 3",
-				"rating": "_18",
-				"genre": "ACTION",
-				"releasedate": "11/10/2006",
-				"cast": [
-					"Uma Thurman",
-					"David Carradine"
-				]
-			}'''
+	def "Deleting movies from the catalog"(){		
+		given:"a movie exists in the catalog under that director that I want to delete"
 		mockMvc.perform(post("/directors/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(killBillVol3))
+			.content(quentinTarantinoFilmography[1]))
 			
-		
 		when: "I make a request to delete the movie from the catalog"
-		def response = mockMvc.perform(delete("/directors/1/movies/delete/1"))
+		def response = mockMvc.perform(delete("/directors/1/movies/delete/2"))
 		
 		then: "the movies details should be deleted from the catalog"
 		response.andExpect(status().isOk())
 	}
 	
 	@Unroll
-	def "Requests should be rejected if they don't pass validation requirements #description"(){
-		given: "a director exists in the catalog"
-		def quentinTarantino =
-		'''{
-				"directorId": 1,
-				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
-				"nationality": "AMERICAN"
-
-			}'''
-		mockMvc.perform(post("/directors/add")
-			  .contentType(MediaType.APPLICATION_JSON)
-			  .content(quentinTarantino))
-		
-		and: "a request containing no valid data"
+	def "Requests should be rejected if they don't pass validation requirements #description"(){	
+		given: "a request containing no valid data"
 		def invalidRequest =
 		'''{
 			}'''
