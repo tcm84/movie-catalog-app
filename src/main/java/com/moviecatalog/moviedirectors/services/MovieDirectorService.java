@@ -22,7 +22,7 @@ public interface MovieDirectorService {
 	MovieDirectorDetails addMovieDirector(MovieDirectorDetails movieDirectorDetails);
 	
 	/**
-	* Updates an existing moive director in this catalog with these 
+	* Updates an existing movie director in this catalog with these 
 	* movieDirectorDetails
 	*
 	* @param updated movieDirectorDetails for an existing movie director 
@@ -31,7 +31,7 @@ public interface MovieDirectorService {
 	* @exception Throws MovieDirectorNotFoundException if a movie director with 
 	* this moviedirectorId does not exist in this catalog
 	*/
-	MovieDirectorDetails updateDirector(MovieDirectorDetails movieDirectorDetails);
+	MovieDirectorDetails updateMovieDirector(MovieDirectorDetails movieDirectorDetails);
 	
 	/**
 	* Deletes a movie director from this catalog with this moviedirectorId

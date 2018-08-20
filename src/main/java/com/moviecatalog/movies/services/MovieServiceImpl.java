@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.moviecatalog.moviedirectors.exceptions.MovieDirectorNotFoundException;
 import com.moviecatalog.moviedirectors.model.MovieDirectorDetails;
+import com.moviecatalog.movies.exceptions.FilmographyNotFoundException;
 import com.moviecatalog.movies.exceptions.MovieExistsException;
 import com.moviecatalog.movies.exceptions.MovieNotFoundException;
 import com.moviecatalog.movies.model.MovieDetails;
@@ -28,7 +28,7 @@ public class MovieServiceImpl implements MovieService {
 		if (optionalFilmography.isPresent()) {
 			return optionalFilmography.get();
 		} else {
-			throw new MovieDirectorNotFoundException();
+			throw new FilmographyNotFoundException();
 		}
 	}
 	

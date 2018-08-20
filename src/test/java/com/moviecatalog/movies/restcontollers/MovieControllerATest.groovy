@@ -197,7 +197,7 @@ class MovieControllerATest extends Specification {
 		
 		then: "all the directors movies should have been returned"
 		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("MovieDirector not found in the catalog"))
+				.andExpect(status().reason("Filmography not found in the catalog for this director"))
 	}
 	
 	def "Should return all a directors movies when a search is done with their id"(){

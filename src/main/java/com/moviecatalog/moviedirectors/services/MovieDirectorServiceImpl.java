@@ -23,7 +23,7 @@ public class MovieDirectorServiceImpl implements MovieDirectorService {
 	}
 	
 	@Override
-	public MovieDirectorDetails updateDirector(MovieDirectorDetails movieDirectorDetails) {
+	public MovieDirectorDetails updateMovieDirector(MovieDirectorDetails movieDirectorDetails) {
 		if(!movieDirectorRepository.existsById(movieDirectorDetails.getMoviedirectorId())) {
 			throw new MovieDirectorNotFoundException();
 		}

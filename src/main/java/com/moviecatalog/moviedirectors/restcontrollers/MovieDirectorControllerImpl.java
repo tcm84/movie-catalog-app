@@ -28,7 +28,7 @@ public class MovieDirectorControllerImpl implements MovieDirectorController {
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/update")
 	public MovieDirectorDetails updateMovieDirector(@Valid @RequestBody MovieDirectorDetails movieDirectorDetails) {
-		return moviedirectorsServiceImpl.updateDirector(movieDirectorDetails);
+		return moviedirectorsServiceImpl.updateMovieDirector(movieDirectorDetails);
 	}
 	
 	@Override
