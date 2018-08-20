@@ -28,7 +28,7 @@ public interface MovieService {
 	* @param updated moviesDetails for an existing movie 
 	* @return An instance of MoviesDetails for the movie just 
 	* updated
-	* @exception Throws MovieNotFoundException the movie with 
+	* @exception Throws MovieNotFoundException if a movie with 
 	* this movieId does not exist in this catalog
 	*/
 	MovieDetails updateMovie(MovieDetails movieDetails);

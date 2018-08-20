@@ -130,6 +130,31 @@ class MovieControllerATest extends Specification {
 				.andExpect(content().json(updatedkillBillVol2))
 	}
 	
+	def "Should not beable to update a movie that doesn't exist in the catalog"(){
+		given:"A movie that doesn't exist in the catalog"
+		def nonexistentMovie =
+		'''{
+				"movieId": 2,
+				"title": "Kill Bill Volume 4",
+				"director": "Quentin Tarantino",
+				"rating": "_18A",
+				"genre": "ACTION",
+				"releasedate": "10/10/2008",
+				"cast": [
+					"Urma Thurman"
+				]
+			}'''
+		
+		when: "I make a request to update the movies' details"
+		def response = mockMvc.perform(post("/movies/update")
+							  .contentType(MediaType.APPLICATION_JSON)
+							  .content(nonexistentMovie))
+		
+		then: "I should not beable to update them as the movie is not in the catalog"
+		response.andExpect(status().isNotFound())
+				.andExpect(status().reason("Movie not found in the catalog"))
+	}
+	
 	def "Deleting movies from the catalog"(){
 		given:"a movie exists in the catalog that I want to delete"
 		def killBillVol3 =
@@ -154,31 +179,6 @@ class MovieControllerATest extends Specification {
 		
 		then: "the movies details should be deleted from the catalog"
 		response.andExpect(status().isOk())
-	}
-	
-	def "Should not beable to update a movie that doesn't exist in the catalog"(){
-		given:"A movie that doesn't exist in the catalog"
-		def nonexistentMovie =
-		'''{
-				"movieId": 1,
-				"title": "Kill Bill Volume 1",
-				"director": "Quentin Tarantino",
-				"rating": "_18A",
-				"genre": "ACTION",
-				"releasedate": "10/10/2003",
-				"cast": [
-					"Urma Thurman"
-				]
-			}'''
-		
-		when: "I make a request to update the movies' details"
-		def response = mockMvc.perform(post("/movies/update")
-							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(nonexistentMovie))
-		
-		then: "I should not beable to update them as the movie is not in the catalog"
-		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("Movie not found in the catalog"))
 	}
 	
 	@Unroll

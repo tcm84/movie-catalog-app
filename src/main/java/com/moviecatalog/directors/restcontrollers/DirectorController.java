@@ -15,4 +15,16 @@ public interface DirectorController {
 	* fails the validation requirements
 	*/
 	DirectorDetails addDirector(DirectorDetails directorDetails);
+	
+	/**
+	* @see DirectorService#updateDirector(DirectorsDetails)
+	* @exception Throws MethodArgumentNotValidException if directorsDetails
+	* fails the validation requirements
+	*/
+	DirectorDetails updateDirector(DirectorDetails directorDetails);
+	
+	/**
+	* @see DirectorService#deleteDirector(Integer)
+	*/
+	void deleteDirector(Integer directorId);
 }
