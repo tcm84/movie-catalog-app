@@ -34,19 +34,12 @@ import spock.lang.Unroll
 	MovieCatalogApplication,
 	MovieDirectorServiceImpl])
 @WebMvcTest(MovieDirectorControllerImpl)
-class MovieDirectorControllerATest extends Specification {
+class MovieDirectorControllerHappyPathATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
 	@Shared
 	def movieDirectors = [
-		'''{
-				"moviedirectorId": 1,
-				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
-				"nationality": "AMERICAN"
-
-			}''',
 			'''{
 				"moviedirectorId": 2,
 				"name": "stevenSpielberg",
@@ -67,63 +60,6 @@ class MovieDirectorControllerATest extends Specification {
 			}'''
 	]
 	
-	@Unroll
-	def "Requests should be rejected if they don't pass validation requirements #description"(){
-		given: "a request containing no valid data"
-		def invalidRequest =
-		'''{
-			}'''
-		
-		when: "I make the request"
-		def response = mockMvc.perform(post(endpointURI)
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(invalidRequest))
-		
-		then: "the request should be rejected as a bad request"
-		response.andExpect(status().isBadRequest())
-		
-		and: "the response should contain all the error messages for the failed validations"
-		MethodArgumentNotValidException ex = response.andReturn().resolvedException
-		def validationErrors = ex.getBindingResult().allErrors
-		validationErrors.size() == 2
-		Set actualErrorMsgs = []
-		validationErrors.forEach({error -> actualErrorMsgs += error.getDefaultMessage()})
-		Set expectedErrorMsgs = ["Name must not be empty", "Dob should not be null"]
-		actualErrorMsgs == expectedErrorMsgs
-		
-		where:
-		description                                        | endpointURI
-		"when adding a new director to the catalog"        | "/moviedirectors/add"
-		"when updating an existing director in the catalog"| "/moviedirectors/update"
-	}
-	
-	def "Should not beable to add a director that already exists in the catalog"(){
-		given: "a director that already exists in the catalog"
-	   mockMvc.perform(post("/moviedirectors/add")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(movieDirectors[1]))
-			
-		when: "I request that it be added again when it already is in the catalog"
-		def response = mockMvc.perform(post("/moviedirectors/add")
-							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(movieDirectors[1]))
-		
-		then: "I should not be able to added it again"
-		response.andExpect(status().isConflict())
-				.andExpect(status().reason("MovieDirector already exists in the catalog"))
-	}
-	
-	def "Should not beable to update a movie director that doesn't exist in the catalog"(){
-		when: "I make a request to update a nonexistent movie directors' details"
-		def response = mockMvc.perform(post("/moviedirectors/update")
-							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(movieDirectors[2]))
-		
-		then: "an exception should be returned in the response indicating the movie director was not found"
-		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("MovieDirector not found in the catalog"))
-	}
-	
 	def "Adding new movie directors to the catalog"(){
 		when: "I request a new director gets added to the catalog"
 		def response = mockMvc.perform(post("/moviedirectors/add")
@@ -143,7 +79,7 @@ class MovieDirectorControllerATest extends Specification {
 		when: "I make a request to update the directors' details"
 		movieDirectors[1] =
 		'''{
-						"moviedirectorId": 1,
+						"moviedirectorId": 2,
 						"name": "Steven Spielberg",
 						"dob": "18/12/46",
 				        "nationality": "AMERICAN"
@@ -158,17 +94,17 @@ class MovieDirectorControllerATest extends Specification {
 				.andExpect(content().json(movieDirectors[1]))
 	}
 	
-	def "Deleting directors from the catalog"(){
+	def "Deleting movie directors from the catalog"(){
 		given:"a movie director exists in the catalog that I want to delete"
 		mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(movieDirectors[3]))
+			.content(movieDirectors[2]))
 			
 		
-		when: "I make a request to delete the director from the catalog"
+		when: "I make a request to delete the movie director from the catalog"
 		def response = mockMvc.perform(delete("/moviedirectors/delete/4"))
 		
-		then: "the directors details should be deleted from the catalog"
+		then: "the movie directors details should be deleted from the catalog"
 		response.andExpect(status().isOk())
 	}
 }
