@@ -60,8 +60,8 @@ class MovieRatingControllerMethodArgsValidationATest extends Specification {
 		validationErrors.get(0).getDefaultMessage() == "Description should not be empty"
 		
 		where:
-		description                                                 | endpointURI
-		"when adding a new movie rating to the catalog"             | "/movieratings/add"
-		"when updating an existing moving rating in the catalog"    | "/movieratings/update"
+		description                                                  | endpointURI
+		"when adding a new movie rating to this catalog"             | "/movieratings/add"
+		"when updating an existing moving rating in this catalog"    | "/movieratings/update"
 	}
 }

@@ -5,6 +5,7 @@ import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.transaction.annotation.Transactional
@@ -36,10 +37,17 @@ import spock.lang.Unroll
 	MovieCatalogApplication,
 	MovieRatingServiceImpl])
 @WebMvcTest(MovieRatingControllerImpl)
+@Transactional
 class MovieRatingControllerEdgeCasesATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
+	/**
+	 * movieratingId is generated automatically but we just include it
+	 * here (its returned by the endpoint anyway) so that we can check
+	 * if a director exists by Id when calling the endpoints
+	 * */
+	@Shared
 	def movieRatings =
 		[
 			'''{
@@ -54,24 +62,24 @@ class MovieRatingControllerEdgeCasesATest extends Specification {
 				"description": "Suitable for 12 years and over"
 			}'''
 		]
-	
-	def "Should not beable to add a movie rating that already exists in the catalog"(){
-		given: "a movie rating has been already added to the catalog"
+	@Rollback
+	def "Should not beable to add a movie rating that already exists in this catalog"(){
+		given: "a movie rating has been already added to this catalog"
 	   mockMvc.perform(post("/movieratings/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(movieRatings[0]))
 			
-		when: "I request that it be added again to the catalog"
+		when: "I request that it be added again to this catalog"
 		def response = mockMvc.perform(post("/movieratings/add")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(movieRatings[0]))
 		
 		then: "an exception should be returned indicating that the movie already exists"
 		response.andExpect(status().isConflict())
-				.andExpect(status().reason("Movie rating already exists in the catalog"))
+				.andExpect(status().reason("Movie rating already exists in this catalog"))
 	}
 	
-	def "Should not beable to update a movie rating that doesn't exist in the catalog"(){
+	def "Should not beable to update a movie rating that doesn't exist in this catalog"(){
 		when: "I make a request to update a nonexistent movie ratings' details"
 		def response = mockMvc.perform(post("/movieratings/update")
 							  .contentType(MediaType.APPLICATION_JSON)
@@ -79,6 +87,6 @@ class MovieRatingControllerEdgeCasesATest extends Specification {
 		
 		then: "an exception should be returned in the response indicating the movie rating was not found"
 		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("Movie rating not found in the catalog"))
+				.andExpect(status().reason("Movie rating not found in this catalog"))
 	}
 }

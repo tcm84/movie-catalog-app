@@ -35,47 +35,53 @@ class MovieRatingControllerHappyPathATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
+	/**
+	 * movieratingId is generated automatically but we just include it
+	 * here (its returned by the endpoint anyway) so that we can check
+	 * if a director exists by Id when calling the endpoints
+	 * */
+	@Shared
 	def movieRatings =
 	[
 		'''{
-				"movieratingId": 2,
+				"movieratingId": 1,
 				"movieClassification": "_18A",
 				"description": "Suitable only for adults"
 			}'''
 		,
 		'''{
-				"movieratingId": 3,
+				"movieratingId": 2,
 				"movieClassification": "_12A",
 				"description": "Suitable for 12 years and over - optional accompanying adult"
 			}''',
 			,
 			'''{
-				"movieratingId": 4,
+				"movieratingId": 3,
 				"movieClassification": "_15",
 				"description": "Suitable for 15 years and over "
 			}'''
 	]
 	
-	def "Adding new movie ratings to the catalog"(){
+	def "Adding new movie ratings to this catalog"(){
 		when: "I request to add a new movie rating"
 		def response = mockMvc.perform(post("/movieratings/add")
 						      .contentType(MediaType.APPLICATION_JSON)
 							  .content(movieRatings[0]))
 		
-		then: "it should be added to the catalog"
+		then: "it should be added to this catalog"
 		response.andExpect(status().isOk())		
 				.andExpect(content().json(movieRatings[0]))
 	}
 	
-	def "Updating movie ratings in the catalog"(){		
-		given:"a movie rating exists in the catalog"
+	def "Updating movie ratings in this catalog"(){		
+		given:"a movie rating exists in this catalog"
 		mockMvc.perform(post("/movieratings/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(movieRatings[1]))
 		when: "I make a request to update the movies ratings' details"
 		movieRatings[1] =
 		'''{
-				"movieratingId": 3,
+				"movieratingId": 2,
 				"movieClassification": "_12A",
 				"description": "Suitable for 12 years and over - optional accompanying adult"
 			}'''
@@ -83,22 +89,21 @@ class MovieRatingControllerHappyPathATest extends Specification {
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(movieRatings[1]))
 		
-		then: "the movie ratings details should be updated in the catalog"
+		then: "the movie ratings details should be updated in this catalog"
 		response.andExpect(status().isOk())
 				.andExpect(content().json(movieRatings[1]))
 	}
 	
-	def "Deleting movie ratings from the catalog"(){
-		given:"a movie rating exists in the catalog that I want to delete"
+	def "Deleting movie ratings from this catalog"(){
+		given:"a movie rating exists in this catalog that I want to delete"
 		mockMvc.perform(post("/movieratings/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(movieRatings[2]))
 			
+		when: "I make a request to delete the movie rating from this catalog"
+		def response = mockMvc.perform(delete("/movieratings/delete/3"))
 		
-		when: "I make a request to delete the movie rating from the catalog"
-		def response = mockMvc.perform(delete("/movieratings/delete/4"))
-		
-		then: "the movie ratings details should be deleted from the catalog"
+		then: "the movie ratings details should be deleted this this catalog"
 		response.andExpect(status().isOk())
 	}
 }

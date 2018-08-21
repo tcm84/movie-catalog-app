@@ -63,8 +63,8 @@ class MovieDirectorControllerMethodArgsValidationATest extends Specification {
 		actualErrorMsgs == expectedErrorMsgs
 		
 		where:
-		description                                        | endpointURI
-		"when adding a new director to the catalog"        | "/moviedirectors/add"
-		"when updating an existing director in the catalog"| "/moviedirectors/update"
+		description                                         | endpointURI
+		"when adding a new director to this catalog"        | "/moviedirectors/add"
+		"when updating an existing director in this catalog"| "/moviedirectors/update"
 	}
 }

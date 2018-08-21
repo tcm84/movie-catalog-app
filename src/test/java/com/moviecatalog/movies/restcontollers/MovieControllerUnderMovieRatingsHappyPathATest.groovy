@@ -5,10 +5,12 @@ import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.transaction.annotation.Propagation
 
 import com.moviecatalog.MovieCatalogApplication
 import com.moviecatalog.movieratings.restcontrollers.MovieRatingControllerImpl
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+import org.junit.After
 import org.springframework.http.MediaType;
 
 import spock.lang.Shared
@@ -48,41 +51,43 @@ class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 				"movieratingId": 1,
 				"movieClassification": "_18",
 				"description": "Suitable only for adults"
-			}'''
+		}'''
 	
+	/**
+	 * movieId is generated automatically but we just include it
+	 * here (its returned by the endpoint anyway) so that we can check
+	 * if a movie exists by Id when calling the endpoints
+	 * */
 	@Shared
-	def filmography =
+	def movieList =
 		[
 			'''{
-				"movieId": 5,
-				"title": "Hateful Eight",
-				"genre": "HISTORICAL_FICTION",
-				"releasedate": "11/10/2016",
+				"movieId": 1,
+				"title": "Jackie Brown",
+				"genre": "CRIME_FICTION",
+				"releasedate": "11/10/2003",
 				"cast": [
-					"Samuel L Jackson",
-					"Kurt Russel"
+					"Samuel L Jackson"
 				]
 			}''',
 
 			'''{
-				"movieId": 6,
-				"title": "Kill Bill Volume 1",
+				"movieId": 2,
+				"title": "Predator",
 				"genre": "ACTION",
-				"releasedate": "10/10/2003",
+				"releasedate": "10/10/1987",
 				"cast": [
-					"Uma Thurman",
-					"David Carradine"
+					"Arnold Schwazenegger"
 				]
 			}''',
 
 			'''{
-				"movieId": 7,
-				"title": "Kill Bill Volume 2",
+				"movieId": 3,
+				"title": "Die Hard",
 				"genre": "ACTION",
-				"releasedate": "16/04/2004",
+				"releasedate": "16/04/1988",
 				"cast": [
-					"Uma Thurman",
-					"David Carradine"
+					"Bruce Willis"
 				]
 			}'''
 		]
@@ -93,64 +98,61 @@ class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 			.content(movieRating))
 	}
 
-	def "Adding new movies to the catalog under an existing movie rating"(){
+	def "Adding new movies to this catalog under an existing movie rating"(){
 		when: "I add request to add a new movie under a movie rating"
 		def response = mockMvc.perform(post("/movieratings/1/movies/add")
 						      .contentType(MediaType.APPLICATION_JSON)
-							  .content(filmography[0]))
+							  .content(movieList[0]))
 		
-		then: "it should be added to the catalog under the rating"
+		then: "it should be added to this catalog under the rating"
 		response.andExpect(status().isOk())		
-				.andExpect(content().json(filmography[0]))
+				.andExpect(content().json(movieList[0]))
 	}
 	
-	def "Updating movies in the catalog"(){		
-		given:"a movie exists in the catalog under a rating that needs updated"
+	def "Updating movies in this catalog"(){		
+		given:"a movie exists in this catalog under a rating that needs updated"
 		mockMvc.perform(post("/movieratings/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(filmography[1]))
+			.content(movieList[1]))
 		when: "I make a request to update the movies' details"
-		filmography[1] =
+		movieList[1] =
 		'''{
-				"movieId": 6,
-				"title": "Kill Bill Volume 1",
-				"genre": "ACTION",
-				"releasedate": "10/10/2003",
+				"movieId": 2,
+				"title": "Predator",
+				"genre": "SCIENCE_FICTION",
+				"releasedate": "04/10/1987",
 				"cast": [
-					"Uma Thurman",
-					"David Carradine",
-					"Michael Madsen"
+					"Arnold Schwazenegger"
 				]
 			}'''
 		def response = mockMvc.perform(post("/movieratings/1/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(filmography[1]))
+							  .content(movieList[1]))
 		
-		then: "the movies details should be updated in the catalog under that rating"
+		then: "the movies details should be updated in this catalog under this rating"
 		response.andExpect(status().isOk())
-				.andExpect(content().json(filmography[1]))
+				.andExpect(content().json(movieList[1]))
 	}
 	
-	def "Deleting movies from the catalog"(){		
-		given:"a movie exists in the catalog under that rating that I want to delete"
+	def "Deleting movies from this catalog"(){		
+		given:"a movie exists in this catalog under this rating that I want to delete"
 		mockMvc.perform(post("/movieratings/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(filmography[2]))
+			.content(movieList[2]))
 			
-		when: "I make a request to delete the movie from the catalog"
-		def response = mockMvc.perform(delete("/movies/delete/7"))
+		when: "I make a request to delete the movie from this catalog"
+		def response = mockMvc.perform(delete("/movies/delete/3"))
 		
-		then: "the movies details should be deleted from the catalog"
+		then: "the movies details should be deleted from this catalog"
 		response.andExpect(status().isOk())
 	}
 	
 	def "Should return all movies of a particular rating when a search is done with its id"(){
-		given: "all a ratings movies have been added to the catalog under them"
-		filmography.forEach({movieDetails ->
-			mockMvc.perform(post("/movieratings/1/movies/add")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(movieDetails))
-		})
+		given: "all this ratings movies have been added to this catalog under it"
+		//movieList[0] and movieList[1] have been added in previous test cases
+		mockMvc.perform(post("/movieratings/1/movies/add")
+		.contentType(MediaType.APPLICATION_JSON)
+		.content(movieList[2]))
 		
 		when: "I search for all the ratings movies"
 		def response = mockMvc.perform(post("/movieratings/1/movies/all")
@@ -160,35 +162,29 @@ class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 		def expectedMovieList =
 		'''[
 			{
-				"movieId": 5,
-				"title": "Hateful Eight",
-				"genre": "HISTORICAL_FICTION",
-				"releasedate": "11/10/2016",
+				"movieId": 1,
+				"title": "Jackie Brown",
+				"genre": "CRIME_FICTION",
+				"releasedate": "11/10/2003",
 				"cast": [
-					"Samuel L Jackson",
-					"Kurt Russel"
+					"Samuel L Jackson"
 				]
 			},
 			{
-				"movieId": 6,
-				"title": "Kill Bill Volume 1",
-				"genre": "ACTION",
-				"releasedate": "10/10/2003",
+				"movieId": 2,
+				"title": "Predator",
+				"genre": "SCIENCE_FICTION",
+				"releasedate": "04/10/1987",
 				"cast": [
-					"Uma Thurman",
-					"David Carradine",
-					"Michael Madsen"
+					"Arnold Schwazenegger"
 				]
-			},
-
-			{
-				"movieId": 7,
-				"title": "Kill Bill Volume 2",
+			},{
+				"movieId": 3,
+				"title": "Die Hard",
 				"genre": "ACTION",
-				"releasedate": "16/04/2004",
+				"releasedate": "16/04/1988",
 				"cast": [
-					"Uma Thurman",
-					"David Carradine"
+					"Bruce Willis"
 				]
 			}
 		]'''

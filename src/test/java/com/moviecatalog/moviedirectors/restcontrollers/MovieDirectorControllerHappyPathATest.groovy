@@ -38,73 +38,78 @@ class MovieDirectorControllerHappyPathATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
+	/**
+	 * moviedirectorId is generated automatically but we just include it
+	 * here (its returned by the endpoint anyway) so that we can check
+	 * if a director exists by Id when calling the endpoints
+	 * */
 	@Shared
 	def movieDirectors = [
 			'''{
-				"moviedirectorId": 2,
+				"moviedirectorId": 1,
 				"name": "stevenSpielberg",
 				"dob": "18/12/46",
 				"nationality": "AMERICAN"
 			}''',
 			'''{
-				"moviedirectorId": 3,
+				"moviedirectorId": 2,
 				"name": "Clint Eastwood",
 				"dob": "31/05/30",
 		        "nationality": "AMERICAN"
 			}''',
 			'''{
-				"moviedirectorId": 4,
+				"moviedirectorId": 3,
 				"name": "Eli Roth",
 				"dob": "18/04/72",
 		        "nationality": "AMERICAN"
 			}'''
 	]
 	
-	def "Adding new movie directors to the catalog"(){
-		when: "I request a new director gets added to the catalog"
+	def "Adding new movie directors to this catalog"(){
+		when: "I request a new director gets added to this catalog"
 		def response = mockMvc.perform(post("/moviedirectors/add")
 						      .contentType(MediaType.APPLICATION_JSON)
 							  .content(movieDirectors[0]))
 		
-		then: "it should be added to the catalog"
+		then: "it should be added to this catalog"
 		response.andExpect(status().isOk())		
 				.andExpect(content().json(movieDirectors[0]))
 	}
 	
-	def "Updating movie directors in the catalog"(){
-		setup:"A director exists in the catalog that needs updated"
+	def "Updating movie directors in this catalog"(){
+		setup:"A director exists in this catalog that needs updated"
 	   mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(movieDirectors[1]))
 		when: "I make a request to update the directors' details"
 		movieDirectors[1] =
 		'''{
-						"moviedirectorId": 2,
-						"name": "Steven Spielberg",
-						"dob": "18/12/46",
-				        "nationality": "AMERICAN"
-					}'''
+				"moviedirectorId": 2,
+				"name": "Clint Eastwood",
+				"dob": "25/05/30",
+		        "nationality": "AMERICAN"
+			}'''
 		
 		def response = mockMvc.perform(post("/moviedirectors/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(movieDirectors[1]))
 		
-		then: "the director details should be updated in the catalog"
+		then: "the director details should be updated in this catalog"
 		response.andExpect(status().isOk())
 				.andExpect(content().json(movieDirectors[1]))
 	}
 	
-	def "Deleting movie directors from the catalog"(){
-		given:"a movie director exists in the catalog that I want to delete"
+	def "Deleting movie directors from this catalog"(){
+		given:"a movie director exists in this catalog that I want to delete"
 		mockMvc.perform(post("/moviedirectors/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(movieDirectors[2]))
 			
 		
-		when: "I make a request to delete the movie director from the catalog"
-		def response = mockMvc.perform(delete("/moviedirectors/delete/4"))
+		when: "I make a request to delete the movie director from this catalog"
+		def response = mockMvc.perform(delete("/moviedirectors/delete/3"))
 		
-		then: "the movie directors details should be deleted from the catalog"
+		then: "the movie directors details should be deleted from this catalog"
 		response.andExpect(status().isOk())
 	}
 }

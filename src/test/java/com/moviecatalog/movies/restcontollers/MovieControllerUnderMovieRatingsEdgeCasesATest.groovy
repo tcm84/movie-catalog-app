@@ -5,6 +5,7 @@ import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.transaction.annotation.Transactional
@@ -38,6 +39,7 @@ import spock.lang.Unroll
 	MovieRatingServiceImpl])
 @WebMvcTest(controllers=[MovieControllerImpl,
 						 MovieRatingControllerImpl])
+@Transactional
 class MovieControllerUnderMovieRatingsEdgeCasesATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
@@ -49,9 +51,14 @@ class MovieControllerUnderMovieRatingsEdgeCasesATest extends Specification {
 				"movieClassification": "_18",
 				"description": "Suitable only for adults"
 			}'''
-	
+
+	/**
+	 * movieId is generated automatically but we just include it
+	 * here (its returned by the endpoint anyway) so that we can check
+	 * if a movie exists by Id when calling the endpoints
+	 * */
 	@Shared
-	def filmography =
+	def movieList =
 		[
 			'''{
 				"movieId": 1,
@@ -93,24 +100,25 @@ class MovieControllerUnderMovieRatingsEdgeCasesATest extends Specification {
 			.content(movieRating))
 	}
 	
-	def "Should not beable to add a movie that already exists in the catalog"(){
-		given: "a movie has been already added to the catalog under that rating"
+	@Rollback
+	def "Should not beable to add a movie that already exists in this catalog"(){
+		given: "a movie has been already added to this catalog under that rating"
 	   mockMvc.perform(post("/movieratings/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(filmography[1]))
+			.content(movieList[0]))
 			
-		when: "I request that it be added again to the catalog under that rating"
+		when: "I request that it be added again to this catalog under that rating"
 		def response = mockMvc.perform(post("/movieratings/1/movies/add")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(filmography[1]))
+							  .content(movieList[0]))
 		
 		then: "an exception should be returned indicating that the movie already exists"
 		response.andExpect(status().isConflict())
-				.andExpect(status().reason("Movie already exists in the catalog"))
+				.andExpect(status().reason("Movie already exists in this catalog"))
 	}
 	
-	def "Should not beable to update a movie that doesn't exist in the catalog"(){
-		given:"a movie that doesn't exist under this rating in the catalog"
+	def "Should not beable to update a movie that doesn't exist in this catalog"(){
+		given:"a movie that doesn't exist under this rating in this catalog"
 		def nonexistentMovie =
 		'''{
 				"movieId": 10,
@@ -129,16 +137,16 @@ class MovieControllerUnderMovieRatingsEdgeCasesATest extends Specification {
 		
 		then: "an exception should be returned indicating that the movie was not found"
 		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("Movie not found in the catalog"))
+				.andExpect(status().reason("Movie not found in this catalog"))
 	}
 	
-	def "Should not beable to search for a list of movies under a rating if the rating doesnt exist in the catalog"(){
-		when: "I search for a list of movies for a rating that doesn't exist in the catalog"
+	def "Should not beable to search for a list of movies under a rating if the rating doesnt exist in this catalog"(){
+		when: "I search for a list of movies for a rating that doesn't exist in this catalog"
 		def response = mockMvc.perform(post("/movieratings/99/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "an exception should be returned indicating that list of movies under this rating was not found"
 		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("Movie list not found in the catalog for this rating"))
+				.andExpect(status().reason("Movie list not found in this catalog for this rating"))
 	}
 }
