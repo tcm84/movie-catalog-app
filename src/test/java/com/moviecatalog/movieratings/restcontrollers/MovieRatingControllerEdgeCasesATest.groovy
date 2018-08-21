@@ -45,39 +45,13 @@ class MovieRatingControllerEdgeCasesATest extends Specification {
 			'''{
 				"movieratingId": 1,
 				"movieClassification": "_18",
-				"description": "Suitable only for adults",
-				"moviewarnings": [
-					{
-						"title": "Strong violence",
-						"summary": "Detailed portrayal of violent or dangerous acts"
-					},
-					{
-						"title": "Strong language",
-						"summary": "Strong language is used throughout"
-					}
-					
-				]
+				"description": "Suitable only for adults"
 			}'''
 			,
 			'''{
 				"movieratingId": 2,
 				"movieClassification": "_12",
-				"description": "Suitable for 12 years and over",
-				"moviewarnings": [
-					{
-						"title": "Imitable behaviour",
-						"summary": "No promotion of potentially dangerous behaviour which children are likely to copy"
-					},
-					{
-						"title": "Threat",
-						"summary": "There may be moderate physical and psychological threat and horror sequences"
-					},
-					{
-						"title": "Violence",
-						"summary": "There may be moderate violence but it should not dwell on detail"
-					}
-					
-				]
+				"description": "Suitable for 12 years and over"
 			}'''
 		]
 	

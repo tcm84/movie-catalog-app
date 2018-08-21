@@ -40,52 +40,19 @@ class MovieRatingControllerHappyPathATest extends Specification {
 		'''{
 				"movieratingId": 2,
 				"movieClassification": "_18A",
-				"description": "Suitable only for adults",
-				"moviewarnings": [
-					{
-						"title": "Strong violence",
-						"summary": "Detailed portrayal of violent or dangerous acts"
-					},
-					{
-						"title": "Strong language",
-						"summary": "Strong language is used throughout"
-					}
-					
-				]
+				"description": "Suitable only for adults"
 			}'''
 		,
 		'''{
 				"movieratingId": 3,
 				"movieClassification": "_12A",
-				"description": "Suitable for 12 years and over - optional accompanying adult",
-				"moviewarnings": [
-					{
-						"title": "Imitable behaviour",
-						"summary": "No promotion of potentially dangerous behaviour which children are likely to copy"
-					},
-					{
-						"title": "Threat",
-						"summary": "There may be moderate physical and psychological threat and horror sequences"
-					},
-					{
-						"title": "Violence",
-						"summary": "There may be moderate violence but it should not dwell on detail"
-					}
-					
-				]
+				"description": "Suitable for 12 years and over - optional accompanying adult"
 			}''',
 			,
 			'''{
 				"movieratingId": 4,
 				"movieClassification": "_15",
-				"description": "Suitable for 15 years and over ",
-				"moviewarnings": [
-					{
-						"title": "Violence",
-						"summary": "There may be moderate violence with occasional more serious violence"
-					}
-					
-				]
+				"description": "Suitable for 15 years and over "
 			}'''
 	]
 	
@@ -110,22 +77,7 @@ class MovieRatingControllerHappyPathATest extends Specification {
 		'''{
 				"movieratingId": 3,
 				"movieClassification": "_12A",
-				"description": "Suitable for 12 years and over - optional accompanying adult",
-				"moviewarnings": [
-					{
-						"title": "Imitable behaviour",
-						"summary": "No promotion of potentially dangerous behaviour which children are likely to copy"
-					},
-					{
-						"title": "Threat",
-						"summary": "There may be more moderate physical and psychological threat and horror sequences"
-					},
-					{
-						"title": "Violence",
-						"summary": "There may be more moderate violence but it should not dwell on detail"
-					}
-					
-				]
+				"description": "Suitable for 12 years and over - optional accompanying adult"
 			}'''
 		def response = mockMvc.perform(post("/movieratings/update")
 							  .contentType(MediaType.APPLICATION_JSON)

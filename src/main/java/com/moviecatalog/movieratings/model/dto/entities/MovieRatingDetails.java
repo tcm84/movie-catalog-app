@@ -1,19 +1,11 @@
 package com.moviecatalog.movieratings.model.dto.entities;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import com.moviecatalog.movieratings.model.dto.vo.MovieWarning;
 import com.moviecatalog.movies.enums.MovieClassification;
 
 import lombok.Getter;
@@ -38,9 +30,4 @@ public class MovieRatingDetails {
 	@NotEmpty(message="Description should not be empty")
 	@Column(name="description")
 	private String description;
-	
-	@ElementCollection(fetch=FetchType.LAZY)
-	@JoinTable(name="movie_warnings",
-	   joinColumns=@JoinColumn(name = "movierating_id"))
-	private Collection<MovieWarning> moviewarnings = new ArrayList<>();
 }

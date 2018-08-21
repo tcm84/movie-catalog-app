@@ -47,18 +47,7 @@ class MovieControllerUnderMovieRatingsEdgeCasesATest extends Specification {
 	'''{
 				"movieratingId": 1,
 				"movieClassification": "_18",
-				"description": "Suitable only for adults",
-				"moviewarnings": [
-					{
-						"title": "Strong violence",
-						"summary": "Detailed portrayal of violent or dangerous acts"
-					},
-					{
-						"title": "Strong language",
-						"summary": "Strong language is used throughout"
-					}
-					
-				]
+				"description": "Suitable only for adults"
 			}'''
 	
 	@Shared

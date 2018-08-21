@@ -57,7 +57,8 @@ public class MovieControllerImpl implements MovieController {
 		MovieRatingDetails movieRatingDetails = new MovieRatingDetails();
 		movieRatingDetails.setMovieratingId(movieratingId);
 		movieDetails.setMovieRatingDetails(movieRatingDetails);
-		return movieService.addMovie(movieDetails);
+		MovieDetails result = movieService.addMovie(movieDetails);
+		return result;
 	}
 	
 	@Override
@@ -66,7 +67,8 @@ public class MovieControllerImpl implements MovieController {
 		MovieRatingDetails movieRatingDetails = new MovieRatingDetails();
 		movieRatingDetails.setMovieratingId(movieratingId);
 		movieDetails.setMovieRatingDetails(movieRatingDetails);
-		return movieService.updateMovie(movieDetails);
+		MovieDetails result =  movieService.updateMovie(movieDetails);
+		return result;
 	}
 
 	@Override

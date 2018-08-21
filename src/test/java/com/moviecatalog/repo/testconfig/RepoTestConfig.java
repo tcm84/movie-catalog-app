@@ -16,7 +16,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
 import com.moviecatalog.moviedirectors.repo.MovieDirectorRepository;
 import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
-import com.moviecatalog.movieratings.model.dto.vo.MovieWarning;
 import com.moviecatalog.movieratings.repo.MovieRatingRepository;
 import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 import com.moviecatalog.movies.repo.MovieRepository;
@@ -41,8 +40,7 @@ public class RepoTestConfig {
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setPackagesToScan(MovieDirectorDetails.class.getPackage().getName(),
 								  MovieDetails.class.getPackage().getName(),
-								  MovieRatingDetails.class.getPackage().getName(),
-								  MovieWarning.class.getPackage().getName());
+								  MovieRatingDetails.class.getPackage().getName());
 		factory.setDataSource(dataSource());
 		factory.afterPropertiesSet();
 

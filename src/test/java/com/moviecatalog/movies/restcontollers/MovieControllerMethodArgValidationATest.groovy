@@ -71,5 +71,10 @@ class MovieControllerMethodArgValidationATest extends Specification {
 		description                                                      | endpointURI
 		"for adding a new movie under a director to the catalog"         | "/moviedirectors/1/movies/add"
 		"for updating an existing movie under a director in the catalog" | "/moviedirectors/1/movies/update"
+		"for adding a new movie under a rating to the catalog"           | "/movieratings/1/movies/add"
+		"for updating an existing movie under a rating in the catalog"   | "/movieratings/1/movies/update"
+
+		
+		
 	}
 }
