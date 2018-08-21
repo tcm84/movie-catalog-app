@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
 import com.moviecatalog.movies.exceptions.FilmographyNotFoundException;
 import com.moviecatalog.movies.exceptions.MovieExistsException;
+import com.moviecatalog.movies.exceptions.MovieListNotFoundException;
 import com.moviecatalog.movies.exceptions.MovieNotFoundException;
 import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 import com.moviecatalog.movies.repo.MovieRepository;
@@ -29,6 +31,19 @@ public class MovieServiceImpl implements MovieService {
 			return optionalFilmography.get();
 		} else {
 			throw new FilmographyNotFoundException();
+		}
+	}
+	
+	@Override
+	public List<MovieDetails> getMovieList(Integer movieratingId) {
+		MovieRatingDetails movieRatingsDetails = new MovieRatingDetails();
+		movieRatingsDetails.setMovieratingId(movieratingId);
+
+		Optional<List<MovieDetails>> optionalMovieList = movieRepository.findByMovieRatingDetails(movieRatingsDetails);
+		if (optionalMovieList.isPresent()) {
+			return optionalMovieList.get();
+		} else {
+			throw new MovieListNotFoundException();
 		}
 	}
 	

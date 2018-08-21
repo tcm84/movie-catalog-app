@@ -12,11 +12,11 @@ import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 public interface MovieService {
 	
 	/** 
-	* Returns the filmography from this catalog for this directorId
+	* Returns the filmography from this catalog for this moviemoviedirectorId
 	* 
-	* @param directorId of director the search is done for
+	* @param moviedirectorId of the movie director the search is done for
 	*/
-	List<MovieDetails> getFilmography(Integer directorId);
+	List<MovieDetails> getFilmography(Integer moviedirectorId);
 	
 	/**
 	* Adds a new movie to this catalog with these 
@@ -41,6 +41,13 @@ public interface MovieService {
 	* this movieId does not exist in this catalog
 	*/
 	MovieDetails updateMovie(MovieDetails movieDetails);
+	
+	/** 
+	* Returns the movie list from this catalog for this movieratingId
+	* 
+	* @param movieratingId of the movie rating the search is done for
+	*/
+	List<MovieDetails> getMovieList(Integer movieratingId);
 
 	/**
 	* Deletes a movie from this catalog with this movieId

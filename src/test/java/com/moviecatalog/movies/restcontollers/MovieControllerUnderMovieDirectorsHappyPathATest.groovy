@@ -38,7 +38,7 @@ import spock.lang.Unroll
 	MovieDirectorServiceImpl])
 @WebMvcTest(controllers=[MovieControllerImpl,
 						 MovieDirectorControllerImpl])
-class MovieControllerHappyPathATest extends Specification {
+class MovieControllerUnderMovieDirectorsHappyPathATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
@@ -140,7 +140,7 @@ class MovieControllerHappyPathATest extends Specification {
 			.content(filmography[1]))
 			
 		when: "I make a request to delete the movie from the catalog"
-		def response = mockMvc.perform(delete("/moviedirectors/1/movies/delete/2"))
+		def response = mockMvc.perform(delete("/movies/delete/2"))
 		
 		then: "the movies details should be deleted from the catalog"
 		response.andExpect(status().isOk())

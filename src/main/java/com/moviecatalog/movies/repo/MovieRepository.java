@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
 import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 
 /**
@@ -15,4 +16,5 @@ import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 @Repository
 public interface MovieRepository extends CrudRepository<MovieDetails,Integer>  {
 	Optional<List<MovieDetails>> findByMovieDirectorDetails(MovieDirectorDetails movieDirectorDetails);
+	Optional<List<MovieDetails>> findByMovieRatingDetails(MovieRatingDetails movieRatingDetails);
 }

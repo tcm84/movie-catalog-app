@@ -39,7 +39,7 @@ public class MovieRatingDetails {
 	@Column(name="description")
 	private String description;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch=FetchType.LAZY)
 	@JoinTable(name="movie_warnings",
 	   joinColumns=@JoinColumn(name = "movierating_id"))
 	private Collection<MovieWarning> moviewarnings = new ArrayList<>();

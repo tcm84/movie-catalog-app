@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
-import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
-import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
+import com.moviecatalog.movieratings.restcontrollers.MovieRatingControllerImpl
+import com.moviecatalog.movieratings.services.MovieRatingServiceImpl
 import com.moviecatalog.movies.repo.MovieRepository
 import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
 import com.moviecatalog.movies.services.MovieServiceImpl
@@ -35,21 +35,30 @@ import spock.lang.Unroll
 @ContextConfiguration(classes=[
 	MovieCatalogApplication,
 	MovieServiceImpl,
-	MovieDirectorServiceImpl])
+	MovieRatingServiceImpl])
 @WebMvcTest(controllers=[MovieControllerImpl,
-						 MovieDirectorControllerImpl])
-class MovieControllerEdgeCasesATest extends Specification {
+						 MovieRatingControllerImpl])
+class MovieControllerUnderMovieRatingsEdgeCasesATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
 	@Shared
-	def movieDirector =
+	def movieRating =
 	'''{
-				"moviedirectorId": 1,
-				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
-				"nationality": "AMERICAN"
-
+				"movieratingId": 1,
+				"movieClassification": "_18",
+				"description": "Suitable only for adults",
+				"moviewarnings": [
+					{
+						"title": "Strong violence",
+						"summary": "Detailed portrayal of violent or dangerous acts"
+					},
+					{
+						"title": "Strong language",
+						"summary": "Strong language is used throughout"
+					}
+					
+				]
 			}'''
 	
 	@Shared
@@ -90,19 +99,19 @@ class MovieControllerEdgeCasesATest extends Specification {
 		]
 	
 	def setup() {
-		mockMvc.perform(post("/moviedirectors/add")
+		mockMvc.perform(post("/movieratings/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(movieDirector))
+			.content(movieRating))
 	}
 	
 	def "Should not beable to add a movie that already exists in the catalog"(){
-		given: "a movie has been already added to the catalog under that director"
-	   mockMvc.perform(post("/moviedirectors/1/movies/add")
+		given: "a movie has been already added to the catalog under that rating"
+	   mockMvc.perform(post("/movieratings/1/movies/add")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(filmography[1]))
 			
-		when: "I request that it be added again to the catalog under that director"
-		def response = mockMvc.perform(post("/moviedirectors/1/movies/add")
+		when: "I request that it be added again to the catalog under that rating"
+		def response = mockMvc.perform(post("/movieratings/1/movies/add")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(filmography[1]))
 		
@@ -112,12 +121,11 @@ class MovieControllerEdgeCasesATest extends Specification {
 	}
 	
 	def "Should not beable to update a movie that doesn't exist in the catalog"(){
-		given:"a movie that doesn't exist under the director in the catalog"
+		given:"a movie that doesn't exist under this rating in the catalog"
 		def nonexistentMovie =
 		'''{
 				"movieId": 10,
 				"title": "Kill Bill Volume 4",
-				"movieclassification": "_18A",
 				"genre": "ACTION",
 				"releasedate": "10/10/2008",
 				"cast": [
@@ -125,8 +133,8 @@ class MovieControllerEdgeCasesATest extends Specification {
 				]
 			}'''
 		
-		when: "I make a request to update the movies' details under that director"
-		def response = mockMvc.perform(post("/moviedirectors/1/movies/update")
+		when: "I make a request to update the movies' details under this rating"
+		def response = mockMvc.perform(post("/movieratings/1/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(nonexistentMovie))
 		
@@ -135,13 +143,13 @@ class MovieControllerEdgeCasesATest extends Specification {
 				.andExpect(status().reason("Movie not found in the catalog"))
 	}
 	
-	def "Should not beable to search for a directors filmography if the director doesnt exist in the catalog"(){
-		when: "I search for a filmography for a director that doesn't in the catalog"
-		def response = mockMvc.perform(post("/moviedirectors/99/movies/all")
+	def "Should not beable to search for a list of movies under a rating if the rating doesnt exist in the catalog"(){
+		when: "I search for a list of movies for a rating that doesn't exist in the catalog"
+		def response = mockMvc.perform(post("/movieratings/99/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
-		then: "all the directors movies should have been returned"
+		then: "an exception should be returned indicating that list of movies under this rating was not found"
 		response.andExpect(status().isNotFound())
-				.andExpect(status().reason("Filmography not found in the catalog for this director"))
+				.andExpect(status().reason("Movie list not found in the catalog for this rating"))
 	}
 }

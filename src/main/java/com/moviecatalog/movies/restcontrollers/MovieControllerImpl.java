@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
 import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 import com.moviecatalog.movies.services.MovieService;
 
@@ -19,34 +20,58 @@ import com.moviecatalog.movies.services.MovieService;
 public class MovieControllerImpl implements MovieController {
 	
 	@Autowired
-	private MovieService movieServiceImpl;
+	private MovieService movieService;
 	
 	@RequestMapping("/moviedirectors/{moviedirectorId}/movies/all")
 	public List<MovieDetails> getFilmography(@PathVariable Integer moviedirectorId) {
-		return movieServiceImpl.getFilmography(moviedirectorId);
+		List<MovieDetails> list =  movieService.getFilmography(moviedirectorId);
+		return list;
 	}
 	
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/moviedirectors/{moviedirectorId}/movies/add")
-	public MovieDetails addMovie(@PathVariable Integer moviedirectorId, @Valid @RequestBody MovieDetails movieDetails) {
+	public MovieDetails addMovieUnderMovieDirector(@PathVariable Integer moviedirectorId, @Valid @RequestBody MovieDetails movieDetails) {
 		MovieDirectorDetails movieDirectorDetails = new MovieDirectorDetails();
 		movieDirectorDetails.setMoviedirectorId(moviedirectorId);
 		movieDetails.setMovieDirectorDetails(movieDirectorDetails);
-		return movieServiceImpl.addMovie(movieDetails);
+		return movieService.addMovie(movieDetails);
 	}
 	
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/moviedirectors/{moviedirectorId}/movies/update")
-	public MovieDetails updateMovie(@PathVariable Integer moviedirectorId,@Valid @RequestBody MovieDetails movieDetails) {
+	public MovieDetails updateMovieUnderMovieDirector(@PathVariable Integer moviedirectorId,@Valid @RequestBody MovieDetails movieDetails) {
 		MovieDirectorDetails movieDirectorDetails = new MovieDirectorDetails();
 		movieDirectorDetails.setMoviedirectorId(moviedirectorId);
 		movieDetails.setMovieDirectorDetails(movieDirectorDetails);
-		return movieServiceImpl.updateMovie(movieDetails);
+		return movieService.updateMovie(movieDetails);
+	}
+	
+	@RequestMapping("/movieratings/{movieratingId}/movies/all")
+	public List<MovieDetails> getMovieList(@PathVariable Integer movieratingId) {
+		return movieService.getMovieList(movieratingId);
 	}
 
 	@Override
-	@RequestMapping(method=RequestMethod.DELETE, value="/moviedirectors/{moviedirectorId}/movies/delete/{movieId}")
+	@RequestMapping(method=RequestMethod.POST, value="/movieratings/{movieratingId}/movies/add")
+	public MovieDetails addMovieUnderMovieRating(@PathVariable Integer movieratingId, @Valid @RequestBody MovieDetails movieDetails) {
+		MovieRatingDetails movieRatingDetails = new MovieRatingDetails();
+		movieRatingDetails.setMovieratingId(movieratingId);
+		movieDetails.setMovieRatingDetails(movieRatingDetails);
+		return movieService.addMovie(movieDetails);
+	}
+	
+	@Override
+	@RequestMapping(method=RequestMethod.POST, value="/movieratings/{movieratingId}/movies/update")
+	public MovieDetails updateMovieUnderMovieRating(@PathVariable Integer movieratingId,@Valid @RequestBody MovieDetails movieDetails) {
+		MovieRatingDetails movieRatingDetails = new MovieRatingDetails();
+		movieRatingDetails.setMovieratingId(movieratingId);
+		movieDetails.setMovieRatingDetails(movieRatingDetails);
+		return movieService.updateMovie(movieDetails);
+	}
+
+	@Override
+	@RequestMapping(method=RequestMethod.DELETE, value="/movies/delete/{movieId}")
 	public void deleteMovie(@PathVariable Integer movieId) {
-		movieServiceImpl.deleteMovie(movieId);
+		movieService.deleteMovie(movieId);
 	}
 }

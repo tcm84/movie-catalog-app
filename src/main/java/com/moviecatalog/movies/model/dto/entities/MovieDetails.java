@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
 import com.moviecatalog.movies.enums.Genre;
 
 import lombok.Getter;
@@ -43,6 +44,9 @@ public class MovieDetails {
 	
 	@ManyToOne
 	private MovieDirectorDetails movieDirectorDetails;
+	
+	@ManyToOne
+	private MovieRatingDetails movieRatingDetails;
 	
 	@Column(name="genre")
 	private Genre  genre;

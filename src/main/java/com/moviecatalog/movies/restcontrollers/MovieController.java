@@ -13,25 +13,48 @@ public interface MovieController {
 
 	/** 
 	* @see MovieService#getFilmography(Integer)
-	* @param directorId of director
+	* @param moviedirectorId of the movie director
 	*/
-	List<MovieDetails> getFilmography(Integer directorId);
+	List<MovieDetails> getFilmography(Integer moviedirectorId);
 	
 	/** 
-	* @see MovieService#addMovie(MovieDetails)
-	* @param directorId of director of the new movie
+	* @see MovieService#addMovieUnderMovieDirector(Integer, MovieDetails)
+	* @param moviedirectorId of the movie director for the new movie
 	* @exception Throws MethodArgumentNotValidException if movieDetails
 	* fails the validation requirements
 	*/
-	MovieDetails addMovie(Integer directorId, MovieDetails movieDetails);
+	MovieDetails addMovieUnderMovieDirector(Integer moviedirectorId, MovieDetails movieDetails);
 
 	/**
-	* @see MovieService#updateMovie(MovieDetails)
-	* @param directorId of director of the movie
+	* @see MovieService#updateMovieUnderMovieDirector(Integer, MovieDetails)
+	* @param moviedirectorId of the movie director of the movie
 	* @exception Throws MethodArgumentNotValidException if movieDetails
 	* fails the validation requirements
 	*/
-	MovieDetails updateMovie(Integer directorId, MovieDetails movieDetails);
+	MovieDetails updateMovieUnderMovieDirector(Integer moviedirectorId, MovieDetails movieDetails);
+	
+	
+	/** 
+	* @see MovieService#getMovieList(Integer)
+	* @param movieratingId of the movie rating
+	*/
+	List<MovieDetails> getMovieList(Integer movieratingId);
+	
+	/** 
+	* @see MovieService#addMovieUnderMovieRating(Integer, MovieDetails)
+	* @param movieratingId of the moving rating for the new movie
+	* @exception Throws MethodArgumentNotValidException if movieDetails
+	* fails the validation requirements
+	*/
+	MovieDetails addMovieUnderMovieRating(Integer movieratingId, MovieDetails movieDetails);
+
+	/**
+	* @see MovieService#updateMovieUnderMovieRating(Integer, MovieDetails)
+	* @param movieratingId of the movie rating of the movie
+	* @exception Throws MethodArgumentNotValidException if movieDetails
+	* fails the validation requirements
+	*/
+	MovieDetails updateMovieUnderMovieRating(Integer movieratingId, MovieDetails movieDetails);
 
 	/**
 	* @see MovieService#deleteMovie(Integer)
