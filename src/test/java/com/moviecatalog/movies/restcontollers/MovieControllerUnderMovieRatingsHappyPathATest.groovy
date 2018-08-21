@@ -41,6 +41,7 @@ import spock.lang.Unroll
 	MovieRatingServiceImpl])
 @WebMvcTest(controllers=[MovieControllerImpl,
 						 MovieRatingControllerImpl])
+@Transactional
 class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
@@ -147,12 +148,14 @@ class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 		response.andExpect(status().isOk())
 	}
 	
+	@Rollback
 	def "Should return all movies of a particular rating when a search is done with its id"(){
 		given: "all this ratings movies have been added to this catalog under it"
-		//movieList[0] and movieList[1] have been added in previous test cases
-		mockMvc.perform(post("/movieratings/1/movies/add")
-		.contentType(MediaType.APPLICATION_JSON)
-		.content(movieList[2]))
+		movieList.forEach({movieDetails -> 
+			mockMvc.perform(post("/movieratings/1/movies/add")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(movieDetails))
+		})
 		
 		when: "I search for all the ratings movies"
 		def response = mockMvc.perform(post("/movieratings/1/movies/all")
@@ -161,6 +164,7 @@ class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 		then: "all the ratings movies should have been returned"
 		def expectedMovieList =
 		'''[
+			
 			{
 				"movieId": 1,
 				"title": "Jackie Brown",
@@ -170,6 +174,7 @@ class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 					"Samuel L Jackson"
 				]
 			},
+
 			{
 				"movieId": 2,
 				"title": "Predator",
@@ -178,7 +183,9 @@ class MovieControllerUnderMovieRatingsHappyPathATest extends Specification {
 				"cast": [
 					"Arnold Schwazenegger"
 				]
-			},{
+			},
+
+			{
 				"movieId": 3,
 				"title": "Die Hard",
 				"genre": "ACTION",

@@ -167,28 +167,6 @@ class MovieControllerUnderMovieDirectorsHappyPathATest extends Specification {
 		then: "all the directors movies should have been returned"
 		def expectedFilmography =
 		'''[
-			{
-				"movieId": 1,
-				"title": "Hateful Eight",
-				"genre": "HISTORICAL_FICTION",
-				"releasedate": "11/10/2016",
-				"cast": [
-					"Samuel L Jackson",
-					"Kurt Russel"
-				]
-			},
-
-			{
-				"movieId": 2,
-				"title": "Kill Bill Volume 1",
-				"genre": "ACTION",
-				"releasedate": "10/10/2003",
-				"cast": [
-					"Uma Thurman",
-					"David Carradine",
-					"Samuel L Jackson"
-				]
-			},
 
 			{
 				"movieId": 3,
@@ -202,6 +180,6 @@ class MovieControllerUnderMovieDirectorsHappyPathATest extends Specification {
 			}
 		]'''
 		response.andExpect(status().isOk())
-				//.andExpect(content().json(expectedFilmography))
+				.andExpect(content().json(expectedFilmography))
 	}
 }
