@@ -1,7 +1,5 @@
 package com.moviecatalog.movies.restcontollers
 
-import groovy.json.JsonOutput
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
@@ -115,7 +113,7 @@ class MovieControllerUnderMovieDirectorsEdgeCasesATest extends Specification {
 		
 		then: "an exception should be returned indicating that the movie already exists"
 		response.andExpect(status().isConflict())
-				.andExpect(status().reason("Movie already exists in this catalog"))
+				.andExpect(status().reason("Movie with this movieId already exists in this catalog"))
 	}
 	
 	def "Should not beable to update a movie that doesn't exist in this catalog"(){
