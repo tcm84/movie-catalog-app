@@ -41,9 +41,11 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 	
 	def movieDirectorId
 	
-	//setup runs before each test is run. A new instance of MovieDirectorDetails is created
-	//in the DB for each test. This is nice as the tests are more independent and what is
-	//getting test is more atomic in nature and less fragile
+    /**
+     * setup runs before each test is run. A new instance of MovieDirectorDetails is created
+	 * in the DB for each test. This is nice as the tests are more independent and what is 
+	 * getting test is more atomic in nature and less fragile
+	 * **/
 	def setup() {
 		def movieDirector =
 		'''{
