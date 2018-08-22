@@ -48,19 +48,19 @@ class MovieDirectorControllerHappyPathATest extends Specification {
 			'''{
 				"moviedirectorId": 1,
 				"name": "stevenSpielberg",
-				"dob": "18/12/46",
+				"dob": "18/12/1946",
 				"nationality": "AMERICAN"
 			}''',
 			'''{
 				"moviedirectorId": 2,
 				"name": "Clint Eastwood",
-				"dob": "31/05/30",
+				"dob": "31/05/1930",
 		        "nationality": "AMERICAN"
 			}''',
 			'''{
 				"moviedirectorId": 3,
 				"name": "Eli Roth",
-				"dob": "18/04/72",
+				"dob": "18/04/1972",
 		        "nationality": "AMERICAN"
 			}'''
 	]
@@ -86,7 +86,7 @@ class MovieDirectorControllerHappyPathATest extends Specification {
 		'''{
 				"moviedirectorId": 2,
 				"name": "Clint Eastwood",
-				"dob": "25/05/30",
+				"dob": "25/05/1930",
 		        "nationality": "AMERICAN"
 			}'''
 		

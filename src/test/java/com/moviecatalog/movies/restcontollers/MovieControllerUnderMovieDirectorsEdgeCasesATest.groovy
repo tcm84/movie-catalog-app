@@ -47,7 +47,7 @@ class MovieControllerUnderMovieDirectorsEdgeCasesATest extends Specification {
 	'''{
 				"moviedirectorId": 1,
 				"name": "Quentin Tarantino",
-				"dob": "27/03/65",
+				"dob": "27/03/1965",
 				"nationality": "AMERICAN"
 
 			}'''

@@ -35,7 +35,7 @@ public class MovieDirectorDetails {
 	private String name;
 	
 	@NotNull(message="Dob should not be null")
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yy")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
 	@Column(name="dob")
 	private Date dob;
 	
