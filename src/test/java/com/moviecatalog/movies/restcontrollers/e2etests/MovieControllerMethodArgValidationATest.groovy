@@ -1,7 +1,8 @@
-package com.moviecatalog.moviedirectors.restcontrollers
+package com.moviecatalog.movies.restcontrollers.e2etests
+
+import groovy.json.JsonOutput
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ContextConfiguration
@@ -10,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
-import com.moviecatalog.repo.testconfig.RepoTestConfig
 import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
 import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
-
-import groovy.swing.factory.ImageIconFactory
+import com.moviecatalog.movies.repo.MovieRepository
+import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
+import com.moviecatalog.movies.services.MovieServiceImpl
+import com.moviecatalog.repo.testconfig.RepoTestConfig
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -30,12 +32,12 @@ import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Import(RepoTestConfig)
-@ContextConfiguration(classes=[MovieCatalogApplication,MovieDirectorServiceImpl])
-@WebMvcTest(MovieDirectorControllerImpl)
-class MovieDirectorControllerMethodArgsValidationATest extends Specification {
+@ContextConfiguration(classes=[MovieCatalogApplication,MovieServiceImpl,MovieDirectorServiceImpl])
+@WebMvcTest(controllers=[MovieControllerImpl,MovieDirectorControllerImpl])
+class MovieControllerMethodArgValidationATest extends Specification {
 	@Autowired
 	private MockMvc mockMvc
-	
+
 	@Unroll
 	def "Requests should be rejected if they don't pass validation requirements #description"(){
 		given: "a request containing no valid data"
@@ -54,15 +56,18 @@ class MovieDirectorControllerMethodArgsValidationATest extends Specification {
 		and: "the response should contain all the error messages for the failed validations"
 		MethodArgumentNotValidException ex = response.andReturn().resolvedException
 		def validationErrors = ex.getBindingResult().allErrors
-		validationErrors.size() == 2
+		validationErrors.size() == 3
 		Set actualErrorMsgs = []
 		validationErrors.forEach({error -> actualErrorMsgs += error.getDefaultMessage()})
-		Set expectedErrorMsgs = ["Name must not be empty", "Dob should not be null"]
+		Set expectedErrorMsgs = ["Movie title must not be empty", "Cast must contains at least one actor",
+			"Releasedate should not be null"]
 		actualErrorMsgs == expectedErrorMsgs
 		
 		where:
-		description                                         | endpointURI
-		"when adding a new director to this catalog"        | "/moviedirectors/add"
-		"when updating an existing director in this catalog"| "/moviedirectors/update"
+		description                                                      | endpointURI
+		"for adding a new movie under a director to this catalog"         | "/moviedirectors/1/movies/add"
+		"for updating an existing movie under a director in this catalog" | "/moviedirectors/1/movies/update"
+		"for adding a new movie under a rating to this catalog"           | "/movieratings/1/movies/add"
+		"for updating an existing movie under a rating in this catalog"   | "/movieratings/1/movies/update"
 	}
 }

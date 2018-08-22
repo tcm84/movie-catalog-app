@@ -1,4 +1,4 @@
-package com.moviecatalog.movieratings.restcontrollers
+package com.moviecatalog.movieratings.restcontrollers.e2etests
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest

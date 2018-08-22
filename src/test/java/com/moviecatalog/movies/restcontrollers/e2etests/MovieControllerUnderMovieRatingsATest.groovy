@@ -1,4 +1,4 @@
-package com.moviecatalog.movies.restcontrollers
+package com.moviecatalog.movies.restcontrollers.e2etests
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
