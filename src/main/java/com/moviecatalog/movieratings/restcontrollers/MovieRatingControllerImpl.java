@@ -22,7 +22,7 @@ public class MovieRatingControllerImpl implements MovieRatingController {
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/add")
 	public MovieRatingDetails addMovieRating(@Valid @RequestBody MovieRatingDetails movieRatingDetails) {
-		return  movieRatingService.addMovieRating(movieRatingDetails);
+		 return movieRatingService.addMovieRating(movieRatingDetails);
 	}
 	
 	@Override

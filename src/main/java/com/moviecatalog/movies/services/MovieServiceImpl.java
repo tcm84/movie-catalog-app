@@ -48,7 +48,7 @@ public class MovieServiceImpl implements MovieService {
 	}
 	
 	@Override
-	public MovieDetails addMovie(MovieDetails movieDetails) {
+	public MovieDetails addMovie(MovieDetails movieDetails) {		
 		if (movieRepository.existsById(movieDetails.getMovieId())) {
 			throw new MovieExistsException();
 		}

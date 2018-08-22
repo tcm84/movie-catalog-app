@@ -30,9 +30,7 @@ import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Import(RepoTestConfig)
-@ContextConfiguration(classes=[
-	MovieCatalogApplication,
-	MovieRatingServiceImpl])
+@ContextConfiguration(classes=[MovieCatalogApplication,MovieRatingServiceImpl])
 @WebMvcTest(MovieRatingControllerImpl)
 class MovieRatingControllerMethodArgsValidationATest extends Specification {
 	@Autowired
@@ -45,7 +43,7 @@ class MovieRatingControllerMethodArgsValidationATest extends Specification {
 		'''{
 			}'''
 		
-		when: "I make the request"
+		when: "I make the request to #endpointURI"
 		def response = mockMvc.perform(post(endpointURI)
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(invalidRequest))
@@ -59,7 +57,7 @@ class MovieRatingControllerMethodArgsValidationATest extends Specification {
 		validationErrors.size() == 1
 		validationErrors.get(0).getDefaultMessage() == "Description should not be empty"
 		
-		where:
+		where: "the following endpointURI's will be hit"
 		description                                                  | endpointURI
 		"when adding a new movie rating to this catalog"             | "/movieratings/add"
 		"when updating an existing moving rating in this catalog"    | "/movieratings/update"

@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -24,10 +26,12 @@ import com.moviecatalog.movies.enums.Genre;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter 
 @Setter
+@ToString
 @Table(name="movies")
 /**
 * The <code>MovieDetails</code> class represents
@@ -36,6 +40,7 @@ import lombok.Setter;
 public class MovieDetails {
 	@Id
 	@Column(name="movie_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int movieId;
 	
 	@NotEmpty(message="Movie title must not be empty")

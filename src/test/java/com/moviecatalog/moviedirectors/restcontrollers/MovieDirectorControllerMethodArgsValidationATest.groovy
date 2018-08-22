@@ -30,9 +30,7 @@ import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Import(RepoTestConfig)
-@ContextConfiguration(classes=[
-	MovieCatalogApplication,
-	MovieDirectorServiceImpl])
+@ContextConfiguration(classes=[MovieCatalogApplication,MovieDirectorServiceImpl])
 @WebMvcTest(MovieDirectorControllerImpl)
 class MovieDirectorControllerMethodArgsValidationATest extends Specification {
 	@Autowired
@@ -45,7 +43,7 @@ class MovieDirectorControllerMethodArgsValidationATest extends Specification {
 		'''{
 			}'''
 		
-		when: "I make the request"
+		when: "I make the request to #endpointURI"
 		def response = mockMvc.perform(post(endpointURI)
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(invalidRequest))

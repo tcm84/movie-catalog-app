@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -15,11 +17,13 @@ import com.moviecatalog.moviedirectors.enums.Nationality;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @Table(name="movie_directors")
 /**
 * The <code>MovieDirectorDetails</code> class represents
@@ -28,6 +32,7 @@ import lombok.Setter;
 public class MovieDirectorDetails {
 	@Id
 	@Column(name="moviedirector_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int moviedirectorId;
 	
 	@NotEmpty(message="Name must not be empty")

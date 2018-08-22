@@ -32,8 +32,8 @@ public class MovieDirectorControllerImpl implements MovieDirectorController {
 	}
 	
 	@Override
-	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{directorId}")
-	public void deleteMovieDirector(@PathVariable Integer directorId) {
-		moviedirectorsServiceImpl.deleteDirector(directorId);
+	@RequestMapping(method=RequestMethod.DELETE, value="/delete/{moviedirectorId}")
+	public void deleteMovieDirector(@PathVariable Integer moviedirectorId) {
+		moviedirectorsServiceImpl.deleteDirector(moviedirectorId);
 	}
 }

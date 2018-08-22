@@ -24,8 +24,7 @@ public class MovieControllerImpl implements MovieController {
 	
 	@RequestMapping("/moviedirectors/{moviedirectorId}/movies/all")
 	public List<MovieDetails> getFilmography(@PathVariable Integer moviedirectorId) {
-		List<MovieDetails> list =  movieService.getFilmography(moviedirectorId);
-		return list;
+		return movieService.getFilmography(moviedirectorId);
 	}
 	
 	@Override
@@ -40,9 +39,6 @@ public class MovieControllerImpl implements MovieController {
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/moviedirectors/{moviedirectorId}/movies/update")
 	public MovieDetails updateMovieUnderMovieDirector(@PathVariable Integer moviedirectorId,@Valid @RequestBody MovieDetails movieDetails) {
-		MovieDirectorDetails movieDirectorDetails = new MovieDirectorDetails();
-		movieDirectorDetails.setMoviedirectorId(moviedirectorId);
-		movieDetails.setMovieDirectorDetails(movieDirectorDetails);
 		return movieService.updateMovie(movieDetails);
 	}
 	
@@ -57,18 +53,13 @@ public class MovieControllerImpl implements MovieController {
 		MovieRatingDetails movieRatingDetails = new MovieRatingDetails();
 		movieRatingDetails.setMovieratingId(movieratingId);
 		movieDetails.setMovieRatingDetails(movieRatingDetails);
-		MovieDetails result = movieService.addMovie(movieDetails);
-		return result;
+	    return movieService.addMovie(movieDetails);
 	}
 	
 	@Override
 	@RequestMapping(method=RequestMethod.POST, value="/movieratings/{movieratingId}/movies/update")
 	public MovieDetails updateMovieUnderMovieRating(@PathVariable Integer movieratingId,@Valid @RequestBody MovieDetails movieDetails) {
-		MovieRatingDetails movieRatingDetails = new MovieRatingDetails();
-		movieRatingDetails.setMovieratingId(movieratingId);
-		movieDetails.setMovieRatingDetails(movieRatingDetails);
-		MovieDetails result =  movieService.updateMovie(movieDetails);
-		return result;
+		return movieService.updateMovie(movieDetails);
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public interface MovieDirectorController {
 	MovieDirectorDetails addMovieDirector(MovieDirectorDetails movieDirectorDetails);
 	
 	/**
-	* @see MovieDirectorController#updateMovieDirector(MovieDirectorDetails)
+	* @see MovieDirectorService#updateMovieDirector(MovieDirectorDetails)
 	* @exception Throws MethodArgumentNotValidException if movieDirectorDetails
 	* fails the validation requirements
 	*/
