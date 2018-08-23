@@ -154,10 +154,14 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 		def response = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
 							  .content(updatedMovieDetails))
+		def updatedMovieDetailsMap = new JsonSlurper().parseText(response.andReturn()
+														.getResponse()
+														.getContentAsString())
+		def updatedReleaseDate = updatedMovieDetailsMap["releasedate"]
 		
 		then: "the movie details should be updated under this movie rating"
 		response.andExpect(status().isOk())
-				//.andExpect(content().json(updatedMovieDetails)) TODO: Need deserializer for movieRatingsPart
+		updatedReleaseDate == "01/09/2003"
 	}
 	
 	def "Should not beable to update a movie that doesn't exist in this catalog"(){
