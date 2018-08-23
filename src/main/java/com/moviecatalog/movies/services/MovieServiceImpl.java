@@ -1,8 +1,13 @@
 package com.moviecatalog.movies.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,16 +55,11 @@ public class MovieServiceImpl implements MovieService {
 	}
 	
 	@Override
-	public List<MovieDetails> getMovieListAboveMovieRating(MovieClassification movieClassification) {
-		 List<MovieDetails> combinedList = new ArrayList<>();
-		 movieRepository.findAll().forEach(md -> {
-			 MovieRatingDetails movieRatingDetails = md.getMovieRatingDetails();
-			 if(movieRatingDetails != null && movieRatingDetails.getMovieClassification().getMinAge() >= movieClassification.getMinAge()) {
-				 combinedList.add(md);
-			 }
-		 });
-				     
-		 return combinedList;
+	public List<MovieDetails> getMovieListAboveMovieRating(MovieClassification movieClassification) {				     
+		 return StreamSupport.stream(movieRepository.findAll().spliterator(), false)
+	 			  .filter(md -> md.getMovieRatingDetails() != null)
+	 			  .filter(md -> md.getMovieRatingDetails().getMovieClassification().getMinAge() >= movieClassification.getMinAge())
+	 			  .collect(Collectors.toList());
 	}
 	
 	@Override
