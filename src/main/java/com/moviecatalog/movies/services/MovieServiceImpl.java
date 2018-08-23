@@ -1,12 +1,9 @@
 package com.moviecatalog.movies.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +54,7 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public List<MovieDetails> getMovieListAboveMovieRating(MovieClassification movieClassification) {				     
 		 return StreamSupport.stream(movieRepository.findAll().spliterator(), false)
-	 			  .filter(md -> md.getMovieRatingDetails() != null)
+	 			  .filter(md -> Objects.nonNull(md.getMovieRatingDetails()))
 	 			  .filter(md -> md.getMovieRatingDetails().getMovieClassification().getMinAge() >= movieClassification.getMinAge())
 	 			  .collect(Collectors.toList());
 	}
@@ -66,7 +63,8 @@ public class MovieServiceImpl implements MovieService {
 	public MovieDetails addMovie(MovieDetails movieDetails) {		
 		if (movieRepository.existsById(movieDetails.getMovieId())) {
 			throw new MovieExistsException();
-		}
+		} 
+		
 		return movieRepository.save(movieDetails);
 	}
 

@@ -49,16 +49,15 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 		})
 	}
 	
-	def createMovieRatingId(def movieRating) {
+	def createMovieRatingId(def movieRatingDetails) {
 		def addResponse = mockMvc.perform(post("/movieratings/add")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(movieRating))
-		def movieRatingMap =
+			.content(movieRatingDetails))
+		def movieRatingDetailsMap =
 		new JsonSlurper().parseText(addResponse.andReturn()
 										   .getResponse()
 										   .getContentAsString())
-		_18movieRatingId =  movieRatingMap["movieratingId"]
-		return _18movieRatingId
+		return movieRatingDetailsMap["movieratingId"]
 	}
 	
 	def _18movieRatingId
@@ -66,22 +65,24 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 	/**
 	 * setup runs before each test is run. A new instance of MovieRatingDetails is created
 	 * in the DB for each test. This is nice as the tests are more independent and what is 
-	 * getting test is more atomic in nature and less fragile
+	 * getting test is more atomic in nature and less fragile. Some tests need to be rolledback.
+	 * An alternative approach would be to setup the db with an initial configuration so this is
+	 * not necessary
 	 **/
 	def setup() {
-		def movieRating =
+		def movieRatingDetails =
 		'''{
 				"movieClassification": "_18",
 				"description": "Suitable only for adults"
 		}'''
-		_18movieRatingId = createMovieRatingId(movieRating)
+		_18movieRatingId = createMovieRatingId(movieRatingDetails)
 	}
 
 	@Transactional
 	@Rollback
 	def "Should be able to add new movies to this catalog under an existing movie rating"(){
 		when: "I make a request to add a new movie to this catalog under this movie rating"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Jackie Brown",
 				"genre": "CRIME_FICTION",
 				"releasedate": "11/10/2003",
@@ -91,18 +92,18 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 			}'''
 		def response = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/add")
 						      .contentType(MediaType.APPLICATION_JSON)
-							  .content(newMovie))
+							  .content(newMovieDetails))
 		
 		then: "it should be added to this catalog"
 		response.andExpect(status().isOk())		
-				.andExpect(content().json(newMovie))
+				.andExpect(content().json(newMovieDetails))
 	}
 	
 	@Transactional
 	@Rollback
 	def "Should not beable to add a movie that already exists in this catalog for this movie rating"(){
 		given: "a movie that already exists in this catalog under this movie rating"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Alien",
 				"genre": "SCIENCE_FICTION",
 				"releasedate": "11/10/1979",
@@ -112,7 +113,7 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/add")
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovie))
+								.content(newMovieDetails))
 			
 		when: "I retry to add the same movie again a second time in a row"
 		def response = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/add")
@@ -128,7 +129,7 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 	@Rollback
 	def "Should be able to update movies that exist in this catalog under this movie rating"(){		
 		given:"a movie already exists in this catalog under this movie rating"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Predator",
 				"genre": "SCIENCE_FICTION",
 				"releasedate": "04/10/1987",
@@ -138,7 +139,7 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/add")
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovie))
+								.content(newMovieDetails))
 		when: "I make a request to update the movies' details"
 		def movieDetailsMap =
 			new JsonSlurper().parseText(addResponse.andReturn()
@@ -156,12 +157,12 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 		
 		then: "the movie details should be updated under this movie rating"
 		response.andExpect(status().isOk())
-				//.andExpect(content().json(updatedMovieDetails)) TODO: Need serializer for movieRatingsPart
+				//.andExpect(content().json(updatedMovieDetails)) TODO: Need deserializer for movieRatingsPart
 	}
 	
 	def "Should not beable to update a movie that doesn't exist in this catalog"(){
 		given:"a movie that doesn't exist under this rating in this catalog"
-		def nonexistentMovie =
+		def nonexistentMovieDetails =
 		'''{
 				"title": "Die Hard 3",
 				"genre": "ACTION",
@@ -174,16 +175,16 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 		when: "I make a request to update the movies' details under this movie rating"
 		def response = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(nonexistentMovie))
+							  .content(nonexistentMovieDetails))
 		
 		then: "an exception should be returned"
 		response.andExpect(status().isNotFound())
 				.andExpect(status().reason("Movie not found in this catalog for this movieId"))
 	}
 	
-	def "Should be able to delete movie that exist in this catalog under this movie rating"(){		
+	def "Should be able to delete movie that exists in this catalog under this movie rating"(){		
 		given:"a movie exists in this catalog under this movie rating"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Die Hard",
 				"genre": "ACTION",
 				"releasedate": "16/04/1988",
@@ -193,7 +194,7 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/add")
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovie))			
+								.content(newMovieDetails))			
 			
 		when: "I make a request to delete the movies' details"
 		def movieDetailsMap =
@@ -291,12 +292,12 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 	
 	def "Should return all movies that have a movie rating equal to or greater than a supplied movie rating" (){
 		given: "a list of _12 movies under a _12 movie rating"
-		def _12movieRating =
+		def _12movieRatingDetails =
 		'''{
 				"movieClassification": "_12",
 				"description": "Suitable only for 12 year olds"
 		}'''
-		def _12movieRatingId = createMovieRatingId(_12movieRating)
+		def _12movieRatingId = createMovieRatingId(_12movieRatingDetails)
 		
 		def _12moviesList =
 		[
@@ -323,12 +324,12 @@ class MovieControllerUnderMovieRatingsATest extends Specification {
 		
 		and: "a list of _15 movies under a _15 movie rating"
 
-		def _15movieRating =
+		def _15movieRatingDetails =
 		'''{
 				"movieClassification": "_15",
 				"description": "Suitable only for 15 and over"
 		}'''
-		def _15movieRatingId = createMovieRatingId(_15movieRating)
+		def _15movieRatingId = createMovieRatingId(_15movieRatingDetails)
 		
 		def _15moviesList =
 		[

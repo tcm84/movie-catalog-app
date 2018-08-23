@@ -42,13 +42,13 @@ class MovieRatingControllerATest extends Specification {
 	
 	def "Should not beable to add a movie rating that already exists in this catalog"(){
 		given: "a movie rating that already exists in this catalog"
-		def newMovieRating = '''{
+		def newMovieRatingDetails = '''{
 				"movieClassification": "_18A",
 				"description": "Suitable only for adults"
 			}'''
 		def addResponse = mockMvc.perform(post(addEndpointURI)
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovieRating))
+								.content(newMovieRatingDetails))
 			
 		when: "I try to add the same movie rating again a second time in a row"
 		def response = mockMvc.perform(post(addEndpointURI)
@@ -62,13 +62,13 @@ class MovieRatingControllerATest extends Specification {
 	
 	def "Should not beable to update a movie rating that doesn't exist in this catalog"(){
 		when: "I try to update a movie ratings' details that are not in this catalog"
-		def nonexistentMovieRating = '''{
+		def nonexistentMovieRatingDetails = '''{
 				"movieClassification": "_12",
 				"description": "Suitable for 12 years and over"
 			}'''
 		def response = mockMvc.perform(post("/movieratings/update")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(nonexistentMovieRating))
+							  .content(nonexistentMovieRatingDetails))
 		
 		then: "an exception should be returned in the response"
 		response.andExpect(status().isNotFound())
@@ -77,28 +77,28 @@ class MovieRatingControllerATest extends Specification {
 	
 	def "Should be able to add new movie ratings to this catalog"(){
 		when: "I make a request to add a new movie rating to this catalog"
-		def newMovieRating = '''{
+		def newMovieRatingDetails = '''{
 				"movieClassification": "_18A",
 				"description": "Suitable only for adults"
 			}'''
 		def response = mockMvc.perform(post(addEndpointURI)
 						      .contentType(MediaType.APPLICATION_JSON)
-							  .content(newMovieRating))
+							  .content(newMovieRatingDetails))
 		
 		then: "it should be added to this catalog"
 		response.andExpect(status().isOk())		
-				.andExpect(content().json(newMovieRating))
+				.andExpect(content().json(newMovieRatingDetails))
 	}
 	
 	def "Should be able to update movie ratings that exist in this catalog"(){		
 		given:"a movie rating already exists in this catalog"
-		def newMovingRating = '''{
+		def newMovingRatingDetails = '''{
 				"movieClassification": "_12A",
 				"description": "Suitable for 12 years and over"
 			}'''
 		def addResponse = mockMvc.perform(post(addEndpointURI)
 								 .contentType(MediaType.APPLICATION_JSON)
-								 .content(newMovingRating))
+								 .content(newMovingRatingDetails))
 		when: "I make a request to update the movies ratings' details"
 		def movieRatingDetailsMap = 
 					new JsonSlurper().parseText(addResponse.andReturn()
@@ -121,13 +121,13 @@ class MovieRatingControllerATest extends Specification {
 	
 	def "Should be able to delete movie ratings that exist in this catalog"(){
 		given:"a movie rating exists in this catalog"
-		def newMovieRating = '''{
+		def newMovieRatingDetails = '''{
 				"movieClassification": "_15",
 				"description": "Suitable for 15 years and over "
 			}'''
 		def addResponse = mockMvc.perform(post(addEndpointURI)
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovieRating))
+								.content(newMovieRatingDetails))
 			
 		when: "I make a request to delete the movie ratings' details"
 		def movieRatingDetailsMap =

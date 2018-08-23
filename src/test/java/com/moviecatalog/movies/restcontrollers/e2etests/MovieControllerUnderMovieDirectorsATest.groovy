@@ -44,10 +44,12 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
     /**
      * setup runs before each test is run. A new instance of MovieDirectorDetails is created
 	 * in the DB for each test. This is nice as the tests are more independent and what is 
-	 * getting test is more atomic in nature and less fragile
+	 * getting test is more atomic in nature and less fragile.Some tests need to be rolledback.
+	 * An alternative approach would be to setup the db with an initial configuration so this is
+	 * not necessary
 	 * **/
 	def setup() {
-		def movieDirector =
+		def movieDirectorDetails =
 		'''{
 				"name": "Quentin Tarantino",
 				"dob": "27/03/65",
@@ -55,18 +57,18 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 		}'''
 		def addResponse = mockMvc.perform(post("/moviedirectors/add")
 							.contentType(MediaType.APPLICATION_JSON)
-							.content(movieDirector))
-		def movieDirectorMap =
+							.content(movieDirectorDetails))
+		def movieDirectorDetailsMap =
 			new JsonSlurper().parseText(addResponse.andReturn()
 												   .getResponse()
 												   .getContentAsString())
-		movieDirectorId =  movieDirectorMap["moviedirectorId"]
+		movieDirectorId =  movieDirectorDetailsMap["moviedirectorId"]
 		
 	}
 
 	def "Should be able to add new movies to this catalog under an existing movie director"(){
 		when: "I make a request to add a new movie to this catalog under this movie director"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Hateful Eight",
 				"genre": "HISTORICAL_FICTION",
 				"releasedate": "11/12/2016",
@@ -78,16 +80,16 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 
 		def response = mockMvc.perform(post("/moviedirectors/" + movieDirectorId + "/movies/add")
 						      .contentType(MediaType.APPLICATION_JSON)
-							  .content(newMovie))
+							  .content(newMovieDetails))
 		
 		then: "it should be added to this catalog"
 		response.andExpect(status().isOk())		
-				.andExpect(content().json(newMovie))
+				.andExpect(content().json(newMovieDetails))
 	}
 	
 	def "Should not beable to add a movie that already exists in this catalog for this movie director"(){
 		given: "a movie that already exists in this catalog under this movie director"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Jurassic World",
 				"genre": "SCIENCE_FICTION",
 				"releasedate": "11/12/2016",
@@ -97,7 +99,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post("/moviedirectors/" + movieDirectorId + "/movies/add")
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovie))
+								.content(newMovieDetails))
 			
 		when: "I try to add the same movie again a second time in a row"
 		def response = mockMvc.perform(post("/moviedirectors/" + movieDirectorId + "/movies/add")
@@ -111,7 +113,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 	
 	def "Should be able to update movies that exist in this catalog under this movie director"(){		
 		given:"a movie already exists in this catalog under this movie director"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Kill Bill Volume 1",
 				"genre": "ACTION",
 				"releasedate": "10/12/2003",
@@ -122,7 +124,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post("/moviedirectors/" + movieDirectorId + "/movies/add")
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovie))
+								.content(newMovieDetails))
 		when: "I make a request to update the movies' details"
 		def movieDetailsMap =
 			new JsonSlurper().parseText(addResponse.andReturn()
@@ -141,12 +143,12 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 		
 		then: "the movie details should be updated under this movie rating"
 		response.andExpect(status().isOk())
-			  //.andExpect(content().json(updatedMovieDetails)) TODO: Need serializer for movieRatingsPart
+			  //.andExpect(content().json(updatedMovieDetails)) TODO: Need deserializer for movieRatingsPart
 	}
 	
 	def "Should not beable to update a movie that doesn't exist in this catalog"(){
 		given:"a movie that doesn't exist under the director in this catalog"
-		def nonexistentMovie =
+		def nonexistentMovieDetails =
 		'''{
 				"title": "Die Hard 4.0",
 				"movieclassification": "_18A",
@@ -160,7 +162,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 		when: "I make a request to update the movies' details under this movie director"
 		def response = mockMvc.perform(post("/moviedirectors/" + movieDirectorId + "/movies/update")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(nonexistentMovie))
+							  .content(nonexistentMovieDetails))
 		
 		then: "an exception should be returned"
 		response.andExpect(status().isNotFound())
@@ -170,7 +172,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 	
 	def "Should be able to delete movie that exist in this catalog under this movie director"(){		
 		given:"a movie exists in this catalog under this movie director"
-		def newMovie = '''{
+		def newMovieDetails = '''{
 				"title": "Kill Bill Volume 2",
 				"genre": "ACTION",
 				"releasedate": "16/04/2004",
@@ -181,7 +183,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post("/moviedirectors/" + movieDirectorId + "/movies/add")
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovie))			
+								.content(newMovieDetails))			
 			
 		when: "I make a request to delete the movies' details"
 		def movieDetailsMap =

@@ -46,7 +46,7 @@ class MovieDirectorControllerATest extends Specification {
 	
 	def "Should be able to add new movie directors to this catalog"(){
 		when: "I make a request to add a new movie director to this catalog"
-		def newMovieDirector = 
+		def newMovieDirectorDetails = 
 		'''{
 				"name": "Jony Carson",
 				"dob": "18/12/1926",
@@ -54,16 +54,16 @@ class MovieDirectorControllerATest extends Specification {
 			}'''
 		def response = mockMvc.perform(post(addEndpointURI)
 						      .contentType(MediaType.APPLICATION_JSON)
-							  .content(newMovieDirector))
+							  .content(newMovieDirectorDetails))
 		
 		then: "it should be added to this catalog"
 		response.andExpect(status().isOk())		
-				.andExpect(content().json(newMovieDirector))
+				.andExpect(content().json(newMovieDirectorDetails))
 	}
 	
 	def "Should not beable to add a director that already exists in this catalog"(){
 		given: "a movie director that already exists in this catalog"
-		def newMovieDirector = '''{
+		def newMovieDirectorDetails = '''{
 				"name": "Jim Smith",
 				"dob": "27/03/1955",
 				"nationality": "AMERICAN"
@@ -71,7 +71,7 @@ class MovieDirectorControllerATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post(addEndpointURI)
 								.contentType(MediaType.APPLICATION_JSON)
-								.content(newMovieDirector))
+								.content(newMovieDirectorDetails))
 		
 		when: "I try to add the same movie director again a second time in a row"
 		def response = mockMvc.perform(post(addEndpointURI)
@@ -85,7 +85,7 @@ class MovieDirectorControllerATest extends Specification {
 	
 	def "Should be able to update movie directors that exist in this catalog"(){
 		given:"a movie director already exists in this catalog"
-		def movieDirector =
+		def movieDirectorDetails =
 		'''{
 				"name": "Clint Eastwood",
 				"dob": "31/05/1930",
@@ -93,7 +93,7 @@ class MovieDirectorControllerATest extends Specification {
 			}'''
 	    def addresponse = mockMvc.perform(post(addEndpointURI)
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(movieDirector))
+							  .content(movieDirectorDetails))
 		
 		when: "I make a request to update the movie directors' details"
 		def movieDirectorDetailsMap = 
@@ -118,7 +118,7 @@ class MovieDirectorControllerATest extends Specification {
 	
 	def "Should not beable to update a movie director that doesn't exist in this catalog"(){
 		when: "I try to update a movie directors' details that are not in this catalog"
-		def nonexistentMovieDirector = '''{
+		def nonexistentMovieDirectorDetails = '''{
 				"moviedirectorId": 999,
 				"name": "stevenSpielberg",
 				"dob": "18/12/1946",
@@ -126,7 +126,7 @@ class MovieDirectorControllerATest extends Specification {
 			}'''
 		def response = mockMvc.perform(post("/moviedirectors/update")
 							  .contentType(MediaType.APPLICATION_JSON)
-							  .content(nonexistentMovieDirector))
+							  .content(nonexistentMovieDirectorDetails))
 		
 		then: "an exception should be returned in the response"
 		response.andExpect(status().isNotFound())
@@ -135,7 +135,7 @@ class MovieDirectorControllerATest extends Specification {
 	
 	def "Should be able to delete movie directors that exist in this catalog"(){
 		given:"a movie director exists in this catalog"
-		def newMovieDirector =
+		def newMovieDirectorDetails =
 		'''{
 				"name": "Soup Broth",
 				"dob": "18/04/1972",
@@ -143,7 +143,7 @@ class MovieDirectorControllerATest extends Specification {
 			}'''
 		def addResponse = mockMvc.perform(post(addEndpointURI)
 								 .contentType(MediaType.APPLICATION_JSON)
-								 .content(newMovieDirector))
+								 .content(newMovieDirectorDetails))
 		
 		when: "I make a request to delete the movie directors' details"
 		def movieDirectorDetailsMap =

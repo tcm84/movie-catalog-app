@@ -54,7 +54,7 @@ public interface MovieService {
 	/** 
 	* Returns the movie list from this catalog for this movieratingId
 	* 
-	* @param movieratingId of the movie rating the search is done for
+	* @param movieratingId of the movie rating
 	*/
 	List<MovieDetails> getMovieList(Integer movieratingId);
 

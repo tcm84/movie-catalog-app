@@ -14,13 +14,11 @@ public interface MovieController {
 
 	/** 
 	* @see MovieService#getFilmography(Integer)
-	* @param moviedirectorId of the movie director
 	*/
 	List<MovieDetails> getFilmography(Integer moviedirectorId);
 	
 	/** 
 	* @see MovieService#getMovieListAboveMovieRating(MovieClassification)
-	* @param movieClassification is the lower movieclassification of the movieList
 	*/
 	List<MovieDetails> getMovieListAboveMovieRating(MovieClassification movieClassification);
 	
@@ -43,7 +41,6 @@ public interface MovieController {
 	
 	/** 
 	* @see MovieService#getMovieList(Integer)
-	* @param movieratingId of the movie rating
 	*/
 	List<MovieDetails> getMovieList(Integer movieratingId);
 	
