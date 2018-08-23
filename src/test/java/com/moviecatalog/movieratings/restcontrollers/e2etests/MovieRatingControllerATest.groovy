@@ -91,7 +91,7 @@ class MovieRatingControllerATest extends Specification {
 	}
 	
 	def "Should be able to update movie ratings that exist in this catalog"(){		
-		setup:"a movie rating already exists in this catalog"
+		given:"a movie rating already exists in this catalog"
 		def newMovingRating = '''{
 				"movieClassification": "_12A",
 				"description": "Suitable for 12 years and over"
@@ -120,7 +120,7 @@ class MovieRatingControllerATest extends Specification {
 	}
 	
 	def "Should be able to delete movie ratings that exist in this catalog"(){
-		setup:"a movie rating exists in this catalog"
+		given:"a movie rating exists in this catalog"
 		def newMovieRating = '''{
 				"movieClassification": "_15",
 				"description": "Suitable for 15 years and over "

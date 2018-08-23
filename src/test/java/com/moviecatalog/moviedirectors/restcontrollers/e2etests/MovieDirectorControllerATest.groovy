@@ -84,7 +84,7 @@ class MovieDirectorControllerATest extends Specification {
 	}
 	
 	def "Should be able to update movie directors that exist in this catalog"(){
-		setup:"a movie director already exists in this catalog"
+		given:"a movie director already exists in this catalog"
 		def movieDirector =
 		'''{
 				"name": "Clint Eastwood",
@@ -134,7 +134,7 @@ class MovieDirectorControllerATest extends Specification {
 	}
 	
 	def "Should be able to delete movie directors that exist in this catalog"(){
-		setup:"a movie director exists in this catalog"
+		given:"a movie director exists in this catalog"
 		def newMovieDirector =
 		'''{
 				"name": "Soup Broth",

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
 import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.movies.enums.MovieClassification;
 import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 import com.moviecatalog.movies.services.MovieService;
 
@@ -45,6 +46,11 @@ public class MovieControllerImpl implements MovieController {
 	@RequestMapping("/movieratings/{movieratingId}/movies/all")
 	public List<MovieDetails> getMovieList(@PathVariable Integer movieratingId) {
 		return movieService.getMovieList(movieratingId);
+	}
+	
+	@RequestMapping("/movieratings/movies/above/{movieClassification}")
+	public List<MovieDetails> getMovieListAboveMovieRating(@PathVariable MovieClassification movieClassification) {
+		return movieService.getMovieListAboveMovieRating(movieClassification);
 	}
 
 	@Override

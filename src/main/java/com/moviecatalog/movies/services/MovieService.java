@@ -2,6 +2,7 @@ package com.moviecatalog.movies.services;
 
 import java.util.List;
 
+import com.moviecatalog.movies.enums.MovieClassification;
 import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 
 /**
@@ -17,6 +18,14 @@ public interface MovieService {
 	* @param moviedirectorId of the movie director the search is done for
 	*/
 	List<MovieDetails> getFilmography(Integer moviedirectorId);
+	
+	/** 
+	* Returns the combined list of movies for every rating at and above movieClassification 
+	* from this catalog
+	* 
+	* @param movieClassification is the lower movieclassification of the movieList
+	*/
+	List<MovieDetails> getMovieListAboveMovieRating(MovieClassification movieClassification);
 	
 	/**
 	* Adds a new movie to this catalog with these 

@@ -2,6 +2,7 @@ package com.moviecatalog.movies.restcontrollers;
 
 import java.util.List;
 
+import com.moviecatalog.movies.enums.MovieClassification;
 import com.moviecatalog.movies.model.dto.entities.MovieDetails;
 
 /**
@@ -16,6 +17,12 @@ public interface MovieController {
 	* @param moviedirectorId of the movie director
 	*/
 	List<MovieDetails> getFilmography(Integer moviedirectorId);
+	
+	/** 
+	* @see MovieService#getMovieListAboveMovieRating(MovieClassification)
+	* @param movieClassification is the lower movieclassification of the movieList
+	*/
+	List<MovieDetails> getMovieListAboveMovieRating(MovieClassification movieClassification);
 	
 	/** 
 	* @see MovieService#addMovieUnderMovieDirector(Integer, MovieDetails)

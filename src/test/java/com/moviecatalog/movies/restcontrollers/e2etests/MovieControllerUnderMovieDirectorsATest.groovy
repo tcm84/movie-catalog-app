@@ -110,7 +110,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 	}
 	
 	def "Should be able to update movies that exist in this catalog under this movie director"(){		
-		setup:"a movie already exists in this catalog under this movie director"
+		given:"a movie already exists in this catalog under this movie director"
 		def newMovie = '''{
 				"title": "Kill Bill Volume 1",
 				"genre": "ACTION",
@@ -169,7 +169,7 @@ class MovieControllerUnderMovieDirectorsATest extends Specification {
 	
 	
 	def "Should be able to delete movie that exist in this catalog under this movie director"(){		
-		setup:"a movie exists in this catalog under this movie director"
+		given:"a movie exists in this catalog under this movie director"
 		def newMovie = '''{
 				"title": "Kill Bill Volume 2",
 				"genre": "ACTION",

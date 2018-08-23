@@ -1,5 +1,6 @@
 package com.moviecatalog.movies.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
 import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.movies.enums.MovieClassification;
 import com.moviecatalog.movies.exceptions.FilmographyNotFoundException;
 import com.moviecatalog.movies.exceptions.MovieExistsException;
 import com.moviecatalog.movies.exceptions.MovieListNotFoundException;
@@ -45,6 +47,19 @@ public class MovieServiceImpl implements MovieService {
 		} else {
 			throw new MovieListNotFoundException();
 		}
+	}
+	
+	@Override
+	public List<MovieDetails> getMovieListAboveMovieRating(MovieClassification movieClassification) {
+		 List<MovieDetails> combinedList = new ArrayList<>();
+		 movieRepository.findAll().forEach(md -> {
+			 MovieRatingDetails movieRatingDetails = md.getMovieRatingDetails();
+			 if(movieRatingDetails != null && movieRatingDetails.getMovieClassification().getMinAge() >= movieClassification.getMinAge()) {
+				 combinedList.add(md);
+			 }
+		 });
+				     
+		 return combinedList;
 	}
 	
 	@Override
