@@ -40,7 +40,7 @@ These should be added with a movie director/rating id and not in isolation
 2. To add a new movie details for this movie director: /moviedirectors/{moviedirectorId}/movies/add
 3. To update a movie details for this movie director:  /moviedirectors/{moviedirectorId}/movies/update
 3. To add a new movie details for this movie rating:/movieratings/{movieratingId}/movies/add
-4. To update a movie details for this movie director:/movieratings/{movieratingId}/movies/update
+4. To update a movie details for this movie rating:/movieratings/{movieratingId}/movies/update
 5. To delete a movie: /movies/delete/{movieId}
 6. To get a list of all movies with a movie rating >= movieClassification: /movieratings/movies/above/{movieClassification}
 
