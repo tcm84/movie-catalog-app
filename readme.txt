@@ -21,29 +21,29 @@ Endpoints:
 
 Movie directors:
 
-1. To add a new movie directors details:          /moviedirectors/add
-2. To update a new movie directors details:       /moviedirectors/update
-3. To delete an existing movie directors details: /moviedirectors/delete/{moviedirectorId}
+1. (HTTP POST) To add a new movie directors details:          /moviedirectors/add
+2. (HTTP POST) To update a new movie directors details:       /moviedirectors/update
+3. (HTTP DELETE) To delete an existing movie directors details: /moviedirectors/delete/{moviedirectorId}
 
 Movie ratings:
 
-1. To add a new movie ratings details:          /movieratings/add
-2. To update a new movie ratings details:       /movieratings/update
-3. To delete an existing movie ratings details: /movieratings/delete/{movieratingId}
+1. (HTTP POST) To add a new movie ratings details:          /movieratings/add
+2. (HTTP POST) To update a new movie ratings details:       /movieratings/update
+3. (HTTP DELETE) To delete an existing movie ratings details: /movieratings/delete/{movieratingId}
 
 Movies:
 
 These should be added with a movie director/rating id and not in isolation
 
-1. Get a list of all a movie directors films from this catalog: /moviedirectors/{moviedirectorId}/movies/all
+1. (HTTP GET) Get a list of all a movie directors films from this catalog: /moviedirectors/{moviedirectorId}/movies/all
 
-2. To add a new movie details for this movie director: /moviedirectors/{moviedirectorId}/movies/add
-3. To update a movie details for this movie director:  /moviedirectors/{moviedirectorId}/movies/update
-3. To add a new movie details for this movie rating:/movieratings/{movieratingId}/movies/add
-4. To update a movie details for this movie rating:/movieratings/{movieratingId}/movies/update
-5. To delete a movie: /movies/delete/{movieId}
-6. To get a list of all movies with a movie rating >= movieClassification: /movieratings/movies/above/{movieClassification}
-
+2. (HTTP POST) To add a new movie details for this movie director: /moviedirectors/{moviedirectorId}/movies/add
+3. (HTTP POST) To update a movie details for this movie director:  /moviedirectors/{moviedirectorId}/movies/update
+3. (HTTP POST) To add a new movie details for this movie rating:/movieratings/{movieratingId}/movies/add
+4. (HTTP POST) To update a movie details for this movie rating:/movieratings/{movieratingId}/movies/update
+5. (HTTP DELETE) To delete a movie: /movies/delete/{movieId}
+6. (HTTP GET) To get a list of all movies with a movie rating >= movieClassification: /movieratings/movies/above/{movieClassification}
+7. (HTTP GET) To get a list of all movies with a movie rating: /movieratings/{movieratingId}/movies/all
 
 To log on to the H2 web console to experiment with persisting data between application restarts go to 
 
