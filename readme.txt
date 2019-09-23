@@ -8,7 +8,7 @@ Groovy
 H2 embedded DB for testing and 
 persistence (for demo only) - stored in a file in the app under /database
 maven
-lombok 
+lombok  - you need to install this with your IDE
 
 
 To build
