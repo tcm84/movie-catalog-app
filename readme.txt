@@ -10,13 +10,10 @@ persistence (for demo only) - stored in a file in the app under /database
 maven
 lombok  - you need to install this with your IDE
 
-To run e2e tests
+To run integration tests
 mvn clean verify
 
-To build
-mvn install - runs test cases too
-
-To run
+To build and run
 mvn spring-boot:run - http://localhost:8080
 
 Endpoints:
