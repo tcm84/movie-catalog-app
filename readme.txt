@@ -11,9 +11,9 @@ maven
 lombok
 
 To run integration tests
-mvn clean verify or import as a maven project into your IDE and run the tests - 
-your dev env needs to be correctly setup to run spock tests in your IDE and lombok
-needs to be installed too
+should normally be mvn clean verify but there are some groovy related issues with this that might be seen
+or import as a maven project into your IDE and run the tests -  your dev env needs to be correctly setup to
+run spock tests in your IDE and lombok needs to be installed too
 
 To build and run
 mvn spring-boot:run and you can send your requests too http://localhost:8080
