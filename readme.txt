@@ -8,11 +8,12 @@ Groovy
 H2 embedded DB for testing and 
 persistence (for demo only) - stored in a file in the app under /database
 maven
-lombok  - you need to install this with your IDE
+lombok
 
 To run integration tests
 mvn clean verify or import as a maven project into your IDE and run the tests - 
-your dev env needs to be correctly setup to run spock tests in your IDE
+your dev env needs to be correctly setup to run spock tests in your IDE and lombok
+needs to be installed too
 
 To build and run
 mvn spring-boot:run and you can send your requests too http://localhost:8080
