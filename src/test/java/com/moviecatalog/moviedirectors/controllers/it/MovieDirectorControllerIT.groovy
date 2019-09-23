@@ -1,4 +1,4 @@
-package com.moviecatalog.moviedirectors.restcontrollers.it
+package com.moviecatalog.moviedirectors.controllers.it
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -13,8 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
 import com.moviecatalog.repo.testconfig.RepoTestConfig
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails
-import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
+import com.moviecatalog.moviedirectors.controllers.MovieDirectorControllerImpl
 import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper

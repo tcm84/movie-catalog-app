@@ -1,6 +1,6 @@
 package com.moviecatalog.movieratings.services;
 
-import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.movieratings.models.MovieRatingDetails;
 
 /**
 * The <code>MovieRatingService</code> interface provides

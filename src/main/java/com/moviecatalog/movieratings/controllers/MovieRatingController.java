@@ -1,6 +1,6 @@
-package com.moviecatalog.movieratings.restcontrollers;
+package com.moviecatalog.movieratings.controllers;
 
-import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.movieratings.models.MovieRatingDetails;
 
 /**
 * The <code>MovieRatingController</code> interface provides

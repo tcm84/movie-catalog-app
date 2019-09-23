@@ -1,4 +1,4 @@
-package com.moviecatalog.movies.restcontrollers.it
+package com.moviecatalog.movies.controllers.it
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
@@ -12,14 +12,15 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
-import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
+import com.moviecatalog.moviedirectors.controllers.MovieDirectorControllerImpl
 import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
+import com.moviecatalog.movies.controllers.MovieControllerImpl
 import com.moviecatalog.movies.repo.MovieRepository
-import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
 import com.moviecatalog.movies.services.MovieServiceImpl
 import com.moviecatalog.repo.testconfig.RepoTestConfig
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -240,7 +241,7 @@ class MovieControllerUnderMovieDirectorsIT extends Specification {
 					.content(movieDetails))
 		})
 		when: "I search for the filmography for this movie director"
-		def response = mockMvc.perform(post("/moviedirectors/" + movieDirectorId + "/movies/all")
+		def response = mockMvc.perform(get("/moviedirectors/" + movieDirectorId + "/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "the movie directors filmography should have been returned"
@@ -280,7 +281,7 @@ class MovieControllerUnderMovieDirectorsIT extends Specification {
 	
 	def "Should not get a filmography for a movie director that doesn't exist in this catalog"(){
 		when: "I search for a filmography for a movie director that that doesn't exist in this catalog"
-		def response = mockMvc.perform(post("/moviedirectors/999/movies/all")
+		def response = mockMvc.perform(get("/moviedirectors/999/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "an exception should be returned"

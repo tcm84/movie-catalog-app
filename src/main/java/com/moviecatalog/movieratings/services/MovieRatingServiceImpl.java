@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.moviecatalog.movieratings.exceptions.MovieRatingExistsException;
 import com.moviecatalog.movieratings.exceptions.MovieRatingNotFoundException;
-import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.movieratings.models.MovieRatingDetails;
 import com.moviecatalog.movieratings.repo.MovieRatingRepository;
 
 @Service

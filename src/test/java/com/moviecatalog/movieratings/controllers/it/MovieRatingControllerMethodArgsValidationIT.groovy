@@ -1,4 +1,4 @@
-package com.moviecatalog.moviedirectors.restcontrollers.it
+package com.moviecatalog.movieratings.controllers.it
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -11,8 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
 import com.moviecatalog.repo.testconfig.RepoTestConfig
-import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
-import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
+import com.moviecatalog.movieratings.controllers.MovieRatingControllerImpl
+import com.moviecatalog.movieratings.services.MovieRatingServiceImpl
 
 import groovy.swing.factory.ImageIconFactory
 
@@ -30,9 +30,9 @@ import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Import(RepoTestConfig)
-@ContextConfiguration(classes=[MovieCatalogApplication,MovieDirectorServiceImpl])
-@WebMvcTest(MovieDirectorControllerImpl)
-class MovieDirectorControllerMethodArgsValidationIT extends Specification {
+@ContextConfiguration(classes=[MovieCatalogApplication,MovieRatingServiceImpl])
+@WebMvcTest(MovieRatingControllerImpl)
+class MovieRatingControllerMethodArgsValidationIT extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	
@@ -54,15 +54,12 @@ class MovieDirectorControllerMethodArgsValidationIT extends Specification {
 		and: "the response should contain all the error messages for the failed validations"
 		MethodArgumentNotValidException ex = response.andReturn().resolvedException
 		def validationErrors = ex.getBindingResult().allErrors
-		validationErrors.size() == 2
-		Set actualErrorMsgs = []
-		validationErrors.forEach({error -> actualErrorMsgs += error.getDefaultMessage()})
-		Set expectedErrorMsgs = ["Name must not be empty", "Dob should not be null"]
-		actualErrorMsgs == expectedErrorMsgs
+		validationErrors.size() == 1
+		validationErrors.get(0).getDefaultMessage() == "Description should not be empty"
 		
-		where:
-		description                                         | endpointURI
-		"when adding a new director to this catalog"        | "/moviedirectors/add"
-		"when updating an existing director in this catalog"| "/moviedirectors/update"
+		where: "the following endpointURI's will be hit"
+		description                                                  | endpointURI
+		"when adding a new movie rating to this catalog"             | "/movieratings/add"
+		"when updating an existing moving rating in this catalog"    | "/movieratings/update"
 	}
 }

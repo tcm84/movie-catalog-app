@@ -1,4 +1,4 @@
-package com.moviecatalog.movieratings.model.dto.entities;
+package com.moviecatalog.movieratings.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

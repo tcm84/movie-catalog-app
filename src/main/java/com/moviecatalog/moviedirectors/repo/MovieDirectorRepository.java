@@ -3,7 +3,7 @@ package com.moviecatalog.moviedirectors.repo;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.models.MovieDirectorDetails;
 
 /**
 * The <code>MovieDirectorRepository</code> represents a MovieDirectorCatalog

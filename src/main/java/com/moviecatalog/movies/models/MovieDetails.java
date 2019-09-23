@@ -1,4 +1,4 @@
-package com.moviecatalog.movies.model.dto.entities;
+package com.moviecatalog.movies.models;
 
 import java.util.Collection;
 import java.util.Date;
@@ -20,17 +20,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
-import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.moviedirectors.models.MovieDirectorDetails;
+import com.moviecatalog.movieratings.models.MovieRatingDetails;
 import com.moviecatalog.movies.enums.Genre;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
 
 @Entity
-@Getter 
-@Setter
+@Data
 @ToString
 @Table(name="movies")
 /**

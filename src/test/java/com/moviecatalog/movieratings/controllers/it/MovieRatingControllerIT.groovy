@@ -1,4 +1,4 @@
-package com.moviecatalog.movieratings.restcontrollers.it
+package com.moviecatalog.movieratings.controllers.it
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
-import com.moviecatalog.movieratings.restcontrollers.MovieRatingControllerImpl
+import com.moviecatalog.movieratings.controllers.MovieRatingControllerImpl
 import com.moviecatalog.movieratings.services.MovieRatingServiceImpl
 import com.moviecatalog.movies.repo.MovieRepository
 import com.moviecatalog.repo.testconfig.RepoTestConfig

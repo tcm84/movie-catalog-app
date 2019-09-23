@@ -1,6 +1,6 @@
-package com.moviecatalog.moviedirectors.restcontrollers;
+package com.moviecatalog.moviedirectors.controllers;
 
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.models.MovieDirectorDetails;
 
 /**
 * The <code>MovieDirectorController</code> interface provides

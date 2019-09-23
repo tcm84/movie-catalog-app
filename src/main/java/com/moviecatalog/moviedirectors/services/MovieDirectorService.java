@@ -1,6 +1,6 @@
 package com.moviecatalog.moviedirectors.services;
 
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.models.MovieDirectorDetails;
 
 /**
 * The <code>MovieDirectorService</code> interface provides

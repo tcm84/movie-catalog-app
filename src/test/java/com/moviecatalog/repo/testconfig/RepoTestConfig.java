@@ -12,11 +12,12 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+
+import com.moviecatalog.moviedirectors.models.MovieDirectorDetails;
 import com.moviecatalog.moviedirectors.repo.MovieDirectorRepository;
-import com.moviecatalog.movieratings.model.dto.entities.MovieRatingDetails;
+import com.moviecatalog.movieratings.models.MovieRatingDetails;
 import com.moviecatalog.movieratings.repo.MovieRatingRepository;
-import com.moviecatalog.movies.model.dto.entities.MovieDetails;
+import com.moviecatalog.movies.models.MovieDetails;
 import com.moviecatalog.movies.repo.MovieRepository;
 
 @TestConfiguration

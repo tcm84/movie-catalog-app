@@ -3,7 +3,7 @@ package com.moviecatalog.movies.services;
 import java.util.List;
 
 import com.moviecatalog.movies.enums.MovieClassification;
-import com.moviecatalog.movies.model.dto.entities.MovieDetails;
+import com.moviecatalog.movies.models.MovieDetails;
 
 /**
 * The <code>MovieService</code> interface provides

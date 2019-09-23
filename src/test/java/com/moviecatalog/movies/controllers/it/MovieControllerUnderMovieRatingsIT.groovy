@@ -1,4 +1,4 @@
-package com.moviecatalog.movies.restcontrollers.it
+package com.moviecatalog.movies.controllers.it
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
@@ -13,14 +13,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.transaction.annotation.Propagation
 
 import com.moviecatalog.MovieCatalogApplication
-import com.moviecatalog.movieratings.restcontrollers.MovieRatingControllerImpl
+import com.moviecatalog.movieratings.controllers.MovieRatingControllerImpl
 import com.moviecatalog.movieratings.services.MovieRatingServiceImpl
+import com.moviecatalog.movies.controllers.MovieControllerImpl
 import com.moviecatalog.movies.repo.MovieRepository
-import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
 import com.moviecatalog.movies.services.MovieServiceImpl
 import com.moviecatalog.repo.testconfig.RepoTestConfig
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -215,7 +216,7 @@ class MovieControllerUnderMovieRatingsIT extends Specification {
 	
 	def "Should not get a movie list for a movie rating that doesn't exist in this catalog"(){
 		when: "I search for a movie list for a movie rating that that doesn't exist in this catalog"
-		def response = mockMvc.perform(post("/movieratings/999/movies/all")
+		def response = mockMvc.perform(get("/movieratings/999/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "an exception should be returned"
@@ -257,7 +258,7 @@ class MovieControllerUnderMovieRatingsIT extends Specification {
 		postMovieListUnderMovieRating(movieList, _18movieRatingId)
 		
 		when: "I search for the movie list for this movie rating"
-		def response = mockMvc.perform(post("/movieratings/" + _18movieRatingId + "/movies/all")
+		def response = mockMvc.perform(get("/movieratings/" + _18movieRatingId + "/movies/all")
 				.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "all the ratings movies should have been returned"
@@ -400,7 +401,7 @@ class MovieControllerUnderMovieRatingsIT extends Specification {
 		postMovieListUnderMovieRating(_18moviesList, _18movieRatingId)
 
 		when: "I search for a list of movies for a moving rating of _15 or over"
-		def response = mockMvc.perform(post("/movieratings/movies/above/_15")
+		def response = mockMvc.perform(get("/movieratings/movies/above/_15")
 			.contentType(MediaType.APPLICATION_JSON))
 		
 		then: "all the movies for the movie rating of _15 or over should be returned"

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.moviecatalog.moviedirectors.exceptions.MovieDirectorExistsException;
 import com.moviecatalog.moviedirectors.exceptions.MovieDirectorNotFoundException;
-import com.moviecatalog.moviedirectors.model.dto.entities.MovieDirectorDetails;
+import com.moviecatalog.moviedirectors.models.MovieDirectorDetails;
 import com.moviecatalog.moviedirectors.repo.MovieDirectorRepository;
 
 @Service
