@@ -37,7 +37,7 @@ import spock.lang.Unroll
 @Import(RepoTestConfig)
 @ContextConfiguration(classes=[MovieCatalogApplication,MovieServiceImpl,MovieRatingServiceImpl])
 @WebMvcTest(controllers=[MovieControllerImpl,MovieRatingControllerImpl])
-class MovieControllerUnderMovieRatingsATest extends Specification {
+class MovieControllerUnderMovieRatingsIT extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	

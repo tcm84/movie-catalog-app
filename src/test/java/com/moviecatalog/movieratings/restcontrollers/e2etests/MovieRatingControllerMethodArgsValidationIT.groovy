@@ -1,8 +1,7 @@
-package com.moviecatalog.movies.restcontrollers.e2etests
-
-import groovy.json.JsonOutput
+package com.moviecatalog.movieratings.restcontrollers.e2etests
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ContextConfiguration
@@ -11,12 +10,11 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.MethodArgumentNotValidException
 
 import com.moviecatalog.MovieCatalogApplication
-import com.moviecatalog.moviedirectors.restcontrollers.MovieDirectorControllerImpl
-import com.moviecatalog.moviedirectors.services.MovieDirectorServiceImpl
-import com.moviecatalog.movies.repo.MovieRepository
-import com.moviecatalog.movies.restcontrollers.MovieControllerImpl
-import com.moviecatalog.movies.services.MovieServiceImpl
 import com.moviecatalog.repo.testconfig.RepoTestConfig
+import com.moviecatalog.movieratings.restcontrollers.MovieRatingControllerImpl
+import com.moviecatalog.movieratings.services.MovieRatingServiceImpl
+
+import groovy.swing.factory.ImageIconFactory
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -32,12 +30,12 @@ import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Import(RepoTestConfig)
-@ContextConfiguration(classes=[MovieCatalogApplication,MovieServiceImpl,MovieDirectorServiceImpl])
-@WebMvcTest(controllers=[MovieControllerImpl,MovieDirectorControllerImpl])
-class MovieControllerMethodArgValidationATest extends Specification {
+@ContextConfiguration(classes=[MovieCatalogApplication,MovieRatingServiceImpl])
+@WebMvcTest(MovieRatingControllerImpl)
+class MovieRatingControllerMethodArgsValidationIT extends Specification {
 	@Autowired
 	private MockMvc mockMvc
-
+	
 	@Unroll
 	def "Requests should be rejected if they don't pass validation requirements #description"(){
 		given: "a request containing no valid data"
@@ -56,18 +54,12 @@ class MovieControllerMethodArgValidationATest extends Specification {
 		and: "the response should contain all the error messages for the failed validations"
 		MethodArgumentNotValidException ex = response.andReturn().resolvedException
 		def validationErrors = ex.getBindingResult().allErrors
-		validationErrors.size() == 3
-		Set actualErrorMsgs = []
-		validationErrors.forEach({error -> actualErrorMsgs += error.getDefaultMessage()})
-		Set expectedErrorMsgs = ["Movie title must not be empty", "Cast must contains at least one actor",
-			"Releasedate should not be null"]
-		actualErrorMsgs == expectedErrorMsgs
+		validationErrors.size() == 1
+		validationErrors.get(0).getDefaultMessage() == "Description should not be empty"
 		
-		where:
-		description                                                      | endpointURI
-		"for adding a new movie under a director to this catalog"         | "/moviedirectors/1/movies/add"
-		"for updating an existing movie under a director in this catalog" | "/moviedirectors/1/movies/update"
-		"for adding a new movie under a rating to this catalog"           | "/movieratings/1/movies/add"
-		"for updating an existing movie under a rating in this catalog"   | "/movieratings/1/movies/update"
+		where: "the following endpointURI's will be hit"
+		description                                                  | endpointURI
+		"when adding a new movie rating to this catalog"             | "/movieratings/add"
+		"when updating an existing moving rating in this catalog"    | "/movieratings/update"
 	}
 }

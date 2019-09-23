@@ -32,7 +32,7 @@ import spock.lang.Unroll
 @Import(RepoTestConfig)
 @ContextConfiguration(classes=[MovieCatalogApplication,MovieDirectorServiceImpl])
 @WebMvcTest(MovieDirectorControllerImpl)
-class MovieDirectorControllerMethodArgsValidationATest extends Specification {
+class MovieDirectorControllerMethodArgsValidationIT extends Specification {
 	@Autowired
 	private MockMvc mockMvc
 	

@@ -10,6 +10,8 @@ persistence (for demo only) - stored in a file in the app under /database
 maven
 lombok  - you need to install this with your IDE
 
+To run e2e tests
+mvn clean verify
 
 To build
 mvn install - runs test cases too
