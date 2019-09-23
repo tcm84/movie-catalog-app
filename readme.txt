@@ -15,7 +15,7 @@ mvn clean verify or import as a maven project into your IDE and run the tests -
 your dev env needs to be correctly setup to run spock tests in your IDE
 
 To build and run
-mvn spring-boot:run - http://localhost:8080
+mvn spring-boot:run and you can send your requests too http://localhost:8080
 
 Endpoints:
 
